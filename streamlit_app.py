@@ -46,45 +46,55 @@ class GroqLlamaChat(BaseChatModel):
     def _identifying_params(self):
         return {"model": self.model}
 
-# ✅ 벡터스토어 불러오기
-@st.cache_resource
-def load_vectorstore():
-    embedding_model = HuggingFaceEmbeddings(model_name="intfloat/e5-small-v2")
-    return FAISS.load_local("busan_db", embedding_model, allow_dangerous_deserialization=True)
-
-# ✅ API 키 불러오기
+# ✅ 텍스트 파일 로딩 함수
 def load_api_key():
     with open("groq_api.txt", "r", encoding="utf-8") as file:
         return file.read().strip()
 
-# ✅ 프롬프트 템플릿 불러오기
 def load_template():
     with open("template.txt", "r", encoding="utf-8") as file:
         return file.read()
 
-# ✅ Streamlit UI
+# ✅ 초기 컴포넌트 캐싱 (1회만 실행)
+@st.cache_resource
+def init_qa_chain():
+    api_key = load_api_key()
+    template = load_template()
+
+    # 임베딩 모델
+    embedding_model = HuggingFaceEmbeddings(model_name="intfloat/e5-small-v2")
+
+    # 벡터 스토어
+    vectorstore = FAISS.load_local("busan_db", embedding_model, allow_dangerous_deserialization=True)
+    retriever = vectorstore.as_retriever(search_kwargs={"k": 5})
+
+    # LLM & 프롬프트
+    llm = GroqLlamaChat(groq_api_key=api_key)
+    prompt = PromptTemplate.from_template(template)
+
+    # QA 체인 생성
+    qa_chain = RetrievalQA.from_chain_type(
+        llm=llm,
+        retriever=retriever,
+        chain_type_kwargs={"prompt": prompt},
+        return_source_documents=True,
+    )
+    return qa_chain
+
+# ✅ QA 체인 세션 상태에 저장
+if "qa_chain" not in st.session_state:
+    st.session_state.qa_chain = init_qa_chain()
+
+# ✅ UI 구성
 st.set_page_config(page_title="부산 기업 RAG", layout="wide")
 st.title("🚢 부산 취업 상담 챗봇(JOB MAN)")
 
 query = st.text_input("🎯 질문을 입력하세요:", placeholder="예) 신입 사원이 처음 받는 연봉 3000만원 이상 되는 선박 제조업 회사를 추천해줘")
 
+# ✅ 버튼 클릭 시, 체인 실행만!
 if st.button("💬 질문 실행") and query:
     with st.spinner("🤖 JOB MAN이 부산 기업 정보를 검색 중입니다..."):
-        api_key = load_api_key()
-        template = load_template()
-        vectorstore = load_vectorstore()
-        retriever = vectorstore.as_retriever(search_kwargs={"k": 5})
-        llm = GroqLlamaChat(groq_api_key=api_key)
-
-        prompt = PromptTemplate.from_template(template)
-        qa_chain = RetrievalQA.from_chain_type(
-            llm=llm,
-            retriever=retriever,
-            chain_type_kwargs={"prompt": prompt},
-            return_source_documents=True,
-        )
-
-        result = qa_chain.invoke(query)
+        result = st.session_state.qa_chain.invoke(query)
 
         st.subheader("✅ JOB MAN의 답변")
         st.write(result["result"])
