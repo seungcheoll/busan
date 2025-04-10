@@ -1,4 +1,6 @@
 import streamlit as st
+st.set_page_config(page_title="부산 기업 RAG", layout="wide")
+
 import os
 from langchain_community.vectorstores import FAISS
 from langchain.chains import RetrievalQA
@@ -86,7 +88,6 @@ if "qa_chain" not in st.session_state:
     st.session_state.qa_chain = init_qa_chain()
 
 # ✅ UI 구성
-st.set_page_config(page_title="부산 기업 RAG", layout="wide")
 st.title("🚢 부산 취업 상담 챗봇(JOB MAN)")
 
 query = st.text_input("🎯 질문을 입력하세요:", placeholder="예) 신입 사원이 처음 받는 연봉 3000만원 이상 되는 선박 제조업 회사를 추천해줘")
