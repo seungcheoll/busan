@@ -73,7 +73,7 @@ if st.button("💬 질문 실행") and query:
         api_key = load_api_key()
         template = load_template()
         vectorstore = load_vectorstore()
-        retriever = vectorstore.as_retriever(search_kwargs={"k": 10})
+        retriever = vectorstore.as_retriever(search_kwargs={"k": 5})
         llm = GroqLlamaChat(groq_api_key=api_key)
 
         prompt = PromptTemplate.from_template(template)
