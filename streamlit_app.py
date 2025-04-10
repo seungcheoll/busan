@@ -50,8 +50,8 @@ class GroqLlamaChat(BaseChatModel):
 
 # ✅ 텍스트 파일 로딩 함수
 def load_api_key():
-    with open("groq_api.txt", "r", encoding="utf-8") as file:
-        return file.read().strip()
+    api_key = st.secrets["general"]["API_KEY"]
+        return api_key.strip()
 
 def load_template():
     with open("template.txt", "r", encoding="utf-8") as file:
