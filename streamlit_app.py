@@ -86,7 +86,7 @@ if st.button("💬 질문 실행") and query:
 
         result = qa_chain.invoke(query)
 
-        st.subheader("✅ GPT의 답변")
+        st.subheader("✅ JOB MAN의 답변")
         st.write(result["result"])
 
         st.subheader("📚 참고 문서")
