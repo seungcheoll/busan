@@ -49,7 +49,7 @@ class GroqLlamaChat(BaseChatModel):
 # ✅ 벡터스토어 불러오기
 @st.cache_resource
 def load_vectorstore():
-    embedding_model = HuggingFaceEmbeddings(model_name="bge_m3_model")
+    embedding_model = HuggingFaceEmbeddings(model_name="intfloat/e5-small-v2")
     return FAISS.load_local("busan_db", embedding_model, allow_dangerous_deserialization=True)
 
 # ✅ API 키 불러오기
