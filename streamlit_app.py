@@ -64,7 +64,7 @@ def init_qa_chain():
     template = load_template()
 
     # 임베딩 모델
-    embedding_model = HuggingFaceEmbeddings(model_name="intfloat/e5-small-v2")
+    embedding_model = HuggingFaceEmbeddings(model_name="BAAI/bge-m3")
 
     # 벡터 스토어
     vectorstore = FAISS.load_local("busan_db", embedding_model, allow_dangerous_deserialization=True)
