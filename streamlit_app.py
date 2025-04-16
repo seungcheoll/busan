@@ -261,14 +261,18 @@ with col2:
         )
 
         selected_rows = grid_response["selected_rows"]
-        st.write(type(selected_rows))
-        st.write(selected_rows)
-        if len(selected_rows) > 0:
+        # 💣 여기서 오류 방지
+        if isinstance(selected_rows, list) and len(selected_rows) > 0:
             selected_company = selected_rows[0]
-            selected_company_name = selected_company.get("회사명")
-            if selected_company_name:
-                st.success(f"선택된 기업: {selected_company_name}")
+        
+            # 👇 dict 형식이면 get으로 접근
+            if isinstance(selected_company, dict):
+                selected_company_name = selected_company.get("회사명")
+                if selected_company_name:
+                    matched_df = matched_df[matched_df["회사명"] == selected_company_name]
+                else:
+                    st.warning(f"'회사명' 키가 없습니다. 키 목록: {list(selected_company.keys())}")
             else:
-                st.warning(f"선택된 행에 '회사명' 키가 없습니다. 키 목록: {list(selected_company.keys())}")
-    else:
-        st.info("기업을 검색해주세요.")
+                st.error("선택된 회사 정보가 dict가 아닙니다. AgGrid 옵션 또는 return_mode를 확인하세요.")
+        else:
+            st.info("선택된 기업이 없습니다.")
