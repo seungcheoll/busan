@@ -137,23 +137,30 @@ with selected_tabs[2]:
 
 with selected_tabs[3]:
     st.markdown("### 🗺 부산 기업 분포 및 검색")
+
     if "search_keyword" not in st.session_state:
         st.session_state.search_keyword = ""
+    if "reset_triggered" not in st.session_state:
+        st.session_state.reset_triggered = False
 
     def reset_search():
         st.session_state.search_keyword = ""
         st.session_state["search_input"] = ""
-        st.experimental_rerun()
-        
+        st.session_state.reset_triggered = True
+
     search_input = st.text_input(
         "🔍 회사명으로 검색 (예: 현대, 시스템, 조선 등)",
         key="search_input",
         placeholder="검색어 입력 후 엔터"
     )
-    
     st.session_state.search_keyword = st.session_state.get("search_input", "")
+
     if st.session_state.search_keyword:
         st.button("검색 초기화", on_click=reset_search)
+
+    if st.session_state.reset_triggered:
+        st.session_state.reset_triggered = False
+        st.experimental_rerun()
 
     if st.session_state.search_keyword.strip():
         matched_df = st.session_state.company_df[
