@@ -119,7 +119,7 @@ else:
     st.session_state["main_query"] = query
 
 # ✅ 탭 구성
-selected_tabs = st.tabs(["✅ JOB MAN의 답변", "📚 참고 문서", "🌍 관련 기업 위치", "🔍 부산 기업 분포 및 검색""])
+selected_tabs = st.tabs(["✅ JOB MAN의 답변", "📚 참고 문서", "🌍 관련 기업 위치", "🔍 부산 기업 분포 및 검색"])
 
 with selected_tabs[0]:
     st.write(st.session_state.get("gpt_result", "🔹 GPT 응답 결과가 여기에 표시됩니다."))
