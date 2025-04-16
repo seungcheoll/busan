@@ -98,34 +98,39 @@ if st.button("💬 질문 실행") and query:
     with st.spinner("🤖 JOB MAN이 부산 기업 정보를 검색 중입니다..."):
         result = st.session_state.qa_chain.invoke(query)
 
-        st.subheader("✅ JOB MAN의 답변")
-        st.write(result["result"])
+        # ✅ 탭 구성
+        tab1, tab2, tab3 = st.tabs(["✅ JOB MAN의 답변", "📚 참고 문서", "🗺 관련 기업 위치"])
 
-        st.subheader("📚 참고 문서")
-        for i, doc in enumerate(result["source_documents"]):
-            with st.expander(f"문서 {i+1}"):
-                st.write(doc.page_content)
+        # ✅ 탭 1: GPT 답변
+        with tab1:
+            st.write(result["result"])
 
-        # ✅ 지도 시각화
-        st.subheader("🗺 관련 기업 위치")
+        # ✅ 탭 2: 참고 문서
+        with tab2:
+            for i, doc in enumerate(result["source_documents"]):
+                with st.expander(f"문서 {i+1}"):
+                    st.write(doc.page_content)
 
-        source_docs = result["source_documents"]
-        company_names = [doc.metadata.get("company") for doc in source_docs if "company" in doc.metadata]
-        matched_df = st.session_state.company_df[st.session_state.company_df['회사명'].isin(company_names)]
+        # ✅ 탭 3: 지도 출력
+        with tab3:
+            source_docs = result["source_documents"]
+            company_names = [doc.metadata.get("company") for doc in source_docs if "company" in doc.metadata]
+            matched_df = st.session_state.company_df[st.session_state.company_df['회사명'].isin(company_names)]
 
-        if not matched_df.empty:
-            m = folium.Map(
-                location=[matched_df["위도"].mean(), matched_df["경도"].mean()],
-                zoom_start=12
-            )
+            if not matched_df.empty:
+                m = folium.Map(
+                    location=[matched_df["위도"].mean(), matched_df["경도"].mean()],
+                    zoom_start=12,
+                    tiles="CartoDB positron"
+                )
 
-            for _, row in matched_df.iterrows():
-                folium.Marker(
-                    [row["위도"], row["경도"]],
-                    tooltip=row["회사명"],
-                    popup=row["회사명"]
-                ).add_to(m)
+                for _, row in matched_df.iterrows():
+                    folium.Marker(
+                        [row["위도"], row["경도"]],
+                        tooltip=row["회사명"],
+                        popup=row["회사명"]
+                    ).add_to(m)
 
-            html(m._repr_html_(), height=500)
-        else:
-            st.info("해당 기업 위치 정보가 없습니다.")
+                html(m._repr_html_(), height=500)
+            else:
+                st.info("해당 기업 위치 정보가 없습니다.")
