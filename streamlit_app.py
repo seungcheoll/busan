@@ -98,7 +98,7 @@ def init_qa_chain():
     company_df = pd.read_excel("map_busan.xlsx")
 
     # 전체 기업 지도 HTML 로드
-    with open("전체기업_지도.html", "r", encoding="utf-8") as f:
+    with open("map_company.html", "r", encoding="utf-8") as f:
         map_html_content = f.read()
 
     return qa_chain, company_df, map_html_content
