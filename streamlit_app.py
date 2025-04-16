@@ -229,6 +229,12 @@ with selected_tabs[3]:
                 ).add_to(m)
             html(m._repr_html_(), height=600)
             st.caption(f"※ '{st.session_state.search_keyword}'를 포함한 기업 {len(matched_df)}곳을 지도에 표시했습니다.")
+            # 🧾 테이블 추가
+            st.markdown("### 🧾 검색 기업 정보")
+            st.dataframe(
+                matched_df[["회사명", "산업분류", "주소", "위도", "경도"]],
+                use_container_width=True
+            )
     else:
         html(st.session_state.map_html, height=600)
         st.caption("※ 입력 없이 전체 기업 분포를 확인 중입니다.")
