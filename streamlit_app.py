@@ -119,7 +119,7 @@ with selected_tabs[2]:
     matched_df = st.session_state.company_df[st.session_state.company_df['회사명'].isin(company_names)]
 
     if not matched_df.empty:
-        m = folium.Map(location=[matched_df["위도"].mean(), matched_df["경도"].mean()], zoom_start=12, tiles="CartoDB positron")
+        m = folium.Map(location=[matched_df["위도"].mean(), matched_df["경도"].mean()], zoom_start=12)
         for _, row in matched_df.iterrows():
             folium.CircleMarker(
                 location=[row["위도"], row["경도"]],
@@ -165,8 +165,7 @@ with selected_tabs[3]:
         else:
             m = folium.Map(
                 location=[matched_df["위도"].mean(), matched_df["경도"].mean()],
-                zoom_start=12,
-                tiles="CartoDB positron"
+                zoom_start=12
             )
             for _, row in matched_df.iterrows():
                 folium.CircleMarker(
