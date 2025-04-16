@@ -244,7 +244,8 @@ with selected_tabs[3]:
         if not matched_df.empty:
             st.dataframe(
                 matched_df[["회사명", "도로명", "업종명", "전화번호"]],
-                use_container_width=True
+                use_container_width=True,
+                height=500
             )
         else:
             st.info("기업을 검색해주세요.")
