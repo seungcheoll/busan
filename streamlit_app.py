@@ -244,10 +244,17 @@ with selected_tabs[3]:
     with col2:
         st.markdown("### 🧾 검색 기업 정보")
         if not matched_df.empty:
-            st.dataframe(
+            selected_df = st.data_editor(
                 matched_df[["회사명", "도로명", "업종명", "전화번호"]],
                 use_container_width=True,
-                height=535
+                height=535,
+                hide_index=True,
+                disabled=True
             )
+
+            # 사용자가 하나의 행을 클릭했다고 가정하고, 그 기업만 지도에 표시하도록 필터링
+            if len(selected_df) == 1:
+                selected_company_name = selected_df.iloc[0]["회사명"]
+                matched_df = matched_df[matched_df["회사명"] == selected_company_name]
         else:
             st.info("기업을 검색해주세요.")
