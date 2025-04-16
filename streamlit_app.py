@@ -1,18 +1,14 @@
 import streamlit as st
-st.set_page_config(page_title="부산 기업 RAG", layout="wide")
-
-import os
 import pandas as pd
 import folium
 from streamlit.components.v1 import html
-
 from langchain_community.vectorstores import FAISS
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
-from langchain.schema import Document, ChatResult
-from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.schema.messages import BaseMessage, HumanMessage, AIMessage
 from langchain.chat_models.base import BaseChatModel
+from langchain.embeddings import HuggingFaceEmbeddings
+from langchain.schema import ChatResult
 from groq import Groq
 
 # ✅ 커스텀 ChatModel 클래스
@@ -79,140 +75,98 @@ def init_qa_chain():
         return_source_documents=True,
     )
 
-    # ✅ 기업 위치정보 로딩
     company_df = pd.read_excel("map_busan.xlsx")
-
-    # ✅ 전체 지도 HTML 파일 미리 읽어오기
     with open("전체기업_지도.html", "r", encoding="utf-8") as f:
         map_html_content = f.read()
 
     return qa_chain, company_df, map_html_content
 
-# ✅ 세션 상태에 QA 체인과 위치정보 저장
+# ✅ 앱 시작
+st.set_page_config(page_title="부산 기업 RAG", layout="wide")
+st.title("🚢 부산 취업 상담 챗봇(JOB MAN)")
+
 if "qa_chain" not in st.session_state:
     st.session_state.qa_chain, st.session_state.company_df, st.session_state.map_html = init_qa_chain()
 
-# ✅ UI 구성
-st.title("🚢 부산 취업 상담 챗봇(JOB MAN)")
-
 query = st.text_input("🎯 질문을 입력하세요:", placeholder="예) 신입 사원이 처음 받는 연봉 3000만원 이상 되는 선박 제조업 회사를 추천해줘")
 
-# ✅ 버튼 클릭 시, 체인 실행
-if st.button("💬 질문 실행") and query:
+if st.button("💬 질문 실행"):
     with st.spinner("🤖 JOB MAN이 부산 기업 정보를 검색 중입니다..."):
         result = st.session_state.qa_chain.invoke(query)
-        # ✅ 탭 구성
-        tab1, tab2, tab3, tab4 = st.tabs([
-            "✅ JOB MAN의 답변",
-            "📚 참고 문서",
-            "🗺 관련 기업 위치",
-            "📍 부산 기업 분포"
-        ])
-        
-        # ✅ 탭 1: GPT 답변
-        with tab1:
-            st.write(result["result"])
-        
-        # ✅ 탭 2: 참고 문서
-        with tab2:
-            for i, doc in enumerate(result["source_documents"]):
-                with st.expander(f"문서 {i+1}"):
-                    st.write(doc.page_content)
-        
-        # ✅ 탭 3: 기업 위치
-        with tab3:
-            source_docs = result["source_documents"]
-            company_names = [doc.metadata.get("company") for doc in source_docs if "company" in doc.metadata]
-            matched_df = st.session_state.company_df[st.session_state.company_df['회사명'].isin(company_names)]
-        
-            if not matched_df.empty:
-                m = folium.Map(
-                    location=[matched_df["위도"].mean(), matched_df["경도"].mean()],
-                    zoom_start=12,
-                    tiles="CartoDB positron"
-                )
-        
-                # ✅ 검색용 마커 그룹 (숨기거나 위에 올림)
-                from folium.plugins import Search
-                marker_group = folium.FeatureGroup(name="검색용 마커").add_to(m)
-        
-                # ✅ 1. 검색용 Marker 추가
-                for _, row in matched_df.iterrows():
-                    folium.Marker(
-                        location=[row["위도"], row["경도"]],
-                        tooltip=row["회사명"],  # 검색 기준
-                        popup=row["회사명"]
-                    ).add_to(marker_group)
-        
-                # ✅ 2. 표시용 CircleMarker 추가
-                for _, row in matched_df.iterrows():
-                    folium.CircleMarker(
-                        location=[row["위도"], row["경도"]],
-                        radius=5,
-                        color="blue",
-                        fill=True,
-                        fill_color="blue",
-                        fill_opacity=0.7,
-                        popup=row["회사명"],
-                        tooltip=row["회사명"]
-                    ).add_to(m)
-        
-                # ✅ 3. Search 플러그인 추가
-                Search(
-                    layer=marker_group,
-                    search_label="tooltip",
-                    placeholder="회사명을 입력하세요",
-                    collapsed=False
-                ).add_to(m)
-        
-                # ✅ 지도 렌더링
-                html(m._repr_html_(), height=500)
-            else:
-                st.info("해당 기업 위치 정보가 없습니다.")
-                
-        # ✅ 탭 4: 부산 기업 분포 (바로 내장 렌더링)
-        with tab4:
-            st.markdown("### 🗺 부산 기업 분포 및 검색")
+        st.session_state.gpt_result = result["result"]
+        st.session_state.source_docs = result["source_documents"]
 
-            # 세션 상태에 검색어 키 초기화
-            if "search_keyword" not in st.session_state:
-                st.session_state.search_keyword = ""
+# ✅ 탭 구성
+selected_tabs = st.tabs(["✅ JOB MAN의 답변", "📚 참고 문서", "🗺 관련 기업 위치", "📍 부산 기업 분포"])
 
-            # 검색창 (세션 상태 연동)
-            search_input = st.text_input(
-                "🔍 회사명으로 검색 (예: 현대, 시스템, 조선 등)",
-                value=st.session_state.search_keyword,
-                key="search_input"
+with selected_tabs[0]:
+    st.write(st.session_state.get("gpt_result", "🔹 GPT 응답 결과가 여기에 표시됩니다."))
+
+with selected_tabs[1]:
+    source_docs = st.session_state.get("source_docs", [])
+    for i, doc in enumerate(source_docs):
+        with st.expander(f"문서 {i+1}"):
+            st.write(doc.page_content)
+
+with selected_tabs[2]:
+    docs = st.session_state.get("source_docs", [])
+    company_names = [doc.metadata.get("company") for doc in docs if "company" in doc.metadata]
+    matched_df = st.session_state.company_df[st.session_state.company_df['회사명'].isin(company_names)]
+
+    if not matched_df.empty:
+        m = folium.Map(location=[matched_df["위도"].mean(), matched_df["경도"].mean()], zoom_start=12, tiles="CartoDB positron")
+        for _, row in matched_df.iterrows():
+            folium.CircleMarker(
+                location=[row["위도"], row["경도"]],
+                radius=5,
+                color="blue",
+                fill=True,
+                fill_color="blue",
+                fill_opacity=0.7,
+                popup=row["회사명"],
+                tooltip=row["회사명"]
+            ).add_to(m)
+        html(m._repr_html_(), height=500)
+    else:
+        st.info("해당 기업 위치 정보가 없습니다.")
+
+with selected_tabs[3]:
+    st.markdown("### 🗺 부산 기업 분포 및 검색")
+    if "search_keyword" not in st.session_state:
+        st.session_state.search_keyword = ""
+
+    search_input = st.text_input(
+        "🔍 회사명으로 검색 (예: 현대, 시스템, 조선 등)",
+        value=st.session_state.search_keyword,
+        key="search_input"
+    )
+    st.session_state.search_keyword = search_input
+
+    if search_input.strip():
+        matched_df = st.session_state.company_df[
+            st.session_state.company_df["회사명"].str.contains(search_input, case=False, na=False)
+        ]
+        if matched_df.empty:
+            st.warning(f"'{search_input}'를 포함하는 기업이 없습니다.")
+        else:
+            m = folium.Map(
+                location=[matched_df["위도"].mean(), matched_df["경도"].mean()],
+                zoom_start=12,
+                tiles="CartoDB positron"
             )
-
-            # 상태 업데이트
-            st.session_state.search_keyword = search_input
-
-            if search_input.strip():
-                matched_df = st.session_state.company_df[
-                    st.session_state.company_df["회사명"].str.contains(search_input, case=False, na=False)
-                ]
-                if matched_df.empty:
-                    st.warning(f"'{search_input}'를 포함하는 기업이 없습니다.")
-                else:
-                    m = folium.Map(
-                        location=[matched_df["위도"].mean(), matched_df["경도"].mean()],
-                        zoom_start=12,
-                        tiles="CartoDB positron"
-                    )
-                    for _, row in matched_df.iterrows():
-                        folium.CircleMarker(
-                            location=[row["위도"], row["경도"]],
-                            radius=5,
-                            color="green",
-                            fill=True,
-                            fill_color="green",
-                            fill_opacity=0.7,
-                            popup=row["회사명"],
-                            tooltip=row["회사명"]
-                        ).add_to(m)
-                    html(m._repr_html_(), height=600)
-                    st.caption(f"※ '{search_input}'를 포함한 기업 {len(matched_df)}곳을 지도에 표시했습니다.")
-            else:
-                html(st.session_state.map_html, height=600)
-                st.caption("※ 입력 없이 전체 기업 분포를 확인 중입니다.")
+            for _, row in matched_df.iterrows():
+                folium.CircleMarker(
+                    location=[row["위도"], row["경도"]],
+                    radius=5,
+                    color="green",
+                    fill=True,
+                    fill_color="green",
+                    fill_opacity=0.7,
+                    popup=row["회사명"],
+                    tooltip=row["회사명"]
+                ).add_to(m)
+            html(m._repr_html_(), height=600)
+            st.caption(f"※ '{search_input}'를 포함한 기업 {len(matched_df)}곳을 지도에 표시했습니다.")
+    else:
+        html(st.session_state.map_html, height=600)
+        st.caption("※ 입력 없이 전체 기업 분포를 확인 중입니다.")
