@@ -128,18 +128,48 @@ if st.button("💬 질문 실행") and query:
             if not matched_df.empty:
                 m = folium.Map(
                     location=[matched_df["위도"].mean(), matched_df["경도"].mean()],
-                    zoom_start=12
+                    zoom_start=12,
+                    tiles="CartoDB positron"
                 )
+        
+                # ✅ 검색용 마커 그룹 (숨기거나 위에 올림)
+                from folium.plugins import Search
+                marker_group = folium.FeatureGroup(name="검색용 마커").add_to(m)
+        
+                # ✅ 1. 검색용 Marker 추가
                 for _, row in matched_df.iterrows():
                     folium.Marker(
-                        [row["위도"], row["경도"]],
-                        tooltip=row["회사명"],
+                        location=[row["위도"], row["경도"]],
+                        tooltip=row["회사명"],  # 검색 기준
                         popup=row["회사명"]
+                    ).add_to(marker_group)
+        
+                # ✅ 2. 표시용 CircleMarker 추가
+                for _, row in matched_df.iterrows():
+                    folium.CircleMarker(
+                        location=[row["위도"], row["경도"]],
+                        radius=5,
+                        color="blue",
+                        fill=True,
+                        fill_color="blue",
+                        fill_opacity=0.7,
+                        popup=row["회사명"],
+                        tooltip=row["회사명"]
                     ).add_to(m)
+        
+                # ✅ 3. Search 플러그인 추가
+                Search(
+                    layer=marker_group,
+                    search_label="tooltip",
+                    placeholder="회사명을 입력하세요",
+                    collapsed=False
+                ).add_to(m)
+        
+                # ✅ 지도 렌더링
                 html(m._repr_html_(), height=500)
             else:
                 st.info("해당 기업 위치 정보가 없습니다.")
-        
+                
         # ✅ 탭 4: 부산 기업 분포 (바로 내장 렌더링)
         with tab4:
             st.markdown("### 🗺 부산 전체 기업 분포 지도")
