@@ -245,7 +245,7 @@ with selected_tabs[3]:
             st.dataframe(
                 matched_df[["회사명", "도로명", "업종명", "전화번호"]],
                 use_container_width=True,
-                height=530
+                height=535
             )
         else:
             st.info("기업을 검색해주세요.")
