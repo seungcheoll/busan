@@ -60,7 +60,6 @@ def load_template():
     with open("template.txt", "r", encoding="utf-8") as file:
         return file.read()
 
-# ✅ 초기 컴포넌트 캐싱 (QA 체인 + 위치정보 데이터프레임 함께 반환)
 @st.cache_resource
 def init_qa_chain():
     api_key = load_api_key()
@@ -80,13 +79,18 @@ def init_qa_chain():
         return_source_documents=True,
     )
 
-    # ✅ 기업 위치정보 엑셀 함께 불러오기
-    company_df = pd.read_excel("부산기업정보_위도경도포함.xlsx")  # '회사명', '위도', '경도' 포함
-    return qa_chain, company_df
+    # ✅ 기업 위치정보 로딩
+    company_df = pd.read_excel("부산기업정보_위도경도포함.xlsx")
+
+    # ✅ 전체 지도 HTML 파일 미리 읽어오기
+    with open("전체기업_지도.html", "r", encoding="utf-8") as f:
+        map_html_content = f.read()
+
+    return qa_chain, company_df, map_html_content
 
 # ✅ 세션 상태에 QA 체인과 위치정보 저장
 if "qa_chain" not in st.session_state:
-    st.session_state.qa_chain, st.session_state.company_df = init_qa_chain()
+    st.session_state.qa_chain, st.session_state.company_df, st.session_state.map_html = init_qa_chain()
 
 # ✅ UI 구성
 st.title("🚢 부산 취업 상담 챗봇(JOB MAN)")
@@ -140,8 +144,11 @@ if st.button("💬 질문 실행") and query:
         # ✅ 탭 4: 부산 기업 분포 (새 탭에서 지도.html 열기)
         with tab4:
             st.markdown("### 🗺 부산 기업 분포 지도 보기")
+        
+            # ✅ 정적 파일로 열기 (새 탭에서 직접 열기)
             st.markdown(
                 '<a href="/전체기업_지도.html" target="_blank">🌐 별도 페이지로 지도 열기</a>',
                 unsafe_allow_html=True
             )
+        
             st.info("링크를 클릭하면 새 브라우저 탭에서 전체 기업 분포 지도를 확인할 수 있습니다.")
