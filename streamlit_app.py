@@ -261,7 +261,8 @@ with col2:
         )
 
         selected_rows = grid_response["selected_rows"]
-
+        st.write(type(selected_rows))
+        st.write(selected_rows)
         if len(selected_rows) > 0:
             selected_company = selected_rows[0]
             selected_company_name = selected_company.get("회사명")
