@@ -97,7 +97,7 @@ if st.button("💬 질문 실행"):
         st.session_state.source_docs = result["source_documents"]
 
 # ✅ 탭 구성
-selected_tabs = st.tabs(["✅ JOB MAN의 답변", "📚 참고 문서", "🗺 관련 기업 위치", "📍 부산 기업 분포"])
+selected_tabs = st.tabs(["✅ JOB MAN의 답변", "📚 참고 문서", "🗺 관련 기업 위치", "🗺 부산 기업 분포 및 검색"])
 
 with selected_tabs[0]:
     st.write(st.session_state.get("gpt_result", "🔹 GPT 응답 결과가 여기에 표시됩니다."))
@@ -131,23 +131,29 @@ with selected_tabs[2]:
         st.info("해당 기업 위치 정보가 없습니다.")
 
 with selected_tabs[3]:
-    st.markdown("### 🗺 부산 기업 분포 및 검색")
     if "search_keyword" not in st.session_state:
         st.session_state.search_keyword = ""
 
-    search_input = st.text_input(
-        "🔍 회사명으로 검색 (예: 현대, 시스템, 조선 등)",
-        value=st.session_state.search_keyword,
-        key="search_input"
-    )
-    st.session_state.search_keyword = search_input
+    col1, col2 = st.columns([4, 1])
+    with col1:
+        search_input = st.text_input(
+            "🔍 회사명으로 검색 (예: 현대, 시스템, 조선 등)",
+            value=st.session_state.search_keyword,
+            key="search_input"
+        )
+        st.session_state.search_keyword = search_input
 
-    if search_input.strip():
+    with col2:
+        if st.button("초기화"):
+            st.session_state.search_keyword = ""
+            st.experimental_rerun()
+
+    if st.session_state.search_keyword.strip():
         matched_df = st.session_state.company_df[
-            st.session_state.company_df["회사명"].str.contains(search_input, case=False, na=False)
+            st.session_state.company_df["회사명"].str.contains(st.session_state.search_keyword, case=False, na=False)
         ]
         if matched_df.empty:
-            st.warning(f"'{search_input}'를 포함하는 기업이 없습니다.")
+            st.warning(f"'{st.session_state.search_keyword}'를 포함하는 기업이 없습니다.")
         else:
             m = folium.Map(
                 location=[matched_df["위도"].mean(), matched_df["경도"].mean()],
@@ -166,7 +172,7 @@ with selected_tabs[3]:
                     tooltip=row["회사명"]
                 ).add_to(m)
             html(m._repr_html_(), height=600)
-            st.caption(f"※ '{search_input}'를 포함한 기업 {len(matched_df)}곳을 지도에 표시했습니다.")
+            st.caption(f"※ '{st.session_state.search_keyword}'를 포함한 기업 {len(matched_df)}곳을 지도에 표시했습니다.")
     else:
         html(st.session_state.map_html, height=600)
         st.caption("※ 입력 없이 전체 기업 분포를 확인 중입니다.")
