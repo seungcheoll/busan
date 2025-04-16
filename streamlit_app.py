@@ -181,21 +181,16 @@ with selected_tabs[2]:
 
 # 기업명 검색 기반 지도 시각화
 with selected_tabs[3]:
-    # 세션 상태 초기화
     if "search_keyword" not in st.session_state:
         st.session_state.search_keyword = ""
     if "reset_triggered" not in st.session_state:
         st.session_state.reset_triggered = False
-    if "selected_company_name" not in st.session_state:
-        st.session_state.selected_company_name = None
 
     def reset_search():
         st.session_state.search_keyword = ""
         st.session_state["search_input"] = ""
         st.session_state.reset_triggered = True
-        st.session_state.selected_company_name = None
 
-    # 입력창
     search_input = st.text_input(
         label="",
         key="search_input",
@@ -210,7 +205,7 @@ with selected_tabs[3]:
         st.session_state.reset_triggered = False
         st.rerun()
 
-    # 👉 검색 키워드 기반 필터
+    matched_df = pd.DataFrame()
     if st.session_state.search_keyword.strip():
         matched_df = st.session_state.company_df[
             st.session_state.company_df["회사명"].str.contains(
@@ -219,40 +214,28 @@ with selected_tabs[3]:
                 na=False
             )
         ]
-    else:
-        matched_df = st.session_state.company_df.copy()
 
-    # 👉 선택된 회사명 기반 필터 (검색어 없이도 동작하도록)
-    selected_name = st.session_state.selected_company_name
-    if selected_name:
-        filtered_df = st.session_state.company_df[
-            st.session_state.company_df["회사명"] == selected_name
-        ]
-    else:
-        filtered_df = matched_df
-
-    # 레이아웃
-    col1, col2 = st.columns([2, 1])
+    col1, col2 = st.columns([2, 1])  # 지도:테이블 비율
 
     with col1:
-        if not filtered_df.empty:
+        if not matched_df.empty:
             m = folium.Map(
-                location=[filtered_df["위도"].mean(), filtered_df["경도"].mean()],
+                location=[matched_df["위도"].mean(), matched_df["경도"].mean()],
                 zoom_start=12
             )
-            for _, row in filtered_df.iterrows():
+            for _, row in matched_df.iterrows():
                 folium.CircleMarker(
                     location=[row["위도"], row["경도"]],
                     radius=5,
-                    color="crimson" if selected_name else "green",
+                    color="green",
                     fill=True,
-                    fill_color="crimson" if selected_name else "green",
+                    fill_color="green",
                     fill_opacity=0.7,
                     popup=row["회사명"],
                     tooltip=row["회사명"]
                 ).add_to(m)
             html(m._repr_html_(), height=600)
-            st.caption(f"※ '{st.session_state.search_keyword}'를 포함한 기업 {len(filtered_df)}곳을 지도에 표시했습니다.")
+            st.caption(f"※ '{st.session_state.search_keyword}'를 포함한 기업 {len(matched_df)}곳을 지도에 표시했습니다.")
         elif st.session_state.search_keyword.strip():
             st.warning("🛑 해당 기업이 존재하지 않습니다.")
         else:
@@ -262,28 +245,18 @@ with selected_tabs[3]:
     with col2:
         st.markdown("### 🧾 검색 기업 정보")
         if not matched_df.empty:
-            gb = GridOptionsBuilder.from_dataframe(
-                matched_df[["회사명", "도로명", "업종명", "전화번호"]]
-            )
-            gb.configure_selection("single", use_checkbox=True)
-            grid_options = gb.build()
-
-            grid_response = AgGrid(
+            selected_df = st.data_editor(
                 matched_df[["회사명", "도로명", "업종명", "전화번호"]],
-                gridOptions=grid_options,
-                update_mode=GridUpdateMode.SELECTION_CHANGED,
+                use_container_width=True,
                 height=535,
-                fit_columns_on_grid_load=True,
-                return_mode='AS_INPUT'
+                hide_index=True,
+                disabled=True
             )
 
-            selected_rows = grid_response["selected_rows"]
-            if isinstance(selected_rows, list) and len(selected_rows) > 0:
-                selected_company = selected_rows[0]
-                if isinstance(selected_company, dict):
-                    selected_company_name = selected_company.get("회사명")
-                    if selected_company_name and selected_company_name != st.session_state.selected_company_name:
-                        st.session_state.selected_company_name = selected_company_name
-                        st.experimental_rerun()
+            # 사용자가 하나의 행을 클릭했다고 가정하고, 그 기업만 지도에 표시하도록 필터링
+            if len(selected_df) == 1:
+                selected_company_name = selected_df.iloc[0]["회사명"]
+                matched_df = matched_df[matched_df["회사명"] == selected_company_name]
         else:
             st.info("기업을 검색해주세요.")
+
