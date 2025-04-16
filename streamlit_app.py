@@ -102,7 +102,7 @@ if st.button("💬 질문 실행"):
         st.rerun()
 
 # ✅ 탭 구성
-selected_tabs = st.tabs(["✅ JOB MAN의 답변", "📚 참고 문서", "🗺 관련 기업 위치", "📍 부산 기업 분포"])
+selected_tabs = st.tabs(["✅ JOB MAN의 답변", "📚 참고 문서", "🗺 관련 기업 위치", "🗺 부산 기업 분포 및 검색"])
 
 with selected_tabs[0]:
     st.write(st.session_state.get("gpt_result", "🔹 GPT 응답 결과가 여기에 표시됩니다."))
@@ -136,8 +136,6 @@ with selected_tabs[2]:
         st.info("해당 기업 위치 정보가 없습니다.")
 
 with selected_tabs[3]:
-    st.markdown("### 🗺 부산 기업 분포 및 검색")
-
     if "search_keyword" not in st.session_state:
         st.session_state.search_keyword = ""
     if "reset_triggered" not in st.session_state:
@@ -177,9 +175,9 @@ with selected_tabs[3]:
                 folium.CircleMarker(
                     location=[row["위도"], row["경도"]],
                     radius=5,
-                    color="green",
+                    color="blue",
                     fill=True,
-                    fill_color="green",
+                    fill_color="blue",
                     fill_opacity=0.7,
                     popup=row["회사명"],
                     tooltip=row["회사명"]
