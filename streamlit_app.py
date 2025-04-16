@@ -135,10 +135,6 @@ with selected_tabs[3]:
     if "search_keyword" not in st.session_state:
         st.session_state.search_keyword = ""
 
-    def reset_search():
-        st.session_state.search_keyword = ""
-        st.experimental_rerun()
-
     search_input = st.text_input(
         "🔍 회사명으로 검색 (예: 현대, 시스템, 조선 등)",
         value=st.session_state.search_keyword,
@@ -147,9 +143,9 @@ with selected_tabs[3]:
     )
     st.session_state.search_keyword = search_input
 
-    # 텍스트박스 바로 아래에 초기화 버튼
     if st.session_state.search_keyword:
-        st.button("검색 초기화", on_click=reset_search)
+        if st.button("검색 초기화"):
+            st.session_state.search_keyword = ""
 
     if st.session_state.search_keyword.strip():
         matched_df = st.session_state.company_df[
