@@ -216,18 +216,20 @@ with selected_tabs[3]:
         ]
 
     col1, col2 = st.columns([2, 1])  # 지도:테이블 비율
+
+
 # 초기화: 선택한 회사명 상태
 if "selected_company_name" not in st.session_state:
     st.session_state.selected_company_name = None
 
+# 👉 matched_df 기본 필터링: 선택된 기업이 있다면 필터 적용
+selected_name = st.session_state.get("selected_company_name", None)
+filtered_df = matched_df
+
+if selected_name and not matched_df.empty:
+    filtered_df = matched_df[matched_df["회사명"] == selected_name]
+
 with col1:
-    # 👇 선택된 회사명으로 지도에 표시할 기업만 필터링
-    selected_name = st.session_state.get("selected_company_name", None)
-    filtered_df = matched_df
-
-    if selected_name:
-        filtered_df = matched_df[matched_df["회사명"] == selected_name]
-
     if not filtered_df.empty:
         m = folium.Map(
             location=[filtered_df["위도"].mean(), filtered_df["경도"].mean()],
