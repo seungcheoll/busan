@@ -3,6 +3,7 @@ import streamlit as st                  # 웹 앱 프레임워크 (간단한 인
 import pandas as pd                    # 데이터 처리용 라이브러리 (엑셀이나 테이블 다루기)
 import folium                          # 지도 시각화 도구 (지도 위에 마커 표시 가능)
 from streamlit.components.v1 import html  # Streamlit에서 HTML 코드 삽입할 때 사용
+from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode
 
 # LangChain 관련: 질문-답변 체계 구축용
 from langchain_community.vectorstores import FAISS
@@ -241,20 +242,29 @@ with selected_tabs[3]:
             html(st.session_state.map_html, height=600)
             st.caption("※ 전체 기업 분포를 표시 중입니다.")
 
-    with col2:
-        st.markdown("### 🧾 검색 기업 정보")
-        if not matched_df.empty:
-            selected_df = st.data_editor(
-                matched_df[["회사명", "도로명", "업종명", "전화번호"]],
-                use_container_width=True,
-                height=535,
-                hide_index=True,
-                disabled=True
-            )
+with col2:
+    st.markdown("### 🧾 검색 기업 정보")
 
-            # 사용자가 하나의 행을 클릭했다고 가정하고, 그 기업만 지도에 표시하도록 필터링
-            if len(selected_df) == 1:
-                selected_company_name = selected_df.iloc[0]["회사명"]
-                matched_df = matched_df[matched_df["회사명"] == selected_company_name]
-        else:
-            st.info("기업을 검색해주세요.")
+    if not matched_df.empty:
+        # 👉 AgGrid 옵션 구성
+        gb = GridOptionsBuilder.from_dataframe(
+            matched_df[["회사명", "도로명", "업종명", "전화번호"]]
+        )
+        gb.configure_selection("single", use_checkbox=True)  # 단일 선택만
+        grid_options = gb.build()
+
+        grid_response = AgGrid(
+            matched_df[["회사명", "도로명", "업종명", "전화번호"]],
+            gridOptions=grid_options,
+            update_mode=GridUpdateMode.SELECTION_CHANGED,
+            height=535,
+            fit_columns_on_grid_load=True
+        )
+
+        selected_rows = grid_response["selected_rows"]
+
+        if selected_rows:
+            selected_company_name = selected_rows[0]["회사명"]
+            matched_df = matched_df[matched_df["회사명"] == selected_company_name]
+    else:
+        st.info("기업을 검색해주세요.")
