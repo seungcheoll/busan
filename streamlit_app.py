@@ -144,15 +144,14 @@ with selected_tabs[3]:
         st.session_state.search_keyword = ""
         st.session_state["search_input"] = ""
         st.experimental_rerun()
-
+        
     search_input = st.text_input(
         "🔍 회사명으로 검색 (예: 현대, 시스템, 조선 등)",
-        value=st.session_state.search_keyword,
         key="search_input",
         placeholder="검색어 입력 후 엔터"
     )
-    st.session_state.search_keyword = search_input
-
+    
+    st.session_state.search_keyword = st.session_state.get("search_input", "")
     if st.session_state.search_keyword:
         st.button("검색 초기화", on_click=reset_search)
 
