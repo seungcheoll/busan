@@ -192,7 +192,7 @@ with selected_tabs[3]:
         st.session_state.search_keyword = ""
         st.session_state["search_input"] = ""
         st.session_state.reset_triggered = True
-        st.session_state.selected_company_name = None  # 선택된 회사도 초기화
+        st.session_state.selected_company_name = None
 
     search_input = st.text_input(
         label="",
@@ -218,13 +218,13 @@ with selected_tabs[3]:
             )
         ]
 
-    col1, col2 = st.columns([2, 1])
-
-    # 👉 선택된 회사명 기반 필터링 적용
-    selected_name = st.session_state.get("selected_company_name")
+    selected_name = st.session_state.get("selected_company_name", None)
     filtered_df = matched_df
+
     if selected_name and not matched_df.empty:
         filtered_df = matched_df[matched_df["회사명"] == selected_name]
+
+    col1, col2 = st.columns([2, 1])
 
     with col1:
         if not filtered_df.empty:
@@ -253,7 +253,6 @@ with selected_tabs[3]:
 
     with col2:
         st.markdown("### 🧾 검색 기업 정보")
-
         if not matched_df.empty:
             gb = GridOptionsBuilder.from_dataframe(
                 matched_df[["회사명", "도로명", "업종명", "전화번호"]]
@@ -271,23 +270,12 @@ with selected_tabs[3]:
             )
 
             selected_rows = grid_response["selected_rows"]
-
             if isinstance(selected_rows, list) and len(selected_rows) > 0:
                 selected_company = selected_rows[0]
                 if isinstance(selected_company, dict):
                     selected_company_name = selected_company.get("회사명")
-                    if selected_company_name:
+                    if selected_company_name and selected_company_name != st.session_state.selected_company_name:
                         st.session_state.selected_company_name = selected_company_name
-                        st.success(f"✅ 선택한 기업: {selected_company_name}")
-                        st.rerun()  # 선택 반영 위해 즉시 rerun 필요
-                    else:
-                        st.warning(f"❌ '회사명' 키 없음: {list(selected_company.keys())}")
-                else:
-                    st.error("선택된 행이 dict가 아닙니다.")
-            else:
-                if st.session_state.selected_company_name:
-                    st.info(f"🔁 최근 선택: {st.session_state.selected_company_name}")
-                else:
-                    st.info("👈 테이블에서 기업을 선택해주세요.")
+                        st.experimental_rerun()
         else:
             st.info("기업을 검색해주세요.")
