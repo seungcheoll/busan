@@ -185,11 +185,14 @@ with selected_tabs[3]:
         st.session_state.search_keyword = ""
     if "reset_triggered" not in st.session_state:
         st.session_state.reset_triggered = False
+    if "selected_company_name" not in st.session_state:
+        st.session_state.selected_company_name = None
 
     def reset_search():
         st.session_state.search_keyword = ""
         st.session_state["search_input"] = ""
         st.session_state.reset_triggered = True
+        st.session_state.selected_company_name = None  # 선택된 회사도 초기화
 
     search_input = st.text_input(
         label="",
@@ -215,81 +218,76 @@ with selected_tabs[3]:
             )
         ]
 
-    col1, col2 = st.columns([2, 1])  # 지도:테이블 비율
+    col1, col2 = st.columns([2, 1])
 
+    # 👉 선택된 회사명 기반 필터링 적용
+    selected_name = st.session_state.get("selected_company_name")
+    filtered_df = matched_df
+    if selected_name and not matched_df.empty:
+        filtered_df = matched_df[matched_df["회사명"] == selected_name]
 
-# 초기화: 선택한 회사명 상태
-if "selected_company_name" not in st.session_state:
-    st.session_state.selected_company_name = None
-
-# 👉 matched_df 기본 필터링: 선택된 기업이 있다면 필터 적용
-selected_name = st.session_state.get("selected_company_name", None)
-filtered_df = matched_df
-
-if selected_name and not matched_df.empty:
-    filtered_df = matched_df[matched_df["회사명"] == selected_name]
-
-with col1:
-    if not filtered_df.empty:
-        m = folium.Map(
-            location=[filtered_df["위도"].mean(), filtered_df["경도"].mean()],
-            zoom_start=12
-        )
-        for _, row in filtered_df.iterrows():
-            folium.CircleMarker(
-                location=[row["위도"], row["경도"]],
-                radius=5,
-                color="crimson" if selected_name else "green",
-                fill=True,
-                fill_color="crimson" if selected_name else "green",
-                fill_opacity=0.7,
-                popup=row["회사명"],
-                tooltip=row["회사명"]
-            ).add_to(m)
-        html(m._repr_html_(), height=600)
-        st.caption(f"※ '{st.session_state.search_keyword}'를 포함한 기업 {len(filtered_df)}곳을 지도에 표시했습니다.")
-    elif st.session_state.search_keyword.strip():
-        st.warning("🛑 해당 기업이 존재하지 않습니다.")
-    else:
-        html(st.session_state.map_html, height=600)
-        st.caption("※ 전체 기업 분포를 표시 중입니다.")
-
-with col2:
-    st.markdown("### 🧾 검색 기업 정보")
-
-    if not matched_df.empty:
-        gb = GridOptionsBuilder.from_dataframe(
-            matched_df[["회사명", "도로명", "업종명", "전화번호"]]
-        )
-        gb.configure_selection("single", use_checkbox=True)
-        grid_options = gb.build()
-
-        grid_response = AgGrid(
-            matched_df[["회사명", "도로명", "업종명", "전화번호"]],
-            gridOptions=grid_options,
-            update_mode=GridUpdateMode.SELECTION_CHANGED,
-            height=535,
-            fit_columns_on_grid_load=True,
-            return_mode='AS_INPUT'
-        )
-
-        selected_rows = grid_response["selected_rows"]
-
-        if isinstance(selected_rows, list) and len(selected_rows) > 0:
-            selected_company = selected_rows[0]
-            if isinstance(selected_company, dict):
-                selected_company_name = selected_company.get("회사명")
-                if selected_company_name:
-                    st.session_state.selected_company_name = selected_company_name
-                    st.success(f"✅ 선택한 기업: {selected_company_name}")
-                else:
-                    st.warning(f"❌ '회사명' 키 없음: {list(selected_company.keys())}")
-            else:
-                st.error("선택된 행이 dict가 아닙니다.")
+    with col1:
+        if not filtered_df.empty:
+            m = folium.Map(
+                location=[filtered_df["위도"].mean(), filtered_df["경도"].mean()],
+                zoom_start=12
+            )
+            for _, row in filtered_df.iterrows():
+                folium.CircleMarker(
+                    location=[row["위도"], row["경도"]],
+                    radius=5,
+                    color="crimson" if selected_name else "green",
+                    fill=True,
+                    fill_color="crimson" if selected_name else "green",
+                    fill_opacity=0.7,
+                    popup=row["회사명"],
+                    tooltip=row["회사명"]
+                ).add_to(m)
+            html(m._repr_html_(), height=600)
+            st.caption(f"※ '{st.session_state.search_keyword}'를 포함한 기업 {len(filtered_df)}곳을 지도에 표시했습니다.")
+        elif st.session_state.search_keyword.strip():
+            st.warning("🛑 해당 기업이 존재하지 않습니다.")
         else:
-            if st.session_state.selected_company_name:
-                st.info(f"🔁 최근 선택: {st.session_state.selected_company_name}")
+            html(st.session_state.map_html, height=600)
+            st.caption("※ 전체 기업 분포를 표시 중입니다.")
+
+    with col2:
+        st.markdown("### 🧾 검색 기업 정보")
+
+        if not matched_df.empty:
+            gb = GridOptionsBuilder.from_dataframe(
+                matched_df[["회사명", "도로명", "업종명", "전화번호"]]
+            )
+            gb.configure_selection("single", use_checkbox=True)
+            grid_options = gb.build()
+
+            grid_response = AgGrid(
+                matched_df[["회사명", "도로명", "업종명", "전화번호"]],
+                gridOptions=grid_options,
+                update_mode=GridUpdateMode.SELECTION_CHANGED,
+                height=535,
+                fit_columns_on_grid_load=True,
+                return_mode='AS_INPUT'
+            )
+
+            selected_rows = grid_response["selected_rows"]
+
+            if isinstance(selected_rows, list) and len(selected_rows) > 0:
+                selected_company = selected_rows[0]
+                if isinstance(selected_company, dict):
+                    selected_company_name = selected_company.get("회사명")
+                    if selected_company_name:
+                        st.session_state.selected_company_name = selected_company_name
+                        st.success(f"✅ 선택한 기업: {selected_company_name}")
+                        st.rerun()  # 선택 반영 위해 즉시 rerun 필요
+                    else:
+                        st.warning(f"❌ '회사명' 키 없음: {list(selected_company.keys())}")
+                else:
+                    st.error("선택된 행이 dict가 아닙니다.")
             else:
-                st.info("👈 테이블에서 기업을 선택해주세요.")
-    else:
-        st.info("기업을 검색해주세요.")
+                if st.session_state.selected_company_name:
+                    st.info(f"🔁 최근 선택: {st.session_state.selected_company_name}")
+                else:
+                    st.info("👈 테이블에서 기업을 선택해주세요.")
+        else:
+            st.info("기업을 검색해주세요.")
