@@ -216,35 +216,41 @@ with selected_tabs[3]:
         ]
 
     col1, col2 = st.columns([2, 1])  # 지도:테이블 비율
-
-    with col1:
-        if not matched_df.empty:
-            m = folium.Map(
-                location=[matched_df["위도"].mean(), matched_df["경도"].mean()],
-                zoom_start=12
-            )
-            for _, row in matched_df.iterrows():
-                folium.CircleMarker(
-                    location=[row["위도"], row["경도"]],
-                    radius=5,
-                    color="green",
-                    fill=True,
-                    fill_color="green",
-                    fill_opacity=0.7,
-                    popup=row["회사명"],
-                    tooltip=row["회사명"]
-                ).add_to(m)
-            html(m._repr_html_(), height=600)
-            st.caption(f"※ '{st.session_state.search_keyword}'를 포함한 기업 {len(matched_df)}곳을 지도에 표시했습니다.")
-        elif st.session_state.search_keyword.strip():
-            st.warning("🛑 해당 기업이 존재하지 않습니다.")
-        else:
-            html(st.session_state.map_html, height=600)
-            st.caption("※ 전체 기업 분포를 표시 중입니다.")
-            
 # 초기화: 선택한 회사명 상태
 if "selected_company_name" not in st.session_state:
     st.session_state.selected_company_name = None
+
+with col1:
+    # 👇 선택된 회사명으로 지도에 표시할 기업만 필터링
+    selected_name = st.session_state.get("selected_company_name", None)
+    filtered_df = matched_df
+
+    if selected_name:
+        filtered_df = matched_df[matched_df["회사명"] == selected_name]
+
+    if not filtered_df.empty:
+        m = folium.Map(
+            location=[filtered_df["위도"].mean(), filtered_df["경도"].mean()],
+            zoom_start=12
+        )
+        for _, row in filtered_df.iterrows():
+            folium.CircleMarker(
+                location=[row["위도"], row["경도"]],
+                radius=5,
+                color="crimson" if selected_name else "green",
+                fill=True,
+                fill_color="crimson" if selected_name else "green",
+                fill_opacity=0.7,
+                popup=row["회사명"],
+                tooltip=row["회사명"]
+            ).add_to(m)
+        html(m._repr_html_(), height=600)
+        st.caption(f"※ '{st.session_state.search_keyword}'를 포함한 기업 {len(filtered_df)}곳을 지도에 표시했습니다.")
+    elif st.session_state.search_keyword.strip():
+        st.warning("🛑 해당 기업이 존재하지 않습니다.")
+    else:
+        html(st.session_state.map_html, height=600)
+        st.caption("※ 전체 기업 분포를 표시 중입니다.")
 
 with col2:
     st.markdown("### 🧾 검색 기업 정보")
