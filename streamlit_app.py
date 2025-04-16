@@ -99,7 +99,7 @@ if st.button("💬 질문 실행"):
         st.session_state.gpt_result = result["result"]
         st.session_state.source_docs = result["source_documents"]
         st.session_state.query = ""
-        st.session_state["main_query"] = ""
+        # ❌ 삭제: main_query는 key 전용으로 직접 할당 불가
         st.rerun()
 
 # ✅ 탭 구성
