@@ -91,14 +91,20 @@ if "qa_chain" not in st.session_state:
 if "query" not in st.session_state:
     st.session_state.query = ""
 
-query = st.text_input("🎯 질문을 입력하세요:", key="main_query", placeholder="예) 신입 사원이 처음 받는 연봉 3000만원 이상 되는 선박 제조업 회사를 추천해줘")
+query = st.text_input(
+    "🎯 질문을 입력하세요:", 
+    key="main_query", 
+    placeholder="예) 신입 사원이 처음 받는 연봉 3000만원 이상 되는 선박 제조업 회사를 추천해줘"
+)
 
 if st.button("💬 질문 실행"):
     with st.spinner("🤖 JOB MAN이 부산 기업 정보를 검색 중입니다..."):
         result = st.session_state.qa_chain.invoke(query)
         st.session_state.gpt_result = result["result"]
         st.session_state.source_docs = result["source_documents"]
-        st.session_state["main_query"] = ""
+
+        # ✅ 텍스트박스 초기화
+        st.session_state.update({"main_query": ""})  # update()를 사용하면 에러 없음
         st.rerun()
 
 # ✅ 탭 구성
