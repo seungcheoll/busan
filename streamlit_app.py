@@ -160,7 +160,7 @@ with selected_tabs[3]:
 
     if st.session_state.reset_triggered:
         st.session_state.reset_triggered = False
-        st.experimental_rerun()
+        st.rerun()
 
     if st.session_state.search_keyword.strip():
         matched_df = st.session_state.company_df[
