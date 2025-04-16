@@ -189,14 +189,13 @@ with selected_tabs[3]:
     if "selected_company_name" not in st.session_state:
         st.session_state.selected_company_name = None
 
-    # 검색 초기화 함수
     def reset_search():
         st.session_state.search_keyword = ""
         st.session_state["search_input"] = ""
         st.session_state.reset_triggered = True
-        st.session_state.selected_company_name = None  # 선택한 회사도 초기화
+        st.session_state.selected_company_name = None
 
-    # 검색 입력창
+    # 입력창
     search_input = st.text_input(
         label="",
         key="search_input",
@@ -204,17 +203,14 @@ with selected_tabs[3]:
     )
     st.session_state.search_keyword = st.session_state.get("search_input", "")
 
-    # 검색어가 있을 때 초기화 버튼 표시
     if st.session_state.search_keyword:
         st.button("검색 초기화", on_click=reset_search)
 
-    # 초기화 버튼 클릭 시 페이지 새로고침
     if st.session_state.reset_triggered:
         st.session_state.reset_triggered = False
         st.rerun()
 
-    # 검색 결과로 필터링
-    matched_df = pd.DataFrame()
+    # 👉 검색 키워드 기반 필터
     if st.session_state.search_keyword.strip():
         matched_df = st.session_state.company_df[
             st.session_state.company_df["회사명"].str.contains(
@@ -223,26 +219,27 @@ with selected_tabs[3]:
                 na=False
             )
         ]
+    else:
+        matched_df = st.session_state.company_df.copy()
 
-    # 선택된 회사명 상태 가져오기
-    selected_name = st.session_state.get("selected_company_name", None)
+    # 👉 선택된 회사명 기반 필터 (검색어 없이도 동작하도록)
+    selected_name = st.session_state.selected_company_name
+    if selected_name:
+        filtered_df = st.session_state.company_df[
+            st.session_state.company_df["회사명"] == selected_name
+        ]
+    else:
+        filtered_df = matched_df
 
-    # 선택된 회사가 있으면, 필터링된 데이터프레임 생성
-    filtered_df = matched_df
-    if selected_name and not matched_df.empty:
-        filtered_df = matched_df[matched_df["회사명"] == selected_name]
-
-    # 지도와 테이블 레이아웃 설정
+    # 레이아웃
     col1, col2 = st.columns([2, 1])
 
     with col1:
         if not filtered_df.empty:
-            # 지도 생성
             m = folium.Map(
                 location=[filtered_df["위도"].mean(), filtered_df["경도"].mean()],
                 zoom_start=12
             )
-            # 지도에 마커 추가
             for _, row in filtered_df.iterrows():
                 folium.CircleMarker(
                     location=[row["위도"], row["경도"]],
@@ -264,9 +261,7 @@ with selected_tabs[3]:
 
     with col2:
         st.markdown("### 🧾 검색 기업 정보")
-
         if not matched_df.empty:
-            # 테이블 설정
             gb = GridOptionsBuilder.from_dataframe(
                 matched_df[["회사명", "도로명", "업종명", "전화번호"]]
             )
@@ -283,24 +278,12 @@ with selected_tabs[3]:
             )
 
             selected_rows = grid_response["selected_rows"]
-
-            # 선택된 회사 처리
             if isinstance(selected_rows, list) and len(selected_rows) > 0:
                 selected_company = selected_rows[0]
                 if isinstance(selected_company, dict):
                     selected_company_name = selected_company.get("회사명")
                     if selected_company_name and selected_company_name != st.session_state.selected_company_name:
                         st.session_state.selected_company_name = selected_company_name
-                        st.success(f"✅ 선택한 기업: {selected_company_name}")
-                        st.experimental_rerun()  # 선택 반영을 위해 rerun
-                    else:
-                        st.warning(f"❌ '회사명' 키 없음: {list(selected_company.keys())}")
-                else:
-                    st.error("선택된 행이 딕셔너리가 아닙니다.")
-            else:
-                if st.session_state.selected_company_name:
-                    st.info(f"🔁 최근 선택: {st.session_state.selected_company_name}")
-                else:
-                    st.info("👈 테이블에서 기업을 선택해주세요.")
+                        st.experimental_rerun()
         else:
             st.info("기업을 검색해주세요.")
