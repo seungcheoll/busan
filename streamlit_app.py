@@ -246,11 +246,10 @@ with col2:
     st.markdown("### 🧾 검색 기업 정보")
 
     if not matched_df.empty:
-        # 👉 AgGrid 옵션 구성
         gb = GridOptionsBuilder.from_dataframe(
             matched_df[["회사명", "도로명", "업종명", "전화번호"]]
         )
-        gb.configure_selection("single", use_checkbox=True)  # 단일 선택만
+        gb.configure_selection("single", use_checkbox=True)
         grid_options = gb.build()
 
         grid_response = AgGrid(
@@ -260,9 +259,11 @@ with col2:
             height=535,
             fit_columns_on_grid_load=True
         )
+
         selected_rows = grid_response["selected_rows"]
 
-        if selected_rows and isinstance(selected_rows, list) and len(selected_rows) > 0:
+        # ✅ 여기서만 len()으로 평가
+        if len(selected_rows) > 0:
             selected_company_name = selected_rows[0]["회사명"]
             matched_df = matched_df[matched_df["회사명"] == selected_company_name]
     else:
