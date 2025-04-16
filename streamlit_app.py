@@ -190,51 +190,60 @@ with selected_tabs[3]:
         st.session_state["search_input"] = ""
         st.session_state.reset_triggered = True
 
-    # 검색 입력창
-    search_input = st.text_input(
-        "🔍 회사명으로 검색 (예: 현대, 시스템, 조선 등)",
-        key="search_input",
-        placeholder="검색어 입력 후 엔터"
-    )
-    st.session_state.search_keyword = st.session_state.get("search_input", "")
+    # 수평 레이아웃: 검색 (왼쪽), 지도 + 테이블 (오른쪽)
+    col1, col2 = st.columns([1, 3])  # 왼쪽 1, 오른쪽 3 비율
 
-    if st.session_state.search_keyword:
-        st.button("검색 초기화", on_click=reset_search)
+    with col1:
+        st.markdown("### 🔎 기업 검색")
+        search_input = st.text_input(
+            "회사명 (예: 현대, 시스템, 조선 등)",
+            key="search_input",
+            placeholder="검색어 입력 후 엔터"
+        )
+        st.session_state.search_keyword = st.session_state.get("search_input", "")
 
-    if st.session_state.reset_triggered:
-        st.session_state.reset_triggered = False
-        st.rerun()
+        if st.session_state.search_keyword:
+            st.button("검색 초기화", on_click=reset_search)
 
-    if st.session_state.search_keyword.strip():
-        matched_df = st.session_state.company_df[
-            st.session_state.company_df["회사명"].str.contains(st.session_state.search_keyword, case=False, na=False)
-        ]
-        if matched_df.empty:
-            st.warning(f"'{st.session_state.search_keyword}'를 포함하는 기업이 없습니다.")
+    with col2:
+        if st.session_state.reset_triggered:
+            st.session_state.reset_triggered = False
+            st.rerun()
+
+        if st.session_state.search_keyword.strip():
+            matched_df = st.session_state.company_df[
+                st.session_state.company_df["회사명"].str.contains(
+                    st.session_state.search_keyword,
+                    case=False,
+                    na=False
+                )
+            ]
+            if matched_df.empty:
+                st.warning(f"'{st.session_state.search_keyword}'를 포함하는 기업이 없습니다.")
+            else:
+                m = folium.Map(
+                    location=[matched_df["위도"].mean(), matched_df["경도"].mean()],
+                    zoom_start=12
+                )
+                for _, row in matched_df.iterrows():
+                    folium.CircleMarker(
+                        location=[row["위도"], row["경도"]],
+                        radius=5,
+                        color="green",
+                        fill=True,
+                        fill_color="green",
+                        fill_opacity=0.7,
+                        popup=row["회사명"],
+                        tooltip=row["회사명"]
+                    ).add_to(m)
+                html(m._repr_html_(), height=500)
+                st.caption(f"※ '{st.session_state.search_keyword}'를 포함한 기업 {len(matched_df)}곳을 지도에 표시했습니다.")
+
+                st.markdown("### 🧾 검색 기업 정보")
+                st.dataframe(
+                    matched_df[["회사명", "도로명", "업종명", "전화번호"]],
+                    use_container_width=True
+                )
         else:
-            m = folium.Map(
-                location=[matched_df["위도"].mean(), matched_df["경도"].mean()],
-                zoom_start=12
-            )
-            for _, row in matched_df.iterrows():
-                folium.CircleMarker(
-                    location=[row["위도"], row["경도"]],
-                    radius=5,
-                    color="green",
-                    fill=True,
-                    fill_color="green",
-                    fill_opacity=0.7,
-                    popup=row["회사명"],
-                    tooltip=row["회사명"]
-                ).add_to(m)
-            html(m._repr_html_(), height=600)
-            st.caption(f"※ '{st.session_state.search_keyword}'를 포함한 기업 {len(matched_df)}곳을 지도에 표시했습니다.")
-            # 🧾 테이블 추가
-            st.markdown("### 🧾 검색 기업 정보")
-            st.dataframe(
-                matched_df[["회사명", "도로명", "업종명", "전화번호"]],
-                use_container_width=True
-            )
-    else:
-        html(st.session_state.map_html, height=600)
-        st.caption("※ 입력 없이 전체 기업 분포를 확인 중입니다.")
+            html(st.session_state.map_html, height=600)
+            st.caption("※ 입력 없이 전체 기업 분포를 확인 중입니다.")
