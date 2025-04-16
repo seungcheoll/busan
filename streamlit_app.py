@@ -172,9 +172,38 @@ if st.button("💬 질문 실행") and query:
                 
         # ✅ 탭 4: 부산 기업 분포 (바로 내장 렌더링)
         with tab4:
-            st.markdown("### 🗺 부산 전체 기업 분포 지도")
+            st.markdown("### 🗺 부산 기업 분포 및 검색")
         
-            # 이미 세션에 저장된 HTML 내용 바로 렌더링
-            html(st.session_state.map_html, height=600)
+            search_keyword = st.text_input("🔍 회사명으로 검색 (예: 현대, 시스템, 조선 등)")
         
-            st.caption("※ 지도는 전체 기업 위치를 시각화한 결과입니다.")
+            if search_keyword:
+                # 회사명에 해당 단어 포함된 기업만 필터링
+                matched_df = st.session_state.company_df[
+                    st.session_state.company_df["회사명"].str.contains(search_keyword, case=False, na=False)
+                ]
+                if matched_df.empty:
+                    st.warning(f"'{search_keyword}'를 포함하는 기업이 없습니다.")
+                else:
+                    # 지도 생성
+                    m = folium.Map(
+                        location=[matched_df["위도"].mean(), matched_df["경도"].mean()],
+                        zoom_start=12,
+                        tiles="CartoDB positron"
+                    )
+                    for _, row in matched_df.iterrows():
+                        folium.CircleMarker(
+                            location=[row["위도"], row["경도"]],
+                            radius=5,
+                            color="green",
+                            fill=True,
+                            fill_color="green",
+                            fill_opacity=0.7,
+                            popup=row["회사명"],
+                            tooltip=row["회사명"]
+                        ).add_to(m)
+                    html(m._repr_html_(), height=600)
+        
+            else:
+                # 입력값이 없을 경우: 전체 기업 지도 보여주기 (이미 읽어온 HTML)
+                html(st.session_state.map_html, height=600)
+                st.caption("※ 입력 없이 전체 기업 분포를 확인 중입니다.")
