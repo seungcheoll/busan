@@ -190,11 +190,10 @@ with selected_tabs[3]:
         st.session_state["search_input"] = ""
         st.session_state.reset_triggered = True
 
-    st.markdown("### 🔎 회사명으로 검색 (예: 현대, 시스템, 조선 등)")
     search_input = st.text_input(
         label="",
         key="search_input",
-        placeholder="검색어 입력 후 엔터"
+        placeholder="🔎 회사명으로 검색 (예: 현대, 시스템, 조선 등)"
     )
     st.session_state.search_keyword = st.session_state.get("search_input", "")
 
