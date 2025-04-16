@@ -160,8 +160,6 @@ with selected_tabs[3]:
 
     if st.session_state.reset_triggered:
         st.session_state.reset_triggered = False
-        st.query_params.clear()
-        st.session_state.main_query = ""
         st.experimental_rerun()
 
     if st.session_state.search_keyword.strip():
