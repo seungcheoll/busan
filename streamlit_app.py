@@ -97,39 +97,51 @@ query = st.text_input("🎯 질문을 입력하세요:", placeholder="예) 신�
 if st.button("💬 질문 실행") and query:
     with st.spinner("🤖 JOB MAN이 부산 기업 정보를 검색 중입니다..."):
         result = st.session_state.qa_chain.invoke(query)
-
         # ✅ 탭 구성
-        tab1, tab2, tab3 = st.tabs(["✅ JOB MAN의 답변", "📚 참고 문서", "🗺 관련 기업 위치"])
-
+        tab1, tab2, tab3, tab4 = st.tabs([
+            "✅ JOB MAN의 답변",
+            "📚 참고 문서",
+            "🗺 관련 기업 위치",
+            "📍 부산 기업 분포"
+        ])
+        
         # ✅ 탭 1: GPT 답변
         with tab1:
             st.write(result["result"])
-
+        
         # ✅ 탭 2: 참고 문서
         with tab2:
             for i, doc in enumerate(result["source_documents"]):
                 with st.expander(f"문서 {i+1}"):
                     st.write(doc.page_content)
-
-        # ✅ 탭 3: 지도 출력
+        
+        # ✅ 탭 3: 기업 위치
         with tab3:
             source_docs = result["source_documents"]
             company_names = [doc.metadata.get("company") for doc in source_docs if "company" in doc.metadata]
             matched_df = st.session_state.company_df[st.session_state.company_df['회사명'].isin(company_names)]
-
+        
             if not matched_df.empty:
                 m = folium.Map(
                     location=[matched_df["위도"].mean(), matched_df["경도"].mean()],
-                    zoom_start=12
+                    zoom_start=12,
+                    tiles="CartoDB positron"
                 )
-
                 for _, row in matched_df.iterrows():
                     folium.Marker(
                         [row["위도"], row["경도"]],
                         tooltip=row["회사명"],
                         popup=row["회사명"]
                     ).add_to(m)
-
                 html(m._repr_html_(), height=500)
             else:
                 st.info("해당 기업 위치 정보가 없습니다.")
+        
+        # ✅ 탭 4: 부산 기업 분포 (새 탭에서 지도.html 열기)
+        with tab4:
+            st.markdown("### 🗺 부산 기업 분포 지도 보기")
+            st.markdown(
+                '<a href="/지도.html" target="_blank">🌐 별도 페이지로 지도 열기</a>',
+                unsafe_allow_html=True
+            )
+            st.info("링크를 클릭하면 새 브라우저 탭에서 전체 기업 분포 지도를 확인할 수 있습니다.")
