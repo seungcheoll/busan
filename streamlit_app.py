@@ -262,14 +262,12 @@ with col2:
 
         selected_rows = grid_response["selected_rows"]
 
-        # ✅ 여기서만 len()으로 평가
         if len(selected_rows) > 0:
             selected_company = selected_rows[0]
-            selected_company_name = selected_company.get("회사명", None)
-        
+            selected_company_name = selected_company.get("회사명")
             if selected_company_name:
-                matched_df = matched_df[matched_df["회사명"] == selected_company_name]
+                st.success(f"선택된 기업: {selected_company_name}")
             else:
-                st.warning("선택된 행에서 '회사명' 정보를 찾을 수 없습니다.")
+                st.warning(f"선택된 행에 '회사명' 키가 없습니다. 키 목록: {list(selected_company.keys())}")
     else:
         st.info("기업을 검색해주세요.")
