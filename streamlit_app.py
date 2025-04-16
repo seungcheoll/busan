@@ -159,10 +159,10 @@ with selected_tabs[3]:
         st.button("검색 초기화", on_click=reset_search)
 
     if st.session_state.reset_triggered:
-    st.session_state.reset_triggered = False
-    st.query_params.clear()
-    st.session_state.main_query = ""
-    st.experimental_rerun()
+        st.session_state.reset_triggered = False
+        st.query_params.clear()
+        st.session_state.main_query = ""
+        st.experimental_rerun()
 
     if st.session_state.search_keyword.strip():
         matched_df = st.session_state.company_df[
