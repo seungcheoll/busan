@@ -97,7 +97,7 @@ if st.button("💬 질문 실행"):
         st.session_state.source_docs = result["source_documents"]
 
 # ✅ 탭 구성
-selected_tabs = st.tabs(["✅ JOB MAN의 답변", "📚 참고 문서", "🗺 관련 기업 위치", "🗺 부산 기업 분포 및 검색"])
+selected_tabs = st.tabs(["✅ JOB MAN의 답변", "📚 참고 문서", "🗺 관련 기업 위치", "📍 부산 기업 분포"])
 
 with selected_tabs[0]:
     st.write(st.session_state.get("gpt_result", "🔹 GPT 응답 결과가 여기에 표시됩니다."))
@@ -131,22 +131,25 @@ with selected_tabs[2]:
         st.info("해당 기업 위치 정보가 없습니다.")
 
 with selected_tabs[3]:
+    st.markdown("### 🗺 부산 기업 분포 및 검색")
     if "search_keyword" not in st.session_state:
         st.session_state.search_keyword = ""
 
-    col1, col2 = st.columns([4, 1])
-    with col1:
-        search_input = st.text_input(
-            "🔍 회사명으로 검색 (예: 현대, 시스템, 조선 등)",
-            value=st.session_state.search_keyword,
-            key="search_input"
-        )
-        st.session_state.search_keyword = search_input
+    def reset_search():
+        st.session_state.search_keyword = ""
+        st.experimental_rerun()
 
-    with col2:
-        if st.button("초기화"):
-            st.session_state.search_keyword = ""
-            st.experimental_rerun()
+    search_input = st.text_input(
+        "🔍 회사명으로 검색 (예: 현대, 시스템, 조선 등)",
+        value=st.session_state.search_keyword,
+        key="search_input",
+        placeholder="검색어 입력 후 엔터"
+    )
+    st.session_state.search_keyword = search_input
+
+    # 텍스트박스 바로 아래에 초기화 버튼
+    if st.session_state.search_keyword:
+        st.button("검색 초기화", on_click=reset_search)
 
     if st.session_state.search_keyword.strip():
         matched_df = st.session_state.company_df[
