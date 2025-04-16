@@ -80,7 +80,7 @@ def init_qa_chain():
     )
 
     # ✅ 기업 위치정보 로딩
-    company_df = pd.read_excel("부산기업정보_위도경도포함.xlsx")
+    company_df = pd.read_excel("map_busan.xlsx")
 
     # ✅ 전체 지도 HTML 파일 미리 읽어오기
     with open("전체기업_지도.html", "r", encoding="utf-8") as f:
