@@ -98,11 +98,11 @@ if st.button("💬 질문 실행"):
         result = st.session_state.qa_chain.invoke(query)
         st.session_state.gpt_result = result["result"]
         st.session_state.source_docs = result["source_documents"]
-        st.session_state.query = ""  # 입력창 비움
-        st.session_state.main_query = ""
+        st.session_state.query = ""
+        st.experimental_rerun()
 
 # ✅ 탭 구성
-selected_tabs = st.tabs(["✅ JOB MAN의 답변", "📚 참고 문서", "🗺 관련 기업 위치", "🗺 부산 기업 분포 및 검색"])
+selected_tabs = st.tabs(["✅ JOB MAN의 답변", "📚 참고 문서", "🗺 관련 기업 위치", "📍 부산 기업 분포"])
 
 with selected_tabs[0]:
     st.write(st.session_state.get("gpt_result", "🔹 GPT 응답 결과가 여기에 표시됩니다."))
@@ -136,13 +136,14 @@ with selected_tabs[2]:
         st.info("해당 기업 위치 정보가 없습니다.")
 
 with selected_tabs[3]:
-    st.markdown("### ")
+    st.markdown("### 🗺 부산 기업 분포 및 검색")
     if "search_keyword" not in st.session_state:
         st.session_state.search_keyword = ""
 
     def reset_search():
         st.session_state.search_keyword = ""
         st.session_state["search_input"] = ""
+        st.experimental_rerun()
 
     search_input = st.text_input(
         "🔍 회사명으로 검색 (예: 현대, 시스템, 조선 등)",
@@ -182,3 +183,4 @@ with selected_tabs[3]:
             st.caption(f"※ '{st.session_state.search_keyword}'를 포함한 기업 {len(matched_df)}곳을 지도에 표시했습니다.")
     else:
         html(st.session_state.map_html, height=600)
+        st.caption("※ 입력 없이 전체 기업 분포를 확인 중입니다.")
