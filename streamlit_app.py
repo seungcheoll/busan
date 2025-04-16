@@ -235,6 +235,8 @@ with selected_tabs[3]:
                 ).add_to(m)
             html(m._repr_html_(), height=600)
             st.caption(f"※ '{st.session_state.search_keyword}'를 포함한 기업 {len(matched_df)}곳을 지도에 표시했습니다.")
+        elif st.session_state.search_keyword.strip():
+            st.warning("🛑 해당 기업이 존재하지 않습니다.")
         else:
             html(st.session_state.map_html, height=600)
             st.caption("※ 전체 기업 분포를 표시 중입니다.")
