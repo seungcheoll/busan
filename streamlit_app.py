@@ -241,6 +241,10 @@ with selected_tabs[3]:
         else:
             html(st.session_state.map_html, height=600)
             st.caption("※ 전체 기업 분포를 표시 중입니다.")
+            
+# 초기화: 선택한 회사명 상태
+if "selected_company_name" not in st.session_state:
+    st.session_state.selected_company_name = None
 
 with col2:
     st.markdown("### 🧾 검색 기업 정보")
@@ -257,22 +261,27 @@ with col2:
             gridOptions=grid_options,
             update_mode=GridUpdateMode.SELECTION_CHANGED,
             height=535,
-            fit_columns_on_grid_load=True
+            fit_columns_on_grid_load=True,
+            return_mode='AS_INPUT'
         )
 
         selected_rows = grid_response["selected_rows"]
-        # 💣 여기서 오류 방지
+
         if isinstance(selected_rows, list) and len(selected_rows) > 0:
             selected_company = selected_rows[0]
-        
-            # 👇 dict 형식이면 get으로 접근
             if isinstance(selected_company, dict):
                 selected_company_name = selected_company.get("회사명")
                 if selected_company_name:
-                    matched_df = matched_df[matched_df["회사명"] == selected_company_name]
+                    st.session_state.selected_company_name = selected_company_name
+                    st.success(f"✅ 선택한 기업: {selected_company_name}")
                 else:
-                    st.warning(f"'회사명' 키가 없습니다. 키 목록: {list(selected_company.keys())}")
+                    st.warning(f"❌ '회사명' 키 없음: {list(selected_company.keys())}")
             else:
-                st.error("선택된 회사 정보가 dict가 아닙니다. AgGrid 옵션 또는 return_mode를 확인하세요.")
+                st.error("선택된 행이 dict가 아닙니다.")
         else:
-            st.info("선택된 기업이 없습니다.")
+            if st.session_state.selected_company_name:
+                st.info(f"🔁 최근 선택: {st.session_state.selected_company_name}")
+            else:
+                st.info("👈 테이블에서 기업을 선택해주세요.")
+    else:
+        st.info("기업을 검색해주세요.")
