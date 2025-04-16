@@ -1,7 +1,10 @@
-import streamlit as st
-import pandas as pd
-import folium
-from streamlit.components.v1 import html
+# 📦 필요한 라이브러리 불러오기
+import streamlit as st                  # 웹 앱 프레임워크 (간단한 인터페이스로 앱 만들 수 있음)
+import pandas as pd                    # 데이터 처리용 라이브러리 (엑셀이나 테이블 다루기)
+import folium                          # 지도 시각화 도구 (지도 위에 마커 표시 가능)
+from streamlit.components.v1 import html  # Streamlit에서 HTML 코드 삽입할 때 사용
+
+# LangChain 관련: 질문-답변 체계 구축용
 from langchain_community.vectorstores import FAISS
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
@@ -9,9 +12,11 @@ from langchain.schema.messages import BaseMessage, HumanMessage, AIMessage
 from langchain.chat_models.base import BaseChatModel
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.schema import ChatResult
+
+# Groq API 연동용
 from groq import Groq
 
-# ✅ 커스텀 ChatModel 클래스
+# ✅ 1. 사용자 정의 챗봇 클래스 정의 (Groq + LLaMA 모델 연결용)
 class GroqLlamaChat(BaseChatModel):
     groq_api_key: str
     model: str = "meta-llama/llama-4-scout-17b-16e-instruct"
@@ -21,6 +26,7 @@ class GroqLlamaChat(BaseChatModel):
         super().__init__(**data)
         self._client = Groq(api_key=self.groq_api_key)
 
+    # 🧠 대화 메시지 정리 후 API 호출
     def _call(self, messages, **kwargs):
         formatted = []
         for m in messages:
@@ -34,12 +40,14 @@ class GroqLlamaChat(BaseChatModel):
         )
         return response.choices[0].message.content
 
+    # 응답 생성
     def _generate(self, messages: list[BaseMessage], stop=None, **kwargs) -> ChatResult:
         content = self._call(messages, **kwargs)
         return ChatResult(
             generations=[{"text": content, "message": AIMessage(content=content)}]
         )
 
+    # 모델 정보 속성 정의
     @property
     def _llm_type(self):
         return "groq-llama-4"
@@ -48,26 +56,37 @@ class GroqLlamaChat(BaseChatModel):
     def _identifying_params(self):
         return {"model": self.model}
 
-# ✅ 텍스트 파일 로딩 함수
+# ✅ 2. API 키 불러오기 (Streamlit Secrets에서 가져옴)
 def load_api_key():
     return st.secrets["general"]["API_KEY"]
 
+# ✅ 3. 프롬프트 템플릿 로드 (질문에 사용할 틀)
 def load_template():
     with open("template.txt", "r", encoding="utf-8") as file:
         return file.read()
 
+# ✅ 4. 체인 초기화 함수 (질문 응답 체계 준비 + 지도 로딩)
 @st.cache_resource
 def init_qa_chain():
     api_key = load_api_key()
     template = load_template()
 
+    # 문장 임베딩 모델 (한국어 문장을 벡터로 변환)
     embedding_model = HuggingFaceEmbeddings(model_name="jhgan/ko-sbert-nli")
+
+    # 벡터 데이터베이스 로드
     vectorstore = FAISS.load_local("busan_db", embedding_model, allow_dangerous_deserialization=True)
+
+    # 검색기 정의 (상위 5개 문서 검색)
     retriever = vectorstore.as_retriever(search_kwargs={"k": 5})
 
+    # LLM 초기화 (Groq 모델)
     llm = GroqLlamaChat(groq_api_key=api_key)
+
+    # 프롬프트 구성
     prompt = PromptTemplate.from_template(template)
 
+    # QA 체인 구성 (질문하면 관련 문서를 찾아서 답변 생성)
     qa_chain = RetrievalQA.from_chain_type(
         llm=llm,
         retriever=retriever,
@@ -75,61 +94,68 @@ def init_qa_chain():
         return_source_documents=True,
     )
 
+    # 기업 위치 엑셀 파일 로드
     company_df = pd.read_excel("map_busan.xlsx")
+
+    # 전체 기업 지도 HTML 로드
     with open("전체기업_지도.html", "r", encoding="utf-8") as f:
         map_html_content = f.read()
 
     return qa_chain, company_df, map_html_content
 
-# ✅ 앱 시작
+# ✅ 5. Streamlit 앱 초기 설정
 st.set_page_config(page_title="부산 기업 RAG", layout="wide")
 st.title("🚢 부산 취업 상담 챗봇(JOB MAN)")
 
+# ✅ 6. 체인 로딩 (최초 1회만 실행)
 if "qa_chain" not in st.session_state:
     st.session_state.qa_chain, st.session_state.company_df, st.session_state.map_html = init_qa_chain()
 
+# 세션 상태에 query 변수 초기화
 if "query" not in st.session_state:
     st.session_state.query = ""
 
-# ✅ 먼저 query 상태 초기값 가져오기
+# 텍스트 입력값 저장용 상태
 if "main_query" not in st.session_state:
     st.session_state["main_query"] = ""
 
-# ✅ main_query 세션 값 -> 로컬 변수로 저장
+# 상태 값 가져오기
 query = st.session_state["main_query"]
 
-# ✅ 텍스트 입력 필드. key는 다른 걸로, 값은 우리가 관리
+# ✅ 7. 사용자 질문 입력창 표시
 query = st.text_input(
     "🎯 질문을 입력하세요:",
     value=query,
-    key="query_input",
+    key="query_input",  # 위 상태와 연결된 key는 아님
     placeholder="예: 연봉 3000만원 이상 선박 제조업 추천"
 )
 
-# ✅ 버튼 누르면 실행 + 입력 초기화
+# ✅ 8. 질문 실행 버튼 누르면 처리
 if st.button("💬 질문 실행"):
     with st.spinner("🤖 JOB MAN이 부산 기업 정보를 검색 중입니다..."):
-        result = st.session_state.qa_chain.invoke(query)
-        st.session_state.gpt_result = result["result"]
-        st.session_state.source_docs = result["source_documents"]
-        st.session_state["main_query"] = ""  # 입력 초기화
+        result = st.session_state.qa_chain.invoke(query)  # 질문 실행
+        st.session_state.gpt_result = result["result"]    # 응답 저장
+        st.session_state.source_docs = result["source_documents"]  # 문서 저장
+        st.session_state["main_query"] = ""  # 입력창 비우기
         st.rerun()
 else:
-    # ✅ 입력 중인 값을 저장 (버튼 안 눌렀을 때만)
-    st.session_state["main_query"] = query
+    st.session_state["main_query"] = query  # 입력 중일 때 실시간 저장
 
-# ✅ 탭 구성
+# ✅ 9. 결과 보여줄 탭 구성
 selected_tabs = st.tabs(["✅ JOB MAN의 답변", "📚 참고 문서", "🌍 관련 기업 위치", "🔍 부산 기업 분포 및 검색"])
 
+# GPT 응답 결과 출력
 with selected_tabs[0]:
     st.write(st.session_state.get("gpt_result", "🔹 GPT 응답 결과가 여기에 표시됩니다."))
 
+# 참조 문서 내용 출력
 with selected_tabs[1]:
     source_docs = st.session_state.get("source_docs", [])
     for i, doc in enumerate(source_docs):
         with st.expander(f"문서 {i+1}"):
             st.write(doc.page_content)
 
+# 관련 기업 위치 지도 출력
 with selected_tabs[2]:
     docs = st.session_state.get("source_docs", [])
     company_names = [doc.metadata.get("company") for doc in docs if "company" in doc.metadata]
@@ -152,6 +178,7 @@ with selected_tabs[2]:
     else:
         st.info("해당 기업 위치 정보가 없습니다.")
 
+# 기업명 검색 기반 지도 시각화
 with selected_tabs[3]:
     if "search_keyword" not in st.session_state:
         st.session_state.search_keyword = ""
@@ -163,6 +190,7 @@ with selected_tabs[3]:
         st.session_state["search_input"] = ""
         st.session_state.reset_triggered = True
 
+    # 검색 입력창
     search_input = st.text_input(
         "🔍 회사명으로 검색 (예: 현대, 시스템, 조선 등)",
         key="search_input",
