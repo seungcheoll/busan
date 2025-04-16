@@ -260,10 +260,9 @@ with col2:
             height=535,
             fit_columns_on_grid_load=True
         )
-
         selected_rows = grid_response["selected_rows"]
 
-        if selected_rows:
+        if selected_rows and isinstance(selected_rows, list) and len(selected_rows) > 0:
             selected_company_name = selected_rows[0]["회사명"]
             matched_df = matched_df[matched_df["회사명"] == selected_company_name]
     else:
