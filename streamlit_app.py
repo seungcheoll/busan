@@ -120,8 +120,7 @@ if st.button("💬 질문 실행") and query:
             if not matched_df.empty:
                 m = folium.Map(
                     location=[matched_df["위도"].mean(), matched_df["경도"].mean()],
-                    zoom_start=12,
-                    tiles="CartoDB positron"
+                    zoom_start=12
                 )
 
                 for _, row in matched_df.iterrows():
