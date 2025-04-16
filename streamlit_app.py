@@ -141,14 +141,11 @@ if st.button("💬 질문 실행") and query:
             else:
                 st.info("해당 기업 위치 정보가 없습니다.")
         
-        # ✅ 탭 4: 부산 기업 분포 (새 탭에서 지도.html 열기)
+        # ✅ 탭 4: 부산 기업 분포 (바로 내장 렌더링)
         with tab4:
-            st.markdown("### 🗺 부산 기업 분포 지도 보기")
+            st.markdown("### 🗺 부산 전체 기업 분포 지도")
         
-            # ✅ 정적 파일로 열기 (새 탭에서 직접 열기)
-            st.markdown(
-                '<a href="/전체기업_지도.html" target="_blank">🌐 별도 페이지로 지도 열기</a>',
-                unsafe_allow_html=True
-            )
+            # 이미 세션에 저장된 HTML 내용 바로 렌더링
+            html(st.session_state.map_html, height=600)
         
-            st.info("링크를 클릭하면 새 브라우저 탭에서 전체 기업 분포 지도를 확인할 수 있습니다.")
+            st.caption("※ 지도는 전체 기업 위치를 시각화한 결과입니다.")
