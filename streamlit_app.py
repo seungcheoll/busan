@@ -91,20 +91,32 @@ if "qa_chain" not in st.session_state:
 if "query" not in st.session_state:
     st.session_state.query = ""
 
+# ✅ 먼저 query 상태 초기값 가져오기
+if "main_query" not in st.session_state:
+    st.session_state["main_query"] = ""
+
+# ✅ main_query 세션 값 -> 로컬 변수로 저장
+query = st.session_state["main_query"]
+
+# ✅ 텍스트 입력 필드. key는 다른 걸로, 값은 우리가 관리
 query = st.text_input(
     "🎯 질문을 입력하세요:",
     value=query,
     key="query_input",
-    placeholder="예) 신입 사원이 처음 받는 연봉 3000만원 이상 되는 선박 제조업 회사를 추천해줘"
+    placeholder="예: 연봉 3000만원 이상 선박 제조업 추천"
 )
 
+# ✅ 버튼 누르면 실행 + 입력 초기화
 if st.button("💬 질문 실행"):
     with st.spinner("🤖 JOB MAN이 부산 기업 정보를 검색 중입니다..."):
         result = st.session_state.qa_chain.invoke(query)
         st.session_state.gpt_result = result["result"]
         st.session_state.source_docs = result["source_documents"]
-        st.session_state["main_query"] = ""  # ✅ 이건 우리가 만든 상태니까 안전함
+        st.session_state["main_query"] = ""  # 입력 초기화
         st.rerun()
+else:
+    # ✅ 입력 중인 값을 저장 (버튼 안 눌렀을 때만)
+    st.session_state["main_query"] = query
 
 # ✅ 탭 구성
 selected_tabs = st.tabs(["✅ JOB MAN의 답변", "📚 참고 문서", "🔍 관련 기업 위치", "📍 부산 기업 분포"])
