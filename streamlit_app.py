@@ -141,7 +141,7 @@ if st.button("💬 질문 실행") and query:
         with tab4:
             st.markdown("### 🗺 부산 기업 분포 지도 보기")
             st.markdown(
-                '<a href="/지도.html" target="_blank">🌐 별도 페이지로 지도 열기</a>',
+                '<a href="/전체기업_지도.html" target="_blank">🌐 별도 페이지로 지도 열기</a>',
                 unsafe_allow_html=True
             )
             st.info("링크를 클릭하면 새 브라우저 탭에서 전체 기업 분포 지도를 확인할 수 있습니다.")
