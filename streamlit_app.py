@@ -230,7 +230,7 @@ with selected_tabs[3]:
 
     # ─── 1) col2: AgGrid로 선택값 업데이트 & 테이블 출력 ─────────
     with col2:
-        st.markdown("### 🧾 검색 기업 정보")
+        st.markdown("### 🧾 검색 기업 정보 (※보고싶은 기업을 선택해주세요.)")
         if not matched_df.empty:
             # 컬럼 포맷터 정의
             PINLEFT = {'pinned': 'left'}
@@ -289,8 +289,6 @@ with selected_tabs[3]:
             # 선택된 항목 보여주기
             if selected:
                 selected_df = pd.DataFrame(selected)[matched_df.columns]
-            else:
-                st.info("※보고싶은 기업을 선택해주세요.")
         else:
             st.info("기업을 검색해주세요.")
 
