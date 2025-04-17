@@ -135,7 +135,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.title("🚢 부산 취업 상담 챗봇(JOB MAN)")
+st.title("🚢 부산 취업 상담 챗봇(JOB BUSAN)")
 
 # ✅ 6. 체인 로딩 (최초 1회만 실행)
 if "qa_chain" not in st.session_state:
@@ -162,7 +162,7 @@ query = st.text_input(
 
 # ✅ 8. 질문 실행 버튼 누르면 처리
 if st.button("💬 질문 실행"):
-    with st.spinner("🤖 JOB MAN이 부산 기업 정보를 검색 중입니다..."):
+    with st.spinner("🤖 JOB BUSAN이 부산 기업 정보를 검색 중입니다..."):
         result = st.session_state.qa_chain.invoke(query)  # 질문 실행
         st.session_state.gpt_result = result["result"]    # 응답 저장
         st.session_state.source_docs = result["source_documents"]  # 문서 저장
@@ -172,7 +172,7 @@ else:
     st.session_state["main_query"] = query  # 입력 중일 때 실시간 저장
 
 # ✅ 9. 결과 보여줄 탭 구성
-selected_tabs = st.tabs(["✅ JOB MAN의 답변", "📚 참고 문서", "🌍 관련 기업 위치", "🔍 부산 기업 분포 및 검색"])
+selected_tabs = st.tabs(["✅ JOB BUSAN의 답변", "📚 참고 문서", "🌍 관련 기업 위치", "🔍 부산 기업 분포 및 검색"])
 
 # GPT 응답 결과 출력
 with selected_tabs[0]:
