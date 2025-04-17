@@ -201,7 +201,7 @@ if job_rag:
 
         col1, col2 = st.columns([2, 1])
         with col2:
-            st.markdown("### 🧾 검색 기업 정보 (※보고싶은 기업을 선택해주세요)")
+            st.markdown("### 🧾 검색 기업 정보")
             if not matched_df.empty:
                 PINLEFT = {'pinned': 'left'}
                 PRECISION_TWO = {'type': ['numericColumn'], 'precision': 6}
@@ -303,11 +303,11 @@ if chatbot:
             {"role": "assistant", "content": "안녕하세요! 무엇을 도와드릴까요?"}
         ]
 
-    st.markdown("""
-    <div style='background-color:#f9f9f9; padding:20px; border-radius:12px; border:1px solid #ddd; width:20%; margin: 0 auto; text-align: center;'>
-<h1 style='margin:0;'>💬 Groq Chatbot</h1>
-</div>
-""", unsafe_allow_html=True)
+        st.markdown("""
+            <div style='background-color:#f9f9f9; padding:20px; border-radius:12px; border:1px solid #ddd; width:20%; margin: 0 auto; text-align: center;'>
+                <h1 style='margin:0; font-size:24px;'>💬 Groq Chatbot</h1>
+            </div>
+        """, unsafe_allow_html=True)
     
     for msg in st.session_state.groq_history:
         if msg["role"] == "user":
