@@ -341,5 +341,5 @@ with selected_tabs[3]:
             st.warning("🛑 해당 기업이 존재하지 않습니다.")
         else:
             # 초기 전체 분포 지도
-            html(st.session_state.map_html, height=700)
+            html(st.session_state.map_html, height=600)
             st.caption("※ 전체 기업 분포를 표시 중입니다.")
