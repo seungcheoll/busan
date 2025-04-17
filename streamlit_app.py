@@ -222,7 +222,7 @@ with selected_tabs[3]:
         st.session_state.reset_triggered = True
     
     # 컬럼 2개 생성: 왼쪽 4, 오른쪽 1 비율
-    col1, col2 = st.columns([3, 1])
+    col1, col2 = st.columns([2, 1])
     with col1:
         search_input = st.text_input(
             label="",
