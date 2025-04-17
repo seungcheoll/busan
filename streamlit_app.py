@@ -106,6 +106,17 @@ def init_qa_chain():
 
 # ✅ 5. Streamlit 앱 초기 설정
 st.set_page_config(page_title="부산 기업 RAG", layout="wide")
+
+# ====== 상단 메뉴바, 푸터, 헤더 숨기기 ======
+hide_streamlit_style = """
+    <style>
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        header {visibility: hidden;}
+    </style>
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 st.title("🚢 부산 취업 상담 챗봇(JOB MAN)")
 
 # ✅ 6. 체인 로딩 (최초 1회만 실행)
