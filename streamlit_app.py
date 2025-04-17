@@ -213,6 +213,7 @@ with selected_tabs[3]:
     with col2:
         # 입력값이 있을 때만 버튼 표시
         if search_input:
+            st.markdown("<div style='padding-top:6px;'></div>", unsafe_allow_html=True)
             st.button("검색 초기화", on_click=reset_search)
     
     # 상태 업데이트
