@@ -83,6 +83,18 @@ hide_streamlit_style = """
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
+# 상단 여백 제거 스타일
+st.markdown("""
+    <style>
+        .block-container {
+            padding-top: 0rem !important;
+        }
+        header[data-testid="stHeader"] {
+            display: none;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 menu = st.sidebar.radio("페이지 선택", ["📊 부산 기업 RAG 시스템", "💬 Groq Chatbot"], key="menu_select")
 job_rag = menu == "📊 부산 기업 RAG 시스템"
 chatbot = menu == "💬 Groq Chatbot"
