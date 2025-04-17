@@ -299,7 +299,7 @@ if chatbot:
     st.markdown("""
     <style>
         .chatbot-wrapper {
-            max-width: 700px;
+            max-width: 500px;
             margin: 0 auto;
         }
     </style>
