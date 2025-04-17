@@ -113,9 +113,11 @@ hide_streamlit_style = """
         #MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
         header {visibility: hidden;}
+        [data-testid="stStatusWidget"] {display: none !important;}
     </style>
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 st.title("🚢 부산 취업 상담 챗봇(JOB MAN)")
 
 # ✅ 6. 체인 로딩 (최초 1회만 실행)
