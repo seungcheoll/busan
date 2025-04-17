@@ -116,6 +116,19 @@ hide_streamlit_style = """
     </style>
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+# ⚡ block-container(본문) 최상단 여백 제거
+st.markdown(
+    """
+    <style>
+        .block-container {
+            padding-top: 0rem;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 st.title("🚢 부산 취업 상담 챗봇(JOB MAN)")
 
 # ✅ 6. 체인 로딩 (최초 1회만 실행)
