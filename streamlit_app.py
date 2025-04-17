@@ -296,19 +296,26 @@ if job_rag:
 
 
 if chatbot:
-    if "groq_chat" not in st.session_state:
-        st.session_state.groq_chat = GroqLlamaChat(groq_api_key=load_api_key())
-    if "groq_history" not in st.session_state:
-        st.session_state.groq_history = [
-            {"role": "assistant", "content": "안녕하세요! 무엇을 도와드릴까요?"}
-        ]
-
+    # ✅ 좁은 영역을 위한 스타일 삽입
     st.markdown("""
-        <div style='background-color:#f9f9f9; padding:20px; border-radius:12px; border:1px solid #ddd; width:20%; margin: 0 auto; text-align: center;'>
+        <style>
+        .chat-wrapper {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        </style>
+        <div class='chat-wrapper'>
+    """, unsafe_allow_html=True)
+
+    # ✅ 챗봇 상단 타이틀
+    st.markdown("""
+        <div style='background-color:#f9f9f9; padding:20px; border-radius:12px; border:1px solid #ddd; text-align: center;'>
             <h1 style='margin:0; font-size:24px;'>💬 Groq Chatbot</h1>
         </div>
     """, unsafe_allow_html=True)
-    
+
+    # ✅ 메시지 출력
     for msg in st.session_state.groq_history:
         if msg["role"] == "user":
             _, right = st.columns([3, 1])
@@ -326,6 +333,7 @@ if chatbot:
                     unsafe_allow_html=True
                 )
 
+    # ✅ 입력창
     prompt = st.chat_input("메시지를 입력하세요...", key="groq_input")
     if prompt:
         st.session_state.groq_history.append({"role": "user", "content": prompt})
@@ -336,3 +344,6 @@ if chatbot:
         answer = st.session_state.groq_chat._call(history)
         st.session_state.groq_history.append({"role": "assistant", "content": answer})
         st.rerun()
+
+    # ✅ div 닫기
+    st.markdown("</div>", unsafe_allow_html=True)
