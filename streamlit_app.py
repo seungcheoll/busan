@@ -296,6 +296,15 @@ if job_rag:
 
 
 if chatbot:
+        st.markdown("""
+        <style>
+            .chatbot-wrapper {
+                max-width: 700px;
+                margin: 0 auto;
+            }
+        </style>
+        <div class="chatbot-wrapper">
+    """, unsafe_allow_html=True)
     if "groq_chat" not in st.session_state:
         st.session_state.groq_chat = GroqLlamaChat(groq_api_key=load_api_key())
     if "groq_history" not in st.session_state:
