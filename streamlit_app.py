@@ -271,7 +271,7 @@ if job_rag:
                         popup=row['회사명'],
                         tooltip=row['회사명']
                     ).add_to(m)
-                html(m._repr_html_(), height=600)
+                html(m._repr_html_(), height=400)
                 st.caption(f"✅ 선택된 기업 {len(df_map)}곳을 지도에 표시했습니다.")
             elif not matched_df.empty:
                 m = folium.Map(location=[matched_df['위도'].mean(), matched_df['경도'].mean()], zoom_start=12)
@@ -291,7 +291,7 @@ if job_rag:
             elif keyword:
                 st.warning("🛑 해당 기업이 존재하지 않습니다.")
             else:
-                html(st.session_state.map_html, height=600)
+                html(st.session_state.map_html, height=400)
                 st.caption("※ 전체 기업 분포를 표시 중입니다.")
 
 
