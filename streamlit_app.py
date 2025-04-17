@@ -196,22 +196,28 @@ with selected_tabs[3]:
         st.session_state.search_keyword = ""
     if "reset_triggered" not in st.session_state:
         st.session_state.reset_triggered = False
-
+    
     def reset_search():
         st.session_state.search_keyword = ""
         st.session_state["search_input"] = ""
         st.session_state.reset_triggered = True
-
-    search_input = st.text_input(
-        label="",
-        key="search_input",
-        placeholder="🔎 회사명으로 검색 (예: 현대, 시스템, 조선 등)"
-    )
-    st.session_state.search_keyword = st.session_state.get("search_input", "")
-
-    if st.session_state.search_keyword:
-        st.button("검색 초기화", on_click=reset_search)
-
+    
+    # 컬럼 2개 생성: 왼쪽 4, 오른쪽 1 비율
+    col1, col2 = st.columns([4, 1])
+    with col1:
+        search_input = st.text_input(
+            label="",
+            key="search_input",
+            placeholder="🔎 회사명으로 검색 (예: 현대, 시스템, 조선 등)"
+        )
+    with col2:
+        # 입력값이 있을 때만 버튼 표시
+        if search_input:
+            st.button("검색 초기화", on_click=reset_search)
+    
+    # 상태 업데이트
+    st.session_state.search_keyword = search_input
+    
     if st.session_state.reset_triggered:
         st.session_state.reset_triggered = False
         st.rerun()
