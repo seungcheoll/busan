@@ -3,7 +3,7 @@ import streamlit as st                  # 웹 앱 프레임워크 (간단한 인
 import pandas as pd                    # 데이터 처리용 라이브러리 (엑셀이나 테이블 다루기)
 import folium                          # 지도 시각화 도구 (지도 위에 마커 표시 가능)
 from streamlit.components.v1 import html  # Streamlit에서 HTML 코드 삽입할 때 사용
-from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode
+from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode, DataReturnMode
 
 # LangChain 관련: 질문-답변 체계 구축용
 from langchain_community.vectorstores import FAISS
@@ -181,6 +181,7 @@ with selected_tabs[2]:
 
 # 기업명 검색 기반 지도 시각화
 with selected_tabs[3]:
+    # ─── 검색 입력 및 초기화 로직 ─────────────────────────────────
     if "search_keyword" not in st.session_state:
         st.session_state.search_keyword = ""
     if "reset_triggered" not in st.session_state:
@@ -205,58 +206,132 @@ with selected_tabs[3]:
         st.session_state.reset_triggered = False
         st.rerun()
 
+    # ─── 검색 결과 필터링 ─────────────────────────────────────
     matched_df = pd.DataFrame()
-    if st.session_state.search_keyword.strip():
+    keyword = st.session_state.search_keyword.strip()
+    if keyword:
         matched_df = st.session_state.company_df[
-            st.session_state.company_df["회사명"].str.contains(
-                st.session_state.search_keyword,
-                case=False,
-                na=False
-            )
+            st.session_state.company_df["회사명"]
+            .str.contains(keyword, case=False, na=False)
         ]
 
-    col1, col2 = st.columns([2, 1])  # 지도:테이블 비율
+    # ─── 화면 분할: 컬럼 2개 ────────────────────────────────────
+    col1, col2 = st.columns([2, 1])
 
-    with col1:
+    # ─── 1) col2: AgGrid로 선택값 업데이트 & 테이블 출력 ─────────
+    with col2:
+        st.markdown("### 🧾 검색 기업 정보")
         if not matched_df.empty:
+            # 컬럼 포맷터 정의
+            PINLEFT = {'pinned': 'left'}
+            PRECISION_TWO = {'type': ['numericColumn'], 'precision': 6}
+            formatter = {
+                '회사명': ('회사명', PINLEFT),
+                '도로명': ('도로명', {'width': 200}),
+                '업종명': ('업종명', {'width': 150}),
+                '전화번호': ('전화번호', {'width': 130}),
+                '위도': ('위도', {**PRECISION_TWO, 'width': 100}),
+                '경도': ('경도', {**PRECISION_TWO, 'width': 100}),
+            }
+
+            # GridOptionsBuilder 설정
+            gb = GridOptionsBuilder.from_dataframe(matched_df)
+            for col, (header, opts) in formatter.items():
+                if col in matched_df.columns:
+                    gb.configure_column(col, header_name=header, **opts)
+            # 여기에 위도/경도를 숨기도록 추가
+            gb.configure_column('위도', hide=True)
+            gb.configure_column('경도', hide=True)
+            gb.configure_pagination(paginationAutoPageSize=True)
+            gb.configure_side_bar()
+            gb.configure_selection('multiple', use_checkbox=True, groupSelectsChildren=True)
+
+            gridOptions = gb.build()
+
+            # AgGrid 렌더링
+            grid_response = AgGrid(
+                matched_df,
+                gridOptions=gridOptions,
+                data_return_mode=DataReturnMode.AS_INPUT,
+                update_mode=GridUpdateMode.MODEL_CHANGED,
+                fit_columns_on_grid_load=True,
+                theme='blue',
+                enable_enterprise_modules=True,
+                height=635,
+                width='100%',
+                allow_unsafe_jscode=True
+            )
+
+            # 선택값을 무조건 리스트로 통일
+            sr = grid_response.get('selected_rows')
+            if sr is None:
+                selected = []
+            elif isinstance(sr, pd.DataFrame):
+                selected = sr.to_dict('records')
+            elif isinstance(sr, list):
+                selected = sr
+            else:
+                selected = []
+
+            # 세션에 저장
+            st.session_state.selected_rows = selected
+
+            # 선택된 항목 보여주기
+            if selected:
+                selected_df = pd.DataFrame(selected)[matched_df.columns]
+            else:
+                st.info("※보고싶은 기업을 선택해주세요.")
+        else:
+            st.info("기업을 검색해주세요.")
+
+    # ─── 2) col1: 최신 session_state.selected_rows 기반으로 지도 그리기 ──
+    with col1:
+        selected = st.session_state.get('selected_rows', [])
+
+        if selected:
+            # 체크된 기업만 빨간 마커로 표시
+            df_map = pd.DataFrame(selected)
             m = folium.Map(
-                location=[matched_df["위도"].mean(), matched_df["경도"].mean()],
+                location=[df_map['위도'].mean(), df_map['경도'].mean()],
+                zoom_start=12
+            )
+            for _, row in df_map.iterrows():
+                folium.CircleMarker(
+                    location=[row['위도'], row['경도']],
+                    radius=6,
+                    color='green',
+                    fill=True,
+                    fill_color='green',
+                    fill_opacity=0.8,
+                    popup=row['회사명'],
+                    tooltip=row['회사명']
+                ).add_to(m)
+            html(m._repr_html_(), height=700)
+            st.caption(f"✅ 선택된 기업 {len(df_map)}곳을 지도에 표시했습니다.")
+
+        elif not matched_df.empty:
+            # 검색 결과 전체를 녹색 마커로 표시
+            m = folium.Map(
+                location=[matched_df['위도'].mean(), matched_df['경도'].mean()],
                 zoom_start=12
             )
             for _, row in matched_df.iterrows():
                 folium.CircleMarker(
-                    location=[row["위도"], row["경도"]],
+                    location=[row['위도'], row['경도']],
                     radius=5,
-                    color="green",
+                    color='green',
                     fill=True,
-                    fill_color="green",
+                    fill_color='green',
                     fill_opacity=0.7,
-                    popup=row["회사명"],
-                    tooltip=row["회사명"]
+                    popup=row['회사명'],
+                    tooltip=row['회사명']
                 ).add_to(m)
-            html(m._repr_html_(), height=600)
-            st.caption(f"※ '{st.session_state.search_keyword}'를 포함한 기업 {len(matched_df)}곳을 지도에 표시했습니다.")
-        elif st.session_state.search_keyword.strip():
+            html(m._repr_html_(), height=700)
+            st.caption(f"※ '{keyword}'를 포함한 기업 {len(matched_df)}곳을 지도에 표시했습니다.")
+
+        elif keyword:
             st.warning("🛑 해당 기업이 존재하지 않습니다.")
         else:
-            html(st.session_state.map_html, height=600)
+            # 초기 전체 분포 지도
+            html(st.session_state.map_html, height=700)
             st.caption("※ 전체 기업 분포를 표시 중입니다.")
-
-    with col2:
-        st.markdown("### 🧾 검색 기업 정보")
-        if not matched_df.empty:
-            selected_df = st.data_editor(
-                matched_df[["회사명", "도로명", "업종명", "전화번호"]],
-                use_container_width=True,
-                height=535,
-                hide_index=True,
-                disabled=True
-            )
-
-            # 사용자가 하나의 행을 클릭했다고 가정하고, 그 기업만 지도에 표시하도록 필터링
-            if len(selected_df) == 1:
-                selected_company_name = selected_df.iloc[0]["회사명"]
-                matched_df = matched_df[matched_df["회사명"] == selected_company_name]
-        else:
-            st.info("기업을 검색해주세요.")
-
