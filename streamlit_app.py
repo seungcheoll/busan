@@ -185,7 +185,7 @@ with selected_tabs[2]:
                 popup=row["회사명"],
                 tooltip=row["회사명"]
             ).add_to(m)
-        html(m._repr_html_(), height=700)
+        html(m._repr_html_(), height=600)
     else:
         st.info("해당 기업 위치 정보가 없습니다.")
 
@@ -267,7 +267,7 @@ with selected_tabs[3]:
                 fit_columns_on_grid_load=True,
                 theme='blue',
                 enable_enterprise_modules=True,
-                height=635,
+                height=535,
                 width='100%',
                 allow_unsafe_jscode=True
             )
@@ -316,7 +316,7 @@ with selected_tabs[3]:
                     popup=row['회사명'],
                     tooltip=row['회사명']
                 ).add_to(m)
-            html(m._repr_html_(), height=700)
+            html(m._repr_html_(), height=600)
             st.caption(f"✅ 선택된 기업 {len(df_map)}곳을 지도에 표시했습니다.")
 
         elif not matched_df.empty:
@@ -336,7 +336,7 @@ with selected_tabs[3]:
                     popup=row['회사명'],
                     tooltip=row['회사명']
                 ).add_to(m)
-            html(m._repr_html_(), height=700)
+            html(m._repr_html_(), height=600)
             st.caption(f"※ '{keyword}'를 포함한 기업 {len(matched_df)}곳을 지도에 표시했습니다.")
 
         elif keyword:
