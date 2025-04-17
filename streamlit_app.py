@@ -47,7 +47,7 @@ class GroqLlamaChat(BaseChatModel):
         return {"model": self.model}
 
 def load_api_key():
-        return st.secrets["general"]["API_KEY"]
+    return st.secrets["general"]["API_KEY"]
 
 def load_template():
     with open("template.txt", "r", encoding="utf-8") as file:
@@ -74,33 +74,31 @@ def init_qa_chain():
     return qa_chain, company_df, map_html_content
 
 st.set_page_config(page_title="부산 기업 RAG", layout="wide")
-hide_streamlit_style = """
+
+st.markdown("""
     <style>
         #MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
         header {visibility: hidden;}
-    </style>
-"""
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-
-# 상단 여백 제거 스타일
-st.markdown("""
-    <style>
-        .block-container {
-            padding-top: 0rem !important;
-        }
-        header[data-testid="stHeader"] {
-            display: none;
-        }
+        .block-container { padding-top: 0rem !important; }
+        header[data-testid="stHeader"] { display: none; }
     </style>
 """, unsafe_allow_html=True)
 
-menu = st.sidebar.radio("페이지 선택", ["📊 부산 기업 RAG 시스템", "💬 Groq Chatbot"], key="menu_select")
-job_rag = menu == "📊 부산 기업 RAG 시스템"
-chatbot = menu == "💬 Groq Chatbot"
+if "page" not in st.session_state:
+    st.session_state.page = "rag"
 
+col1, col2 = st.columns([1, 1])
+with col1:
+    if st.button("📊 부산 기업 RAG 시스템"):
+        st.session_state.page = "rag"
+        st.rerun()
+with col2:
+    if st.button("💬 Groq Chatbot"):
+        st.session_state.page = "chatbot"
+        st.rerun()
 
-if job_rag:
+if st.session_state.page == "rag":
     st.title("🚢 부산 취업 상담 챗봇(JOB BUSAN)")
     if "qa_chain" not in st.session_state:
         st.session_state.qa_chain, st.session_state.company_df, st.session_state.map_html = init_qa_chain()
@@ -239,21 +237,8 @@ if job_rag:
                 )
 
                 sr = grid_response.get('selected_rows')
-                if sr is None:
-                    selected = []
-                elif isinstance(sr, pd.DataFrame):
-                    selected = sr.to_dict('records')
-                elif isinstance(sr, list):
-                    selected = sr
-                else:
-                    selected = []
-
+                selected = sr if isinstance(sr, list) else []
                 st.session_state.selected_rows = selected
-
-                if selected:
-                    selected_df = pd.DataFrame(selected)[matched_df.columns]
-            else:
-                st.info("기업을 검색해주세요.")
 
         with col1:
             selected = st.session_state.get('selected_rows', [])
@@ -294,8 +279,7 @@ if job_rag:
                 html(st.session_state.map_html, height=480)
                 st.caption("※ 전체 기업 분포를 표시 중입니다.")
 
-
-if chatbot:
+elif st.session_state.page == "chatbot":
     if "groq_chat" not in st.session_state:
         st.session_state.groq_chat = GroqLlamaChat(groq_api_key=load_api_key())
     if "groq_history" not in st.session_state:
@@ -308,7 +292,7 @@ if chatbot:
             <h1 style='margin:0; font-size:24px;'>💬 Groq Chatbot</h1>
         </div>
     """, unsafe_allow_html=True)
-    
+
     for msg in st.session_state.groq_history:
         if msg["role"] == "user":
             _, right = st.columns([3, 1])
