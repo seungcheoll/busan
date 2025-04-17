@@ -205,18 +205,6 @@ with selected_tabs[3]:
     # 컬럼 2개 생성: 왼쪽 4, 오른쪽 1 비율
     col1, col2 = st.columns([4, 1])
     with col1:
-        # ⚡ block-container(본문) 최상단 여백 제거
-        st.markdown(
-            """
-            <style>
-                .block-container {
-                    padding-top: 0rem;
-                }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
-
         search_input = st.text_input(
             label="",
             key="search_input",
