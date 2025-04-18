@@ -12,11 +12,6 @@ from langchain.chat_models.base import BaseChatModel
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.schema import ChatResult
 from groq import Groq
-import warnings
-
-# 특정 경고 메시지 무시
-warnings.filterwarnings("ignore")
-
 # ✅ Groq API를 활용한 LangChain용 LLM 클래스 정의
 class GroqLlamaChat(BaseChatModel):
     groq_api_key: str
