@@ -148,6 +148,8 @@ if job_rag:
 
             st.session_state.gpt_result = result["result"]
             st.session_state.source_docs = result["source_documents"]
+            st.session_state["saved_user_type"] = user_type
+            st.session_state["saved_query"] = query
             st.session_state["main_query"] = ""
             st.rerun()
     else:
@@ -337,8 +339,8 @@ if chatbot:
         st.stop()
 
     # 🔹 사용자 유형과 질문 가져오기
-    user_type = st.session_state.get("user_type", "알 수 없음")
-    user_query = st.session_state.get("query_input", "입력된 질문이 없습니다")
+    user_type = st.session_state.get("saved_user_type", "알 수 없음")
+    user_query = st.session_state.get("saved_query", "입력된 질문이 없습니다")
     st.write(user_type)
     st.write(user_query)
     # 🔹 참고자료 포함 system prompt 구성
