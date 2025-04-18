@@ -95,8 +95,8 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-menu = st.sidebar.radio("페이지 선택", ["📊 부산 기업 RAG 시스템", "💬 Groq Chatbot"], key="menu_select")
-job_rag = menu == "📊 부산 기업 RAG 시스템"
+menu = st.sidebar.radio("페이지 선택", ["🚢 Job Busan", "💬 Groq Chatbot"], key="menu_select")
+job_rag = menu == "🚢 Job Busan"
 chatbot = menu == "💬 Groq Chatbot"
 
 
@@ -138,7 +138,7 @@ if job_rag:
     ])
 
     with selected_tabs[0]:
-        st.write(st.session_state.get("gpt_result", "🔹 GPT 응답 결과가 여기에 표시됩니다."))
+        st.write(st.session_state.get("gpt_result", "🔹 Job Busan의 응답 결과가 여기에 표시됩니다."))
 
     with selected_tabs[1]:
         source_docs = st.session_state.get("source_docs", [])
@@ -309,7 +309,7 @@ if chatbot:
 
     # 참고자료가 없으면 JOB BUSAN 먼저 실행하라는 안내 출력
     if "source_docs" not in st.session_state or not st.session_state.source_docs:
-        st.warning("💡 JOB BUSAN 페이지에서 먼저 '질문 실행'을 눌러 참고자료를 확보해 주세요.")
+        st.warning("💡 'JOB BUSAN' 페이지에서 먼저 '질문 실행'을 눌러 참고자료를 확보해 주세요.")
         st.stop()
 
     # 참고자료를 하나의 context 문자열로 병합
