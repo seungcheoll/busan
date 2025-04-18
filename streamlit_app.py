@@ -120,18 +120,37 @@ if job_rag:
         st.session_state["query_input"] = ""
     if "user_type" not in st.session_state:
         st.session_state["user_type"] = "진로 설정을 못한 대학생"
+    if "saved_user_type" not in st.session_state:
+        st.session_state["saved_user_type"] = ""
+    if "saved_query" not in st.session_state:
+        st.session_state["saved_query"] = ""
+
+    # 🔐 입력값 저장 콜백 함수
+    def save_user_inputs():
+        st.session_state["saved_user_type"] = st.session_state["user_type"]
+        st.session_state["saved_query"] = st.session_state["query_input"]
 
     # 🔎 질문 입력 및 유형 선택 영역
     col1, col2 = st.columns([3, 2])
     with col1:
-        st.text_input("🎯 질문", value=st.session_state["main_query"], key="query_input", placeholder="예: 연봉 3000만원 이상 선박 제조업 추천")
+        st.text_input(
+            "🎯 질문",
+            key="query_input",
+            value=st.session_state["main_query"],
+            placeholder="예: 연봉 3000만원 이상 선박 제조업 추천",
+            on_change=save_user_inputs
+        )
     with col2:
-        st.selectbox("👤 유형", ["진로 설정을 못한 대학생", "첫 취업 준비", "이직을 준비하는 사람"], key="user_type")
+        st.selectbox(
+            "👤 유형",
+            ["진로 설정을 못한 대학생", "첫 취업 준비", "이직을 준비하는 사람"],
+            key="user_type",
+            on_change=save_user_inputs
+        )
 
     query = st.session_state["query_input"]
     user_type = st.session_state["user_type"]
-    st.session_state["saved_user_type"] = user_type
-    st.session_state["saved_query"] = query
+
     # 💬 질문 실행 버튼
     if st.button("💬 질문 실행"):
         with st.spinner("🤖 JOB BUSAN이 부산 기업 정보를 검색 중입니다..."):
@@ -149,6 +168,11 @@ if job_rag:
 
             st.session_state.gpt_result = result["result"]
             st.session_state.source_docs = result["source_documents"]
+
+            # 다시 비우기 전 최종 저장
+            st.session_state["saved_query"] = query
+            st.session_state["saved_user_type"] = user_type
+
             st.session_state["main_query"] = ""
             st.rerun()
     else:
