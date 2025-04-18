@@ -295,20 +295,39 @@ if job_rag:
                 st.caption("※ 전체 기업 분포를 표시 중입니다.")
 
 
+# Groq Chatbot 페이지 흐름
 if chatbot:
+    # GroqLlamaChat 인스턴스 초기화
     if "groq_chat" not in st.session_state:
         st.session_state.groq_chat = GroqLlamaChat(groq_api_key=load_api_key())
+
+    # 세션 히스토리 초기화
     if "groq_history" not in st.session_state:
         st.session_state.groq_history = [
             {"role": "assistant", "content": "안녕하세요! 무엇을 도와드릴까요?"}
         ]
 
+    # 참고자료가 없으면 JOB BUSAN 먼저 실행하라는 안내 출력
+    if "source_documents" not in st.session_state or not st.session_state.source_documents:
+        st.warning("💡 JOB BUSAN 페이지에서 먼저 '질문 실행'을 눌러 참고자료를 확보해 주세요.")
+        st.stop()
+
+    # 참고자료를 하나의 context 문자열로 병합
+    context_text = "\n\n".join(
+        doc.page_content for doc in st.session_state.source_documents
+    )
+    system_prompt = (
+        "다음은 부산 기업 관련 참고자료입니다. 이 내용을 바탕으로 사용자의 질문에 답변해 주세요.\n\n" + context_text
+    )
+
+    # 챗봇 헤더 UI
     st.markdown("""
         <div style='background-color:#f9f9f9; padding:20px; border-radius:12px; border:1px solid #ddd; width:20%; margin: 0 auto; text-align: center;'>
             <h1 style='margin:0; font-size:24px;'>💬 Groq Chatbot</h1>
         </div>
     """, unsafe_allow_html=True)
-    
+
+    # 대화 내역 출력
     for msg in st.session_state.groq_history:
         if msg["role"] == "user":
             _, right = st.columns([3, 1])
@@ -326,13 +345,20 @@ if chatbot:
                     unsafe_allow_html=True
                 )
 
+    # 사용자 입력
     prompt = st.chat_input("메시지를 입력하세요...", key="groq_input")
     if prompt:
+        # 히스토리에 사용자 입력 저장
         st.session_state.groq_history.append({"role": "user", "content": prompt})
-        history = [
-            (HumanMessage if m["role"] == "user" else AIMessage)(content=m["content"])
-            for m in st.session_state.groq_history
-        ]
+
+        # LangChain 메시지 형식으로 구성 (시스템 프롬프트 + 히스토리)
+        history = [HumanMessage(content=system_prompt)]
+        for m in st.session_state.groq_history:
+            history.append(
+                (HumanMessage if m["role"] == "user" else AIMessage)(content=m["content"])
+            )
+
+        # Groq 호출
         answer = st.session_state.groq_chat._call(history)
         st.session_state.groq_history.append({"role": "assistant", "content": answer})
         st.rerun()
