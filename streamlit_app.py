@@ -130,7 +130,8 @@ if job_rag:
 
     query = st.session_state["query_input"]
     user_type = st.session_state["user_type"]
-
+    st.session_state["saved_user_type"] = user_type
+    st.session_state["saved_query"] = query
     # 💬 질문 실행 버튼
     if st.button("💬 질문 실행"):
         with st.spinner("🤖 JOB BUSAN이 부산 기업 정보를 검색 중입니다..."):
@@ -148,8 +149,6 @@ if job_rag:
 
             st.session_state.gpt_result = result["result"]
             st.session_state.source_docs = result["source_documents"]
-            st.session_state["saved_user_type"] = user_type
-            st.session_state["saved_query"] = query
             st.session_state["main_query"] = ""
             st.rerun()
     else:
