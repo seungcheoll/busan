@@ -366,15 +366,14 @@ if chatbot:
     user_query = st.session_state.get("saved_query", "입력된 질문이 없습니다")
     # 🔹 참고자료 포함 system prompt 구성
     context_text = "\n\n".join(doc.page_content for doc in st.session_state.source_docs)
-    system_prompt = f"""
-다음은 부산 기업 관련 참고자료입니다. 사용자의 유형과 질문, 그리고 참고자료를 바탕으로 한국어로 성실히 답변해 주세요.
-
-[사용자 유형]: {user_type}
-[사용자 질문]: {user_query}
-
-[참고자료]:
-{context_text}
-"""
+    with open("template/sys_template.txt", "r", encoding="utf-8") as file:
+        template=file.read()
+    
+    system_prompt = template.format(
+        user_type=user_type,
+        user_query=user_query,
+        context_text=context_text
+    )
 
     st.markdown("""
         <div style='background-color:#f9f9f9; padding:0px 0px; border-radius:12px; border:1px solid #ddd; 
