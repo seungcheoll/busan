@@ -342,7 +342,7 @@ if chatbot:
                     unsafe_allow_html=True
                 )
         else:
-            left, _ = st.columns([1, 5])
+            left, _ = st.columns([3, 1])
             with left:
                 bubble = st.chat_message("assistant")
                 bubble.markdown(
