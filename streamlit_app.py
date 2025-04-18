@@ -208,7 +208,7 @@ if job_rag:
 
         col1, col2 = st.columns([2, 1])
         with col1:
-            search_input = st.text_input("", key="search_input", placeholder="🔎 회사명으로 검색 (예: 현대, 시스템, 조선 등)")
+            search_input = st.text_input("", key="search_input", label_visibility="collapsed", placeholder="🔎 회사명으로 검색 (예: 현대, 시스템, 조선 등)")
         with col2:
             if search_input:
                 st.markdown("<div style='padding-top:27px;'></div>", unsafe_allow_html=True)
