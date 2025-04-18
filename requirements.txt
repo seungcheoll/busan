@@ -1,27 +1,12 @@
-# ✅ Streamlit 앱 실행
 streamlit>=1.31.0
-
-# ✅ 테이블 구성 (기업 목록)
 streamlit-aggrid>=0.3.4.post3
-
-# ✅ LangChain 메인 라이브러리
-langchain>=0.2.0
-
-# ✅ LangChain 커뮤니티 모듈 (v0.2 이후 import 경로 변경 대응)
+langchain>=0.2.2
 langchain-community>=0.0.20
-
-# ✅ Groq LLM API 클라이언트
+langchain-huggingface>=0.0.5
 groq>=0.4.0
-
-# ✅ 문장 임베딩 모델 (Ko-SBERT 등 사용 가능)
 sentence-transformers>=2.2.2
-
-# ✅ FAISS 벡터 DB (CPU 버전)
 faiss-cpu>=1.7.4
-
-# ✅ 데이터프레임 및 엑셀 처리
 pandas>=2.2.1
 openpyxl>=3.1.2
-
-# ✅ 지도 시각화
 folium>=0.15.1
+torch==2.1.2
