@@ -323,8 +323,10 @@ if chatbot:
     # 챗봇 헤더 UI
     st.markdown("""
         <div style='background-color:#f9f9f9; padding:20px; border-radius:12px; border:1px solid #ddd; width:20%; margin: 0 auto; text-align: center;'>
-            <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/GPT_image.png' width='32' style='margin-bottom: 8px;'/>
-            <h1 style='margin:0; font-size:24px;'>Groq Chatbot</h1>
+            <h1 style='margin:0; font-size:24px; display: flex; align-items: center; justify-content: center; gap: 10px;'>
+                <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/GPT_image.png' width='28' style='vertical-align: middle;'/>
+                Groq Chatbot
+            </h1>
         </div>
     """, unsafe_allow_html=True)
 
