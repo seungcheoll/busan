@@ -131,7 +131,7 @@ if job_rag:
         st.session_state["main_query"] = query
 
     selected_tabs = st.tabs([
-        "✅ JOB BUSAN의 답변",
+        "✅ Job Busan의 답변",
         "📚 참고 문서",
         "🌍 관련 기업 위치",
         "🔍 부산 기업 분포 및 검색"
