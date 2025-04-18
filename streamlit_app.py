@@ -407,10 +407,13 @@ if chatbot:
     prompt = st.chat_input("메시지를 입력하세요...", key="groq_input")
     if prompt:
         st.session_state.groq_history.append({"role": "user", "content": prompt})
-
-        # 🔹 첫 메시지는 system_prompt, 이후는 이전 히스토리
+        
+        # ✅ 최근 5개만 포함
+        recent_messages = st.session_state.groq_history[-5:]
+        
+        # ✅ system_prompt 고정 + 최근 메시지 순차 삽입
         history = [HumanMessage(content=system_prompt)]
-        for m in st.session_state.groq_history:
+        for m in recent_messages:
             history.append(
                 (HumanMessage if m["role"] == "user" else AIMessage)(content=m["content"])
             )
