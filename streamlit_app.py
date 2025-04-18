@@ -1,3 +1,4 @@
+# 📦 라이브러리 임포트
 import streamlit as st
 import pandas as pd
 import folium
@@ -12,6 +13,7 @@ from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.schema import ChatResult
 from groq import Groq
 
+# ✅ Groq API를 활용한 LangChain용 LLM 클래스 정의
 class GroqLlamaChat(BaseChatModel):
     groq_api_key: str
     model: str = "meta-llama/llama-4-scout-17b-16e-instruct"
@@ -46,9 +48,11 @@ class GroqLlamaChat(BaseChatModel):
     def _identifying_params(self):
         return {"model": self.model}
 
+# 🔑 API Key 불러오기
 def load_api_key():
         return st.secrets["general"]["API_KEY"]
 
+# 🧩 사용자 유형별 템플릿 불러오기
 def load_all_templates():
     templates = {
         "진로 설정을 못한 대학생": open("template/template_un.txt", "r", encoding="utf-8").read(),
@@ -56,7 +60,8 @@ def load_all_templates():
         "이직을 준비하는 사람": open("template/template_move.txt", "r", encoding="utf-8").read(),
     }
     return templates
-    
+
+# 🧠 벡터 DB 및 QA 체인 초기화
 @st.cache_resource
 def init_qa_chain():
     api_key = load_api_key()
@@ -71,6 +76,7 @@ def init_qa_chain():
 
     return llm, retriever, company_df, map_html_content
 
+# 🧭 Streamlit 기본 설정 및 스타일 숨기기
 st.set_page_config(page_title="부산 기업 RAG", layout="wide")
 hide_streamlit_style = """
     <style>
@@ -81,7 +87,7 @@ hide_streamlit_style = """
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-# 상단 여백 제거 스타일
+# 📏 상단 여백 제거 스타일
 st.markdown("""
     <style>
         .block-container {
@@ -93,53 +99,40 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# 🔘 사이드바 라디오 메뉴 설정
 menu = st.sidebar.radio("페이지 선택", ["Job Busan", "Groq Chatbot"], key="menu_select")
 job_rag = menu == "Job Busan"
 chatbot = menu == "Groq Chatbot"
 
-
+# 📌 Job Busan 페이지 구성
 if job_rag:
     st.title("🚢 부산 취업 상담 챗봇(JOB BUSAN)")
-        # 아래는 동일
+
+    # 세션 상태 초기화
     if "llm" not in st.session_state:
         st.session_state.llm, st.session_state.retriever, st.session_state.company_df, st.session_state.map_html = init_qa_chain()
-
     if "templates" not in st.session_state:
         st.session_state.templates = load_all_templates()
-
     if "query" not in st.session_state:
         st.session_state.query = ""
-
     if "main_query" not in st.session_state:
         st.session_state["main_query"] = ""
-
     if "query_input" not in st.session_state:
         st.session_state["query_input"] = ""
-        
     if "user_type" not in st.session_state:
         st.session_state["user_type"] = "진로 설정을 못한 대학생"
 
-    # ✅ 1줄 2컬럼 구성: 왼쪽 질문 입력, 오른쪽 유형 선택
-    col1, col2 = st.columns([3, 2])  # 비율은 원하는 대로 조절 가능
-
+    # 🔎 질문 입력 및 유형 선택 영역
+    col1, col2 = st.columns([3, 2])
     with col1:
-        st.text_input(
-            "🎯 질문을 입력하세요:",
-            value=st.session_state["main_query"],
-            key="query_input",
-            placeholder="예: 연봉 3000만원 이상 선박 제조업 추천"
-        )
-
+        st.text_input("🎯 질문을 입력하세요:", value=st.session_state["main_query"], key="query_input", placeholder="예: 연봉 3000만원 이상 선박 제조업 추천")
     with col2:
-        st.selectbox(
-            "👤 당신의 상황에 맞는 유형을 선택해주세요:",
-            ["진로 설정을 못한 대학생", "첫 취업 준비", "이직을 준비하는 사람"],
-            key="user_type"
-        )
+        st.selectbox("👤 당신의 상황에 맞는 유형을 선택해주세요:", ["진로 설정을 못한 대학생", "첫 취업 준비", "이직을 준비하는 사람"], key="user_type")
 
     query = st.session_state["query_input"]
-    user_type = st.session_state["user_type"]  # 선택한 유형도 세션에서 불러오기
+    user_type = st.session_state["user_type"]
 
+    # 💬 질문 실행 버튼
     if st.button("💬 질문 실행"):
         with st.spinner("🤖 JOB BUSAN이 부산 기업 정보를 검색 중입니다..."):
             selected_template = st.session_state.templates[user_type]
@@ -161,6 +154,7 @@ if job_rag:
     else:
         st.session_state["main_query"] = query
 
+    # 📁 결과 탭 구성
     selected_tabs = st.tabs([
         "✅ Job Busan의 답변",
         "📚 참고 문서",
@@ -168,15 +162,18 @@ if job_rag:
         "🔍 부산 기업 분포 및 검색"
     ])
 
+    # 1️⃣ 답변 탭
     with selected_tabs[0]:
         st.write(st.session_state.get("gpt_result", "🔹 Job Busan의 응답 결과가 여기에 표시됩니다."))
 
+    # 2️⃣ 문서 탭
     with selected_tabs[1]:
         source_docs = st.session_state.get("source_docs", [])
         for i, doc in enumerate(source_docs):
             with st.expander(f"문서 {i+1}"):
                 st.write(doc.page_content)
 
+    # 3️⃣ 기업 위치 지도
     with selected_tabs[2]:
         docs = st.session_state.get("source_docs", [])
         company_names = [doc.metadata.get("company") for doc in docs if "company" in doc.metadata]
@@ -198,6 +195,7 @@ if job_rag:
         else:
             st.info("해당 기업 위치 정보가 없습니다.")
 
+    # 4️⃣ 기업 검색 및 지도 표시
     with selected_tabs[3]:
         if "search_keyword" not in st.session_state:
             st.session_state.search_keyword = ""
@@ -324,34 +322,26 @@ if job_rag:
             else:
                 html(st.session_state.map_html, height=480)
                 st.caption("※ 전체 기업 분포를 표시 중입니다.")
-                
 
-# Groq Chatbot 페이지 흐름
+# 🤖 Groq Chatbot 페이지
 if chatbot:
-    # GroqLlamaChat 인스턴스 초기화
     if "groq_chat" not in st.session_state:
         st.session_state.groq_chat = GroqLlamaChat(groq_api_key=load_api_key())
 
-    # 세션 히스토리 초기화
     if "groq_history" not in st.session_state:
         st.session_state.groq_history = [
             {"role": "assistant", "content": "안녕하세요! 무엇을 도와드릴까요?"}
         ]
 
-    # 참고자료가 없으면 JOB BUSAN 먼저 실행하라는 안내 출력
     if "source_docs" not in st.session_state or not st.session_state.source_docs:
         st.warning("💡 'JOB BUSAN' 페이지에서 먼저 '질문 실행'을 눌러 참고자료를 확보해 주세요.")
         st.stop()
 
-    # 참고자료를 하나의 context 문자열로 병합
-    context_text = "\n\n".join(
-        doc.page_content for doc in st.session_state.source_docs
-    )
+    context_text = "\n\n".join(doc.page_content for doc in st.session_state.source_docs)
     system_prompt = (
         "다음은 부산 기업 관련 참고자료입니다. 이 내용을 바탕으로 사용자의 질문에 답변해 주세요.\n\n" + context_text
     )
 
-    # 챗봇 헤더 UI
     st.markdown("""
         <div style='background-color:#f9f9f9; padding:0px 0px; border-radius:12px; border:1px solid #ddd; 
                     width:20%; margin: 0 auto; text-align: center;'>
@@ -363,7 +353,6 @@ if chatbot:
         </div>
     """, unsafe_allow_html=True)
 
-    # 대화 내역 출력
     for msg in st.session_state.groq_history:
         if msg["role"] == "user":
             _, right = st.columns([3, 1])
@@ -381,20 +370,16 @@ if chatbot:
                     unsafe_allow_html=True
                 )
 
-    # 사용자 입력
     prompt = st.chat_input("메시지를 입력하세요...", key="groq_input")
     if prompt:
-        # 히스토리에 사용자 입력 저장
         st.session_state.groq_history.append({"role": "user", "content": prompt})
 
-        # LangChain 메시지 형식으로 구성 (시스템 프롬프트 + 히스토리)
         history = [HumanMessage(content=system_prompt)]
         for m in st.session_state.groq_history:
             history.append(
                 (HumanMessage if m["role"] == "user" else AIMessage)(content=m["content"])
             )
 
-        # Groq 호출
         answer = st.session_state.groq_chat._call(history)
         st.session_state.groq_history.append({"role": "assistant", "content": answer})
         st.rerun()
