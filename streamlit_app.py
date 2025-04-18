@@ -325,7 +325,7 @@ if chatbot:
         <div style='background-color:#f9f9f9; padding:0px 0px; border-radius:12px; border:1px solid #ddd; 
                     width:20%; margin: 0 auto; text-align: center;'>
             <h1 style='margin:0; font-size:24px; display: flex; align-items: center; justify-content: center; gap: 10px;'>
-                <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/GPT_image.png' 
+                <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/GPT_image2.png' 
                      style='width: 40px; height: auto; vertical-align: middle;'/>
                 Groq Chatbot
             </h1>
@@ -335,7 +335,7 @@ if chatbot:
     # 대화 내역 출력
     for msg in st.session_state.groq_history:
         if msg["role"] == "user":
-            _, right = st.columns([3, 1])
+            _, right = st.columns([5, 1])
             with right:
                 st.markdown(
                     f"<div style='padding:12px; border-radius:8px; background-color:#e0f7fa; width:fit-content; margin-left:auto;'>{msg['content']}</div>",
