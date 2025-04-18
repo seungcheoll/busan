@@ -140,16 +140,14 @@ if job_rag:
         key="query_input",
         placeholder="예: 연봉 3000만원 이상 선박 제조업 추천"
     )
-    # 질문 실행 버튼
+        # 질문 실행 버튼
     if st.button("💬 질문 실행"):
         with st.spinner("🤖 JOB BUSAN이 부산 기업 정보를 검색 중입니다..."):
             result = st.session_state.qa_chain.invoke(query)
             st.session_state.gpt_result = result["result"]
             st.session_state.source_documents = result["source_documents"]
             st.session_state["main_query"] = ""
-            # 클릭 후 챗봇 탭으로 전환
-            st.session_state["menu_select"] = "💬 Groq Chatbot"
-            st.rerun()
+        st.rerun()
     else:
         st.session_state["main_query"] = query
 
