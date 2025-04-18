@@ -324,7 +324,7 @@ if chatbot:
     st.markdown("""
         <div style='background-color:#f9f9f9; padding:20px; border-radius:12px; border:1px solid #ddd; width:20%; margin: 0 auto; text-align: center;'>
             <h1 style='margin:0; font-size:24px; display: flex; align-items: center; justify-content: center; gap: 10px;'>
-                <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/GPT_image.png' width='28' style='vertical-align: middle;'/>
+                <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/GPT_image.png' width='40' style='vertical-align: middle;'/>
                 Groq Chatbot
             </h1>
         </div>
