@@ -367,7 +367,7 @@ if chatbot:
     # 🔹 참고자료 포함 system prompt 구성
     context_text = "\n\n".join(doc.page_content for doc in st.session_state.source_docs)
     system_prompt = f"""
-다음은 부산 기업 관련 참고자료입니다. 사용자의 유형과 질문, 그리고 참고자료를 바탕으로 성실히 답변해 주세요.
+다음은 부산 기업 관련 참고자료입니다. 사용자의 유형과 질문, 그리고 참고자료를 바탕으로 한국어로 성실히 답변해 주세요.
 
 [사용자 유형]: {user_type}
 [사용자 질문]: {user_query}
