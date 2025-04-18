@@ -147,15 +147,28 @@ if chatbot:
             st.session_state.groq_chat = GroqLlamaChat(groq_api_key=load_api_key())
         if "groq_history" not in st.session_state:
             st.session_state.groq_history += [{"role":"assistant","content":"무엇을 도와드릴까요?"}]
-        # UI 및 대화
+                # UI 및 대화
         st.markdown("### 💬 Groq Chatbot")
+        # 대화 내역 표시
         for msg in st.session_state.groq_history:
-            if msg['role']=='user': _,right=st.columns([3,1]);with right: st.write(msg['content'])
-            elif msg['role']=='assistant': left,_=st.columns([1,3]);with left: st.write(msg['content'])
-        user = st.text_input("메시지를 입력하세요...",key="groq_input")
-        if user:
-            st.session_state.groq_history.append({"role":"user","content":user})
-            history = [(HumanMessage if m['role']=='user' else AIMessage)(content=m['content']) for m in st.session_state.groq_history]
+            if msg['role'] == 'user':
+                cols = st.columns([3,1])
+                with cols[1]:
+                    st.write(msg['content'])
+            elif msg['role'] == 'assistant':
+                cols = st.columns([1,3])
+                with cols[0]:
+                    st.write(msg['content'])
+        # 사용자 입력 처리
+        user_input = st.text_input("메시지를 입력하세요...", key="groq_input")
+        if user_input:
+            st.session_state.groq_history.append({"role":"user","content":user_input})
+            history = []
+            for m in st.session_state.groq_history:
+                if m['role'] == 'user':
+                    history.append(HumanMessage(content=m['content']))
+                elif m['role'] == 'assistant' or m['role'] == 'system':
+                    history.append(AIMessage(content=m['content']))
             ans = st.session_state.groq_chat._call(history)
             st.session_state.groq_history.append({"role":"assistant","content":ans})
             st.rerun()
