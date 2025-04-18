@@ -15,8 +15,7 @@ from groq import Groq
 import warnings
 
 # 특정 경고 메시지 무시
-warnings.filterwarnings("ignore", category=DeprecationWarning)
-warnings.filterwarnings("ignore", message=".*langchain.embeddings.*")
+warnings.filterwarnings("ignore")
 
 # ✅ Groq API를 활용한 LangChain용 LLM 클래스 정의
 class GroqLlamaChat(BaseChatModel):
