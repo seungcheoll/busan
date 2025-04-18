@@ -125,9 +125,9 @@ if job_rag:
     # 🔎 질문 입력 및 유형 선택 영역
     col1, col2 = st.columns([3, 2])
     with col1:
-        st.text_input("🎯 질문을 입력하세요:", value=st.session_state["main_query"], key="query_input", placeholder="예: 연봉 3000만원 이상 선박 제조업 추천")
+        st.text_input("🎯 질문", value=st.session_state["main_query"], key="query_input", placeholder="예: 연봉 3000만원 이상 선박 제조업 추천")
     with col2:
-        st.selectbox("👤 당신의 상황에 맞는 유형을 선택해주세요:", ["진로 설정을 못한 대학생", "첫 취업 준비", "이직을 준비하는 사람"], key="user_type")
+        st.selectbox("👤 유형", ["진로 설정을 못한 대학생", "첫 취업 준비", "이직을 준비하는 사람"], key="user_type")
 
     query = st.session_state["query_input"]
     user_type = st.session_state["user_type"]
