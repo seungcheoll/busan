@@ -294,10 +294,6 @@ if job_rag:
                 html(st.session_state.map_html, height=480)
                 st.caption("※ 전체 기업 분포를 표시 중입니다.")
                 
-if st.session_state.source_docs:
-    st.success(f"📚 참고자료 {len(st.session_state.source_docs)}개가 저장되었습니다.")
-else:
-    st.error("❌ 참고자료가 비어 있습니다.")
 
 # Groq Chatbot 페이지 흐름
 if chatbot:
@@ -312,13 +308,13 @@ if chatbot:
         ]
 
     # 참고자료가 없으면 JOB BUSAN 먼저 실행하라는 안내 출력
-    if "source_documents" not in st.session_state or not st.session_state.source_documents:
+    if "source_documents" not in st.session_state or not st.session_state.source_docs:
         st.warning("💡 JOB BUSAN 페이지에서 먼저 '질문 실행'을 눌러 참고자료를 확보해 주세요.")
         st.stop()
 
     # 참고자료를 하나의 context 문자열로 병합
     context_text = "\n\n".join(
-        doc.page_content for doc in st.session_state.source_documents
+        doc.page_content for doc in st.session_state.source_docs
     )
     system_prompt = (
         "다음은 부산 기업 관련 참고자료입니다. 이 내용을 바탕으로 사용자의 질문에 답변해 주세요.\n\n" + context_text
