@@ -95,10 +95,23 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-menu = st.sidebar.radio("페이지 선택", ["🚢 Job Busan", "💬 Groq Chatbot"], key="menu_select")
-job_rag = menu == "🚢 Job Busan"
-chatbot = menu == "💬 Groq Chatbot"
+with st.sidebar:
+    st.markdown("### 페이지 선택")
+    
+    col1, col2 = st.columns([1, 4])
+    with col1:
+        st.image("https://raw.githubusercontent.com/seungcheoll/busan/main/GPT_image.png", width=30)
+    with col2:
+        if st.button("Groq Chatbot"):
+            st.session_state.menu_select = "Groq Chatbot"
 
+    if st.button("🚢 Job Busan"):
+        st.session_state.menu_select = "Job Busan"
+
+# 페이지 상태 적용
+menu = st.session_state.get("menu_select", "Job Busan")
+job_rag = menu == "Job Busan"
+chatbot = menu == "Groq Chatbot"
 
 if job_rag:
     st.title("🚢 부산 취업 상담 챗봇(JOB BUSAN)")
