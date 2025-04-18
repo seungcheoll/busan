@@ -297,38 +297,48 @@ if job_rag:
 
 # Groq Chatbot 페이지 흐름
 if chatbot:
-    if "groq_chat" not in st.session_state:
-        st.session_state.groq_chat = GroqLlamaChat(groq_api_key=load_api_key())
-    if "groq_history" not in st.session_state:
-        st.session_state.groq_history = [
-            {"role": "assistant", "content": "안녕하세요! 무엇을 도와드릴까요?"}
-        ]
+    # 질문 실행 전 안내 메시지
+    if "source_documents" not in st.session_state or not st.session_state.source_documents:
+        st.info("먼저 📊 부산 기업 RAG 시스템 탭에서 '💬 질문 실행' 버튼을 눌러주세요.")
+    else:
+        # GroqChat 인스턴스 및 히스토리 초기화
+        if "groq_chat" not in st.session_state:
+            st.session_state.groq_chat = GroqLlamaChat(groq_api_key=load_api_key())
+        if "groq_history" not in st.session_state:
+            st.session_state.groq_history = [
+                {"role": "assistant", "content": "안녕하세요! 무엇을 도와드릴까요?"}
+            ]
 
-    st.markdown("""
-        <div style='background-color:#f9f9f9; padding:20px; border-radius:12px; border:1px solid #ddd; width:20%; margin: 0 auto; text-align: center;'>
-            <h1 style='margin:0; font-size:24px;'>💬 Groq Chatbot</h1>
-        </div>
-    """, unsafe_allow_html=True)
-    for msg in st.session_state.groq_history:
-        if msg["role"] == "user":
-            _, right = st.columns([3, 1])
-            with right:
-                st.markdown(
-                    f"<div style='padding:12px; border-radius:8px; background-color:#e0f7fa; width:fit-content; margin-left:auto;'>{msg['content']}</div>",
-                    unsafe_allow_html=True
-                )
-        else:
-            left, _ = st.columns([1, 3])
-            with left:
-                bubble = st.chat_message("assistant")
-                bubble.markdown(
-                    f"<div style='background-color:#f0f0f0; padding:12px; border-radius:8px'>{msg['content']}</div>",
-                    unsafe_allow_html=True
-                )
-    prompt = st.chat_input("메시지를 입력하세요...", key="groq_input")
-    if prompt:
-        st.session_state.groq_history.append({"role": "user", "content": prompt})
-        history = [(HumanMessage if m["role"] == "user" else AIMessage)(content=m["content"]) for m in st.session_state.groq_history]
-        answer = st.session_state.groq_chat._call(history)
-        st.session_state.groq_history.append({"role": "assistant", "content": answer})
-        st.rerun()
+        # 챗봇 헤더 UI
+        st.markdown("""
+            <div style='background-color:#f9f9f9; padding:20px; border-radius:12px; border:1px solid #ddd; width:20%; margin: 0 auto; text-align: center;'>
+                <h1 style='margin:0; font-size:24px;'>💬 Groq Chatbot</h1>
+            </div>
+        """, unsafe_allow_html=True)
+
+        # 대화 내역 표시
+        for msg in st.session_state.groq_history:
+            if msg["role"] == "user":
+                _, right = st.columns([3, 1])
+                with right:
+                    st.markdown(
+                        f"<div style='padding:12px; border-radius:8px; background-color:#e0f7fa; width:fit-content; margin-left:auto;'>{msg['content']}</div>",
+                        unsafe_allow_html=True
+                    )
+            else:
+                left, _ = st.columns([1, 3])
+                with left:
+                    bubble = st.chat_message("assistant")
+                    bubble.markdown(
+                        f"<div style='background-color:#f0f0f0; padding:12px; border-radius:8px'>{msg['content']}</div>",
+                        unsafe_allow_html=True
+                    )
+
+        # 사용자 입력 처리
+        prompt = st.chat_input("메시지를 입력하세요...", key="groq_input")
+        if prompt:
+            st.session_state.groq_history.append({"role": "user", "content": prompt})
+            history = [(HumanMessage if m["role"] == "user" else AIMessage)(content=m["content"]) for m in st.session_state.groq_history]
+            answer = st.session_state.groq_chat._call(history)
+            st.session_state.groq_history.append({"role": "assistant", "content": answer})
+            st.rerun()
