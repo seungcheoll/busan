@@ -308,7 +308,7 @@ if chatbot:
         ]
 
     # 참고자료가 없으면 JOB BUSAN 먼저 실행하라는 안내 출력
-    if "source_documents" not in st.session_state or not st.session_state.source_docs:
+    if "source_docs" not in st.session_state or not st.session_state.source_docs:
         st.warning("💡 JOB BUSAN 페이지에서 먼저 '질문 실행'을 눌러 참고자료를 확보해 주세요.")
         st.stop()
 
