@@ -335,14 +335,14 @@ if chatbot:
     # 대화 내역 출력
     for msg in st.session_state.groq_history:
         if msg["role"] == "user":
-            _, right = st.columns([5, 1])
+            _, right = st.columns([3, 1])
             with right:
                 st.markdown(
                     f"<div style='padding:12px; border-radius:8px; background-color:#e0f7fa; width:fit-content; margin-left:auto;'>{msg['content']}</div>",
                     unsafe_allow_html=True
                 )
         else:
-            left, _ = st.columns([1, 3])
+            left, _ = st.columns([1, 5])
             with left:
                 bubble = st.chat_message("assistant")
                 bubble.markdown(
