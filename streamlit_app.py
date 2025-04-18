@@ -339,8 +339,8 @@ if chatbot:
     # 🔹 사용자 유형과 질문 가져오기
     user_type = st.session_state.get("user_type", "알 수 없음")
     user_query = st.session_state.get("query_input", "입력된 질문이 없습니다")
-    print(user_type)
-    print(user_query)
+    st.write(user_type)
+    st.write(user_query)
     # 🔹 참고자료 포함 system prompt 구성
     context_text = "\n\n".join(doc.page_content for doc in st.session_state.source_docs)
     system_prompt = f"""
