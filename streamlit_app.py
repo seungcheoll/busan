@@ -293,7 +293,11 @@ if job_rag:
             else:
                 html(st.session_state.map_html, height=480)
                 st.caption("※ 전체 기업 분포를 표시 중입니다.")
-
+                
+if st.session_state.source_docs:
+    st.success(f"📚 참고자료 {len(st.session_state.source_docs)}개가 저장되었습니다.")
+else:
+    st.error("❌ 참고자료가 비어 있습니다.")
 
 # Groq Chatbot 페이지 흐름
 if chatbot:
