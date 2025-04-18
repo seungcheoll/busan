@@ -49,29 +49,27 @@ class GroqLlamaChat(BaseChatModel):
 def load_api_key():
         return st.secrets["general"]["API_KEY"]
 
-def load_template():
-    with open("template.txt", "r", encoding="utf-8") as file:
-        return file.read()
-
+def load_all_templates():
+    templates = {
+        "진로 설정을 못한 대학생": open("template/template_un.txt", "r", encoding="utf-8").read(),
+        "첫 취업 준비": open("template/template_first.txt", "r", encoding="utf-8").read(),
+        "이직을 준비하는 사람": open("template/template_move.txt", "r", encoding="utf-8").read(),
+    }
+    return templates
+    
 @st.cache_resource
 def init_qa_chain():
     api_key = load_api_key()
-    template = load_template()
     embedding_model = HuggingFaceEmbeddings(model_name="jhgan/ko-sbert-nli")
     vectorstore = FAISS.load_local("busan_db", embedding_model, allow_dangerous_deserialization=True)
     retriever = vectorstore.as_retriever(search_kwargs={"k": 5})
     llm = GroqLlamaChat(groq_api_key=api_key)
-    prompt = PromptTemplate.from_template(template)
-    qa_chain = RetrievalQA.from_chain_type(
-        llm=llm,
-        retriever=retriever,
-        chain_type_kwargs={"prompt": prompt},
-        return_source_documents=True,
-    )
+
     company_df = pd.read_excel("map_busan.xlsx")
     with open("map_company.html", "r", encoding="utf-8") as f:
         map_html_content = f.read()
-    return qa_chain, company_df, map_html_content
+
+    return llm, retriever, company_df, map_html_content
 
 st.set_page_config(page_title="부산 기업 RAG", layout="wide")
 hide_streamlit_style = """
@@ -102,8 +100,12 @@ chatbot = menu == "Groq Chatbot"
 
 if job_rag:
     st.title("🚢 부산 취업 상담 챗봇(JOB BUSAN)")
-    if "qa_chain" not in st.session_state:
-        st.session_state.qa_chain, st.session_state.company_df, st.session_state.map_html = init_qa_chain()
+        # 아래는 동일
+    if "llm" not in st.session_state:
+        st.session_state.llm, st.session_state.retriever, st.session_state.company_df, st.session_state.map_html = init_qa_chain()
+
+    if "templates" not in st.session_state:
+        st.session_state.templates = load_all_templates()
 
     if "query" not in st.session_state:
         st.session_state.query = ""
@@ -111,18 +113,47 @@ if job_rag:
     if "main_query" not in st.session_state:
         st.session_state["main_query"] = ""
 
-    query = st.session_state["main_query"]
+    if "query_input" not in st.session_state:
+        st.session_state["query_input"] = ""
+        
+    if "user_type" not in st.session_state:
+        st.session_state["user_type"] = "진로 설정을 못한 대학생"
 
-    query = st.text_input(
-        "🎯 질문을 입력하세요:",
-        value=query,
-        key="query_input",
-        placeholder="예: 연봉 3000만원 이상 선박 제조업 추천"
-    )
+    # ✅ 1줄 2컬럼 구성: 왼쪽 질문 입력, 오른쪽 유형 선택
+    col1, col2 = st.columns([3, 2])  # 비율은 원하는 대로 조절 가능
+
+    with col1:
+        st.text_input(
+            "🎯 질문을 입력하세요:",
+            value=st.session_state["main_query"],
+            key="query_input",
+            placeholder="예: 연봉 3000만원 이상 선박 제조업 추천"
+        )
+
+    with col2:
+        st.selectbox(
+            "👤 당신의 상황에 맞는 유형을 선택해주세요:",
+            ["진로 설정을 못한 대학생", "첫 취업 준비", "이직을 준비하는 사람"],
+            key="user_type"
+        )
+
+    query = st.session_state["query_input"]
+    user_type = st.session_state["user_type"]  # 선택한 유형도 세션에서 불러오기
 
     if st.button("💬 질문 실행"):
         with st.spinner("🤖 JOB BUSAN이 부산 기업 정보를 검색 중입니다..."):
-            result = st.session_state.qa_chain.invoke(query)
+            selected_template = st.session_state.templates[user_type]
+            prompt = PromptTemplate.from_template(selected_template)
+
+            qa_chain = RetrievalQA.from_chain_type(
+                llm=st.session_state.llm,
+                retriever=st.session_state.retriever,
+                return_source_documents=True,
+                chain_type_kwargs={"prompt": prompt}
+            )
+
+            result = qa_chain.invoke({"query": query})
+
             st.session_state.gpt_result = result["result"]
             st.session_state.source_docs = result["source_documents"]
             st.session_state["main_query"] = ""
