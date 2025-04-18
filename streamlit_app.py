@@ -108,7 +108,7 @@ st.markdown("""
         .block-container {
             padding-top: 0rem !important;
         }
-        header[data-testid="stHeader"] {
+        header[data-testid=\"stHeader\"] {
             display: none;
         }
     </style>
@@ -145,8 +145,10 @@ if job_rag:
         with st.spinner("🤖 JOB BUSAN이 부산 기업 정보를 검색 중입니다..."):
             result = st.session_state.qa_chain.invoke(query)
             st.session_state.gpt_result = result["result"]
-            st.session_state.source_docs = result["source_documents"]
+            st.session_state.source_documents = result["source_documents"]
             st.session_state["main_query"] = ""
+            # 클릭 후 챗봇 탭으로 전환
+            st.session_state["menu_select"] = "💬 Groq Chatbot"
             st.rerun()
     else:
         st.session_state["main_query"] = query
@@ -176,7 +178,6 @@ if job_rag:
         company_names = [doc.metadata.get("company") for doc in docs if "company" in doc.metadata]
         matched_df = st.session_state.company_df[st.session_state.company_df["회사명"].isin(company_names)]
         if not matched_df.empty:
-            # Folium 지도 생성 및 마커 추가
             m = folium.Map(location=[matched_df["위도"].mean(), matched_df["경도"].mean()], zoom_start=12)
             for _, row in matched_df.iterrows():
                 folium.CircleMarker(
@@ -191,19 +192,16 @@ if job_rag:
 
     # 4) 부산 기업 분포 및 검색 탭
     with selected_tabs[3]:
-        # 검색 관련 상태 초기화
         if "search_keyword" not in st.session_state:
             st.session_state.search_keyword = ""
         if "reset_triggered" not in st.session_state:
             st.session_state.reset_triggered = False
 
         def reset_search():
-            # 검색 초기화 함수
             st.session_state.search_keyword = ""
             st.session_state["search_input"] = ""
             st.session_state.reset_triggered = True
 
-        # 검색 UI 레이아웃
         col1, col2 = st.columns([2, 1])
         with col1:
             search_input = st.text_input("", key="search_input", placeholder="🔎 회사명으로 검색 (예: 현대, 시스템, 조선 등)")
@@ -212,13 +210,11 @@ if job_rag:
                 st.markdown("<div style='padding-top:27px;'></div>", unsafe_allow_html=True)
                 st.button("검색 초기화", on_click=reset_search)
 
-        # 검색 상태 업데이트 및 초기화 반영
         st.session_state.search_keyword = search_input
         if st.session_state.reset_triggered:
             st.session_state.reset_triggered = False
             st.rerun()
 
-        # 검색 결과 필터링
         matched_df = pd.DataFrame()
         keyword = st.session_state.search_keyword.strip()
         if keyword:
@@ -226,12 +222,10 @@ if job_rag:
                 st.session_state.company_df["회사명"].str.contains(keyword, case=False, na=False)
             ]
 
-        # 결과 테이블 및 지도 렌더링
         col1, col2 = st.columns([2, 1])
         with col2:
             st.markdown("### 🧾 검색 기업 정보")
             if not matched_df.empty:
-                # 그리드 설정
                 PINLEFT = {'pinned': 'left'}
                 PRECISION_TWO = {'type': ['numericColumn'], 'precision': 6}
                 formatter = {
@@ -264,7 +258,6 @@ if job_rag:
                     width='100%',
                     allow_unsafe_jscode=True
                 )
-                # 선택된 행 처리
                 sr = grid_response.get('selected_rows')
                 selected = sr if isinstance(sr, list) else []
                 st.session_state.selected_rows = selected
@@ -273,7 +266,6 @@ if job_rag:
             else:
                 st.info("기업을 검색해주세요.")
 
-        # 지도 렌더링
         with col1:
             selected = st.session_state.get('selected_rows', [])
             df_map = pd.DataFrame(selected) if selected else None
@@ -286,7 +278,7 @@ if job_rag:
                         popup=row['회사명'], tooltip=row['회사명']
                     ).add_to(m)
                 html(m._repr_html_(), height=480)
-                st.caption(f"✅ 선택된 기업 {len(df_map)}곳을 지도에 표시했습니다.")
+                st.caption(f"✅ 선택된 기업 {len(df_map)}곳을 карте 표시했습니다.")
             elif not matched_df.empty:
                 m = folium.Map(location=[matched_df['위도'].mean(), matched_df['경도'].mean()], zoom_start=12)
                 for _, row in matched_df.iterrows():
@@ -305,23 +297,18 @@ if job_rag:
 
 # Groq Chatbot 페이지 흐름
 if chatbot:
-    # GroqLlamaChat 인스턴스 초기화
     if "groq_chat" not in st.session_state:
         st.session_state.groq_chat = GroqLlamaChat(groq_api_key=load_api_key())
-    # 세션 히스토리 초기화
     if "groq_history" not in st.session_state:
         st.session_state.groq_history = [
             {"role": "assistant", "content": "안녕하세요! 무엇을 도와드릴까요?"}
         ]
 
-    # 챗봇 헤더 UI
     st.markdown("""
         <div style='background-color:#f9f9f9; padding:20px; border-radius:12px; border:1px solid #ddd; width:20%; margin: 0 auto; text-align: center;'>
             <h1 style='margin:0; font-size:24px;'>💬 Groq Chatbot</h1>
         </div>
     """, unsafe_allow_html=True)
-
-    # 대화 내역 출력
     for msg in st.session_state.groq_history:
         if msg["role"] == "user":
             _, right = st.columns([3, 1])
@@ -338,18 +325,10 @@ if chatbot:
                     f"<div style='background-color:#f0f0f0; padding:12px; border-radius:8px'>{msg['content']}</div>",
                     unsafe_allow_html=True
                 )
-
-    # 사용자 입력
     prompt = st.chat_input("메시지를 입력하세요...", key="groq_input")
     if prompt:
-        # 사용자 메시지 추가
         st.session_state.groq_history.append({"role": "user", "content": prompt})
-        # 히스토리 메시지 객체 변환
-        history = [
-            (HumanMessage if m["role"] == "user" else AIMessage)(content=m["content"])
-            for m in st.session_state.groq_history
-        ]
-        # Groq API 호출 및 응답 처리
+        history = [(HumanMessage if m["role"] == "user" else AIMessage)(content=m["content"]) for m in st.session_state.groq_history]
         answer = st.session_state.groq_chat._call(history)
         st.session_state.groq_history.append({"role": "assistant", "content": answer})
         st.rerun()
