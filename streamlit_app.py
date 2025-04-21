@@ -200,27 +200,32 @@ if info:
       .split > div {
         flex: 1;
       }
-      .imgbox {
-        background-color: #ffffff; /* 그대로 흰색 */
+      /* 이미지 섹션 스타일 */
+      .image-section {
+        background-color: #ffffff;
         padding: 20px;
-        border: 1px solid #ccc;
         border-radius: 10px;
       }
-      .imgbox .title-box {
+      .image-section .title-box {
         background-color: #1f77b4;
         color: white;
         padding: 10px;
         border-radius: 6px;
         text-align: center;
         font-size: 1.1rem;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
       }
-      .imgbox img {
+      hr.custom {
+        border: none;
+        border-top: 1px solid #d1dce5;
+        margin: 10px 0 15px;
+      }
+      .image-section img {
         width: 100%;
         border-radius: 8px;
       }
       .textbox {
-        background-color: #ffffff;  /* 여기만 #ffffff 으로 변경 */
+        background-color: #ffffff;
         border-left: 6px solid #1f77b4;
         padding: 25px;
         border-radius: 12px;
@@ -236,8 +241,9 @@ if info:
     </style>
     <div class="gbox">
       <div class="split">
-        <div class="imgbox">
+        <div class="image-section">
           <div class="title-box">Pipeline</div>
+          <hr class="custom"/>
           <img
             src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/pipeline.png"
             alt="JobBusan RAG 처리 구조도"
