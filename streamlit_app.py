@@ -187,7 +187,7 @@ if info:
     st.markdown("<h1 style='text-align: center;'>🧾 JobBusan 이용 가이드</h1>", unsafe_allow_html=True)
 
     # 메인 컬럼: 왼쪽(이미지), 오른쪽(텍스트 2개)
-    col_left, col_right = st.columns([1, 2])
+    col_left, col_right = st.columns([1, 1])
 
     with col_left:
         st.markdown("""
