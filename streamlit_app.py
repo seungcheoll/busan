@@ -130,7 +130,7 @@ with st.sidebar:
     # 🔘 페이지 선택 메뉴
     choice = option_menu(
         menu_title="Page",
-        options=["Guide","Job-Bu", "Job-Bu Chatbot"],
+        options=["Guideline","Job-Bu", "Job-Bu Chatbot"],
         icons=["info-circle","", ""],
         menu_icon="",
         default_index=0,
@@ -175,7 +175,7 @@ with st.sidebar:
                 st.session_state.certificates = certificates_temp
 
                 st.success("✅ 입력 완료!")
-info = choice == "Guide"
+info = choice == "Guideline"
 job_rag = choice == "Job-Bu"
 chatbot = choice == "Job-Bu Chatbot"
 
