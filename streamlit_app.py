@@ -222,15 +222,6 @@ if info:
             <li>📝 Job-Bu에서 확보한 문서를 기반으로, 자세한 답변을 제공합니다.</li>
         </ul>
     </div>
-
-    <div class="guide-section">
-        <h3>3. 자주 묻는 질문 (FAQ)</h3>
-        <ul>
-            <li><strong>Q. 사용자 프로필을 꼭 입력해야 하나요?</strong><br/>➡ 더 정확한 추천을 위해 권장됩니다.</li>
-            <li><strong>Q. 지도에 기업이 안 보이면?</strong><br/>➡ 입력한 검색어에 해당하는 기업이 없을 수 있어요.</li>
-            <li><strong>Q. 질문을 바꿔서 다시 하려면?</strong><br/>➡ 질문 입력 후 <strong>다시 실행</strong> 버튼을 눌러주세요.</li>
-        </ul>
-    </div>
     """, unsafe_allow_html=True)
     
 # ───────────────────────────────────────────
