@@ -153,11 +153,6 @@ with st.sidebar:
         }
     )
 
-    st.markdown(
-        "<hr style='margin:4px 0 4px 0; border:1px solid #ddd'/>",
-        unsafe_allow_html=True
-    )
-
     # ▼ 사용자 프로필 입력 (expander로 접기/펼치기)
     with st.expander("📋 사용자 프로필 입력", expanded=False):
         with st.form("profile_form"):
