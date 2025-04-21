@@ -187,10 +187,11 @@ if info:
     st.markdown("<h1 style='text-align: center;'>🧾 JobBusan 이용 가이드</h1>", unsafe_allow_html=True)
 
     with st.container():
+        # 큰 컨테이너 시작
         st.markdown("""
             <div style="background-color: #f0f4f8; padding: 30px; border-radius: 15px; 
                         border: 2px solid #d1dce5; margin-top: 20px; margin-bottom: 20px;">
-            """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
         col1, col2 = st.columns([1, 2])
 
@@ -235,6 +236,7 @@ if info:
                 </div>
             """, unsafe_allow_html=True)
 
+        # 큰 컨테이너 닫기
         st.markdown("</div>", unsafe_allow_html=True)
 # ───────────────────────────────────────────
 # [8] Job-Bu 페이지: LLM QA + 지도 시각화
