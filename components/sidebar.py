@@ -2,6 +2,11 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
 
+# ✅ 사용자 입력값 초기화
+for key in ["university", "major", "gpa", "field_pref", "job_pref", "activities", "certificates"]:
+    if key not in st.session_state:
+        st.session_state[key] = ""
+        
 def sidebar_ui():
     with st.sidebar:
         # 🔘 페이지 선택 메뉴
