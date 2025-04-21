@@ -127,6 +127,7 @@ for key in ["university", "major", "gpa", "field_pref", "job_pref", "activities"
 # ───────────────────────────────────────────
 # 🔘 사이드바 라디오 메뉴 설정
 with st.sidebar:
+    # 🔘 페이지 선택 메뉴
     choice = option_menu(
         menu_title="Page",
         options=["Job-Bu", "Job-Bu Chatbot"],
@@ -146,43 +147,41 @@ with st.sidebar:
                 "--hover-color": "#e5e9f2"
             },
             "nav-link-selected": {
-                "background-color": "#3498db",  # 선택 시 파란색
-                "color": "white"               # 선택 시 글자색 흰색으로
+                "background-color": "#3498db",
+                "color": "white"
             },
         }
     )
-    
+
     st.markdown(
         "<hr style='margin:4px 0 4px 0; border:1px solid #ddd'/>",
         unsafe_allow_html=True
     )
 
-    st.markdown(
-        "<h3 style='text-align:center; margin-bottom:8px;'>사용자 프로필 입력</h3>",
-        unsafe_allow_html=True
-    )
-    # ——— 여기에 폼 정의 ———
-    with st.form("profile_form"):
-        university_temp   = st.text_input("대학교", value=st.session_state.get("university", ""))
-        major_temp        = st.text_input("전공", value=st.session_state.get("major", ""))
-        gpa_temp          = st.text_input("학점", value=st.session_state.get("gpa", ""))
-        field_pref_temp   = st.text_input("선호분야", value=st.session_state.get("field_pref", ""))
-        job_pref_temp     = st.text_input("선호직무", value=st.session_state.get("job_pref", ""))
-        activities_temp   = st.text_area("활동이력", value=st.session_state.get("activities", ""))
-        certificates_temp = st.text_area("자격증", value=st.session_state.get("certificates", ""))
+    # 📋 사용자 프로필 입력 (토글 방식)
+    show_profile = st.toggle("📋 사용자 프로필 입력", value=False)
 
-        submitted = st.form_submit_button("입력 완료")
-        if submitted:
-            st.session_state.university   = university_temp
-            st.session_state.major        = major_temp
-            st.session_state.gpa          = gpa_temp
-            st.session_state.field_pref   = field_pref_temp
-            st.session_state.job_pref     = job_pref_temp
-            st.session_state.activities   = activities_temp
-            st.session_state.certificates = certificates_temp
-            
-            st.success("✅ 입력 완료!")
+    if show_profile:
+        with st.form("profile_form"):
+            university_temp   = st.text_input("대학교", value=st.session_state.get("university", ""))
+            major_temp        = st.text_input("전공", value=st.session_state.get("major", ""))
+            gpa_temp          = st.text_input("학점", value=st.session_state.get("gpa", ""))
+            field_pref_temp   = st.text_input("선호분야", value=st.session_state.get("field_pref", ""))
+            job_pref_temp     = st.text_input("선호직무", value=st.session_state.get("job_pref", ""))
+            activities_temp   = st.text_area("활동이력", value=st.session_state.get("activities", ""))
+            certificates_temp = st.text_area("자격증", value=st.session_state.get("certificates", ""))
 
+            submitted = st.form_submit_button("입력 완료")
+            if submitted:
+                st.session_state.university   = university_temp
+                st.session_state.major        = major_temp
+                st.session_state.gpa          = gpa_temp
+                st.session_state.field_pref   = field_pref_temp
+                st.session_state.job_pref     = job_pref_temp
+                st.session_state.activities   = activities_temp
+                st.session_state.certificates = certificates_temp
+
+                st.success("✅ 입력 완료!")
 job_rag = choice == "Job-Bu"
 chatbot = choice == "Job-Bu Chatbot"
 
