@@ -231,13 +231,10 @@ if info:
         with col2:
             st.image(
                 "https://raw.githubusercontent.com/seungcheoll/busan/main/image/pipeline.png",
-                use_column_width=True,
+                use_container_width=True,
                 caption="JobBusan RAG 처리 구조도"
             )
             st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
-
-        # 큰 컨테이너 닫기
-        st.markdown("</div>", unsafe_allow_html=True)
 # ───────────────────────────────────────────
 # [8] Job-Bu 페이지: LLM QA + 지도 시각화
 # ───────────────────────────────────────────
