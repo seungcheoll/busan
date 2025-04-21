@@ -255,7 +255,7 @@ if info:
       }
 
       .video-link {
-        text-align: center;
+        text-align: left;
         margin-top: 20px;
         font-size: 18px;
       }
