@@ -1,5 +1,6 @@
 # 📦 라이브러리 임포트
 import streamlit as st
+from streamlit_option_menu import option_menu
 import pandas as pd
 import folium
 from streamlit.components.v1 import html
@@ -100,9 +101,30 @@ st.markdown("""
 
 # 🔘 사이드바 라디오 메뉴 설정
 with st.sidebar:
-    menu = st.radio("페이지 선택", ["Job-Bu", "Groq Chatbot"])
-job_rag = menu == "Job-Bu"
-chatbot = menu == "Groq Chatbot"
+    choice = option_menu(
+        menu_title="페이지 선택",
+        options=["Job-Bu", "Groq Chatbot"],
+        icons=["", ""],              # 아이콘 제거
+        menu_icon="",                # 사이드바 제목용 아이콘도 없앰
+        default_index=0,
+        styles={
+            "container": {
+                "padding": "4!important",
+                "background-color": "transparent"   # 투명으로 해서 사이드바 색상이 그대로 보이도록
+            },
+            "icon": {"display": "none"},
+            "nav-link": {
+                "font-size": "16px",
+                "text-align": "left",
+                "margin": "0px",
+                "--hover-color": "#e5e9f2"
+            },
+            "nav-link-selected": {"background-color": "#08c7b4"},
+        }
+    )
+
+job_rag = choice == "Job-Bu"
+chatbot = choice == "Groq Chatbot"
 
 # 📌 Job Busan 페이지 구성
 if job_rag:
