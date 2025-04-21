@@ -109,7 +109,7 @@ if job_rag:
         <div style='padding: 10px 0px;'>
             <h1 style='margin:0; font-size:28px; display: flex; align-items: center; gap: 12px;'>
                 <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/chatbot.png' 
-                     style='width: 60px; height: auto; vertical-align: middle;'
+                     style='width: 60px; height: auto; vertical-align: middle;'>
                 Job-Bu
             </h1>
         </div>
