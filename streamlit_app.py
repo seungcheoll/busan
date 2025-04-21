@@ -183,62 +183,45 @@ chatbot = choice == "Job-Bu Chatbot"
 # [7] 이용 가이드 페이지
 # ───────────────────────────────────────────
 if info:
-    with st.container():
+    st.title("🧾 JobBusan 이용 가이드")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
         st.markdown("""
-            <style>
-                .main-guide-box {
-                    background-color: #f8f9fa;
-                    padding: 30px 20px;
-                    border-radius: 10px;
-                    border: 1px solid #d9d9d9;
-                    margin-bottom: 30px;
-                }
-                .main-guide-box h3 {
-                    color: #2c3e50;
-                    margin-bottom: 10px;
-                }
-                .main-guide-box ul {
-                    padding-left: 1.2em;
-                    margin-bottom: 0;
-                    color: #333;
-                    font-size: 0.95rem;
-                }
-                .main-guide-box li {
-                    margin-bottom: 8px;
-                }
-            </style>
-            <div class="main-guide-box">
+            <div style="background-color:#f8f9fa; padding:20px; border-radius:10px; border-left:4px solid #1f77b4;">
+            <h4>1️⃣ Job-Bu 페이지 (기업 추천)</h4>
+            <ul style="margin-left: -20px;">
+                <li>📝 <strong>사이드바</strong>에서 사용자 프로필을 입력하세요</li>
+                <li>🎯 상단 입력창에 조건 입력 → <strong>질문 실행</strong> 클릭</li>
+                <li>📁 <strong>결과는 4개의 탭</strong>으로 제공됨:
+                    <ul>
+                        <li>✅ <strong>Job-Bu 답변</strong>: 요약된 추천 결과</li>
+                        <li>📚 <strong>추천 기업 상세</strong>: 참고 문서 리스트</li>
+                        <li>🌐 <strong>기업 위치 지도</strong>: 지도 위 기업 표시</li>
+                        <li>🔍 <strong>부산 기업 검색</strong>: 직접 탐색 가능</li>
+                    </ul>
+                </li>
+            </ul>
+            </div>
         """, unsafe_allow_html=True)
     
-        st.markdown("### 🧾 JobBusan 이용 가이드")
-    
-        col1, col2 = st.columns(2)
-    
-        with col1:
-            st.markdown("""
-            #### 1️⃣ Job-Bu 페이지 (기업 추천)
-    
-            - 📋 **사이드바**에서 **사용자 프로필**을 입력하세요  
-            - ❓ **상단 입력창**에 원하는 조건을 입력하고 **질문 실행** 버튼 클릭  
-            - 📁 **결과는 4개의 탭**으로 구성:
-                - ✅ **Job-Bu 답변**: 요약된 추천 결과  
-                - 📚 **추천 기업 상세**: 참고 문서 리스트  
-                - 🌍 **기업 위치 지도**: 지도 위 추천 기업 표시  
-                - 🔍 **부산 기업 검색**: 직접 탐색 가능  
-            """)
-        
-        with col2:
-            st.markdown("""
-            #### 2️⃣ Job-Bu Chatbot (상세 질문 챗봇)
-    
-            - 🤖 추천된 기업에 대해 **추가적인 질문 가능**  
-            - 💡 예시 질문:  
-                - `"복지제도가 어떻게 되나요?"`  
-                - `"평균 연봉은 얼마인가요?"`  
-            - 📄 Job-Bu가 참고한 문서를 기반으로 **자세한 응답 제공**  
-            """)
-    
-        st.markdown("</div>", unsafe_allow_html=True)
+    with col2:
+        st.markdown("""
+            <div style="background-color:#f8f9fa; padding:20px; border-radius:10px; border-left:4px solid #1f77b4;">
+            <h4>2️⃣ Job-Bu Chatbot (상세 질문 챗봇)</h4>
+            <ul style="margin-left: -20px;">
+                <li>🤖 추천 기업에 대해 <strong>추가 질문 가능</strong></li>
+                <li>💡 <strong>예시 질문:</strong>
+                    <ul>
+                        <li style="color:green;">"복지제도가 어떻게 되나요?"</li>
+                        <li style="color:green;">"평균 연봉은 얼마인가요?"</li>
+                    </ul>
+                </li>
+                <li>📄 참고 문서를 기반으로 <strong>자세한 응답</strong> 제공</li>
+            </ul>
+            </div>
+        """, unsafe_allow_html=True)
 # ───────────────────────────────────────────
 # [8] Job-Bu 페이지: LLM QA + 지도 시각화
 # ───────────────────────────────────────────
