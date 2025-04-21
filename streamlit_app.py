@@ -183,92 +183,80 @@ chatbot = choice == "Job-Bu Chatbot"
 # [7] 이용 가이드 페이지
 # ───────────────────────────────────────────
 if info:
-    # 제목 가운데 정렬
+    # 제목
     st.markdown("<h1 style='text-align: center;'>🧾 JobBusan 이용 가이드</h1>", unsafe_allow_html=True)
 
+    # 모든 요소를 감싸는 하나의 Streamlit-native container
     with st.container():
-        # 전체 박스를 감싸는 Streamlit-native 방법
-        st.markdown(
-            """
-            <style>
-            .rounded-box {
+        # 배경과 테두리를 감싼 박스처럼 보이게 하기 위한 박스
+        st.markdown("""
+            <div style="
                 background-color: #f0f4f8;
+                padding: 30px;
                 border: 2px solid #d1dce5;
                 border-radius: 15px;
-                padding: 30px;
                 margin-top: 20px;
-                margin-bottom: 20px;
-            }
-            .content-box {
-                background-color: #f8f9fa;
-                border-left: 6px solid #1f77b4;
-                padding: 25px;
-                border-radius: 12px;
-                color: black;
-            }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
+                margin-bottom: 20px;">
+        """, unsafe_allow_html=True)
 
-        # Streamlit의 native 요소로 전체 box 생성
-        with st.container():
-            st.markdown('<div class="rounded-box">', unsafe_allow_html=True)
+        col1, col2 = st.columns([1, 1])
 
-            col1, col2 = st.columns([1, 1])
+        with col1:
+            st.image(
+                "https://raw.githubusercontent.com/seungcheoll/busan/main/image/pipeline.png",
+                use_container_width=True,
+                caption="JobBusan RAG 처리 구조도"
+            )
 
-            with col1:
-                # 이미지
-                st.image(
-                    "https://raw.githubusercontent.com/seungcheoll/busan/main/image/pipeline.png",
-                    caption="JobBusan RAG 처리 구조도",
-                    use_container_width=True
-                )
+            # 유튜브 영상 (iframe이지만 안전하게 markdown으로만)
+            st.markdown(
+                """
+                <iframe width="100%" height="200" 
+                src="https://www.youtube.com/embed/G_MKtEmmJt8" 
+                frameborder="0" allowfullscreen>
+                </iframe>
+                """,
+                unsafe_allow_html=True
+            )
 
-                # YouTube 영상
-                st.markdown("""
-                    <div style="text-align: center; margin-top: 20px;">
-                        <iframe width="100%" height="200"
-                            src="https://www.youtube.com/embed/G_MKtEmmJt8"
-                            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                """, unsafe_allow_html=True)
+        with col2:
+            st.markdown("""
+                <div style="
+                    background-color:#f8f9fa;
+                    padding: 25px;
+                    border-left: 6px solid #1f77b4;
+                    border-radius: 12px;">
+                    <h4>1️⃣ Job-Bu 페이지 (기업 추천형 챗봇)</h4>
+                    <ul>
+                        <li>📋 먼저 사이드바에서 사용자 프로필을 입력하세요.</li>
+                        <li>❓ 조건 입력 후 질문 실행 버튼을 클릭하세요.</li>
+                        <li>📁 결과는 3개의 탭으로 구성되어 있습니다:
+                            <ul>
+                                <li>✅ Job-Bu 답변: 부산 내 강소기업 추천</li>
+                                <li>📚 추천 기업 상세</li>
+                                <li>🌍 추천 기업 위치</li>
+                                <li>🔍 부산 기업 분포</li>
+                            </ul>
+                        </li>
+                    </ul>
 
-            with col2:
-                # 텍스트 블록
-                st.markdown("""
-                    <div class="content-box">
-                        <h4>1️⃣ Job-Bu 페이지 (기업 추천형 챗봇)</h4>
-                        <ul>
-                            <li>📋 먼저 사이드바에서 사용자 프로필을 입력하세요.</li>
-                            <li>❓ 조건 입력 후 질문 실행 버튼을 클릭하세요.</li>
-                            <li>📁 결과는 3개의 탭으로 구성되어 있습니다:
-                                <ul>
-                                    <li>✅ Job-Bu 답변: 부산 내 강소기업 추천</li>
-                                    <li>📚 추천 기업 상세</li>
-                                    <li>🌍 추천 기업 위치</li>
-                                    <li>🔍 부산 기업 분포</li>
-                                </ul>
-                            </li>
-                        </ul>
-                        <h4>2️⃣ Job-Bu Chatbot (상담형 챗봇)</h4>
-                        <ul>
-                            <li>🤖 기업 추천 이후 추가 질문 가능</li>
-                            <li>📝 Job-Bu 프로필과 문서를 바탕으로 정밀한 답변</li>
-                            <li>💡 예시 질문:
-                                <ul>
-                                    <li style="color:green;">"이 기업의 복지제도는 어떻게 되나요?"</li>
-                                    <li style="color:green;">"평균 연봉은 얼마인가요?"</li>
-                                    <li style="color:green;">"이 분야의 전망은?"</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                """, unsafe_allow_html=True)
+                    <h4 style="margin-top: 30px;">2️⃣ Job-Bu Chatbot (상담형 챗봇)</h4>
+                    <ul>
+                        <li>🤖 기업 추천 이후 추가 질문 가능</li>
+                        <li>📝 Job-Bu 프로필과 문서를 바탕으로 정밀한 답변</li>
+                        <li>💡 예시 질문:
+                            <ul>
+                                <li style="color: green;">"이 기업의 복지제도는 어떻게 되나요?"</li>
+                                <li style="color: green;">"평균 연봉은 얼마인가요?"</li>
+                                <li style="color: green;">"이 분야의 전망은?"</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            """, unsafe_allow_html=True)
 
-            st.markdown('</div>', unsafe_allow_html=True)  # 반드시 columns 밖에서 닫아야 함
+        # 박스 닫기
+        st.markdown("</div>", unsafe_allow_html=True)
 # ───────────────────────────────────────────
 # [8] Job-Bu 페이지: LLM QA + 지도 시각화
 # ───────────────────────────────────────────
