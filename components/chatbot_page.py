@@ -19,6 +19,7 @@ def show_chatbot_page():
 
     user_type = st.session_state.get("saved_user_type", "알 수 없음")
     user_query = st.session_state.get("saved_query", "입력된 질문이 없습니다")
+    st.write(user_query)
     context_text = "\n\n".join(doc.page_content for doc in st.session_state.source_docs)
 
     with open("template/sys_template.txt", "r", encoding="utf-8") as file:
