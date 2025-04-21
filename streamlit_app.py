@@ -152,7 +152,7 @@ with st.sidebar:
             },
         }
     )
-    if st.button("🔄 완전 초기화"):
+    if st.button("🔄 새로 고침"):
         # 1) 세션 상태 초기화
         for key in list(st.session_state.keys()):
             del st.session_state[key]
