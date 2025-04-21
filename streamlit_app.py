@@ -253,7 +253,7 @@ if info:
           <img
             src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/pipeline.png"
             alt="JobBusan RAG 처리 구조도"
-            style="width:600px; height:500px; display:block; margin:0 auto;"
+            style="width:600px; height:510px; display:block; margin:0 auto;"
           />
         </div>
         <div class="right-section">
