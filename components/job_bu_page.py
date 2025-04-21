@@ -33,21 +33,21 @@ def show_job_bu_page(profile):
 
     def save_user_inputs():
         st.session_state["saved_user_type"] = st.session_state["user_type"]
-        st.session_state["saved_query"] = st.session_state["query_input_inputbox"]
+        st.session_state["saved_query"] = st.session_state["query_input"]
 
     col1, col2 = st.columns([3, 2])
     with col1:
         query = st.text_input(
             "❓ 질문으로 상담을 시작하세요!",
             value=st.session_state["main_query"],
-            key="query_input_inputbox",
+            key="query_input",
             placeholder="예: 연봉 3000만원 이상 선박 제조업 추천",
             on_change=save_user_inputs
         )
     with col2:
         st.selectbox("🏷️ 유형을 선택하세요!", ["대학생", "첫 취업 준비", "이직 준비"], key="user_type", on_change=save_user_inputs)
 
-    st.session_state["query_input"] = query
+    st.session_state["saved_query"] = st.session_state["query_input"]
     user_type = st.session_state["user_type"]
 
     if st.button("💬 질문 실행"):
