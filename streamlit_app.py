@@ -162,7 +162,7 @@ with st.sidebar:
         st.cache_resource.clear()  # @st.cache_resource (예전의 experimental_singleton)
 
         # 3) 전체 스크립트 다시 실행 (F5와 동일 효과)
-        st.experimental_rerun()
+        st.rerun()
 
     # ▼ 사용자 프로필 입력 (expander로 접기/펼치기)
     with st.expander("📋 사용자 프로필 입력", expanded=False):
