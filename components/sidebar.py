@@ -2,11 +2,6 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
 
-# ✅ 사용자 입력값 초기화
-for key in ["university", "major", "gpa", "field_pref", "job_pref", "activities", "certificates"]:
-    if key not in st.session_state:
-        st.session_state[key] = ""
-        
 def sidebar_ui():
     with st.sidebar:
         # 🔘 페이지 선택 메뉴
@@ -25,6 +20,10 @@ def sidebar_ui():
 
         # ▼ 사용자 프로필 입력
         with st.expander("📋 사용자 프로필 입력", expanded=False):
+            # ✅ 사용자 입력값 초기화
+            for key in ["university", "major", "gpa", "field_pref", "job_pref", "activities", "certificates"]:
+                if key not in st.session_state:
+                    st.session_state[key] = ""
             with st.form("profile_form"):
                 university_temp   = st.text_input("대학교", value=st.session_state.get("university", ""))
                 major_temp        = st.text_input("전공", value=st.session_state.get("major", ""))
