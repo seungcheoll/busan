@@ -407,7 +407,15 @@ if chatbot:
             with left:
                 bubble = st.chat_message("assistant")
                 bubble.markdown(
-                    f"<div style='background-color:#f0f0f0; padding:12px; border-radius:8px'>{msg['content']}</div>",
+                    f"""
+                    <div style='display: flex; align-items: flex-start; gap: 10px;'>
+                        <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/GPT_image2.png' 
+                             style='width: 36px; height: auto; margin-top: 4px;'/>
+                        <div style='background-color:#f0f0f0; padding:12px; border-radius:8px; max-width: 100%;'>
+                            {msg['content']}
+                        </div>
+                    </div>
+                    """,
                     unsafe_allow_html=True
                 )
 
