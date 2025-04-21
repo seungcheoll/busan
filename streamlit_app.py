@@ -177,7 +177,6 @@ with st.sidebar:
                 st.success("✅ 입력 완료!")
 
     # ▶️ 시연 영상 (YouTube 삽입)
-    st.sidebar.markdown("---")
     st.sidebar.markdown("#### ▶️ 시연 영상")
     st.sidebar.video("https://youtu.be/G_MKtEmmJt8")  # 여기에 유튜브 링크 삽입
 info = choice == "Guide"
