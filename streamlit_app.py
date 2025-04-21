@@ -187,56 +187,51 @@ if info:
     st.markdown("<h1 style='text-align: center;'>🧾 JobBusan 이용 가이드</h1>", unsafe_allow_html=True)
 
     with st.container():
-        # 왼쪽: 이미지 / 오른쪽: 텍스트 2개(위아래)
-        col_left, col_right = st.columns([1, 2])
-
-        with col_left:
-            st.markdown("""
-                <div style='text-align: center;'>
-                    <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/pipeline.png' 
-                         style='width: 100%; height: auto; border-radius: 12px;' />
-                </div>
-            """, unsafe_allow_html=True)
-
-        with col_right:
-            # 상단 텍스트 (Job-Bu 설명)
-            st.markdown("""
-                <div style="background-color:#f8f9fa; padding:20px; border-radius:10px;
-                            border-left:4px solid #1f77b4; color: black; margin-bottom: 20px;">
-                    <h4>1️⃣ Job-Bu 페이지 (기업 추천형 챗봇)</h4>
-                    <ul>
-                        <li>📋 먼저 사이드바에서 사용자 프로필을 입력하세요.</li>
-                        <li>❓ 조건 입력 후 질문 실행 버튼을 클릭하세요.</li>
-                        <li>📁 결과는 3개의 탭으로 구성되어 있습니다:
+        st.markdown("""
+            <div style="background-color: #f0f4f8; padding: 30px; border-radius: 15px; 
+                        border: 2px solid #d1dce5; margin-top: 20px; margin-bottom: 20px;">
+                <div style="display: flex; flex-direction: row; gap: 40px;">
+                    <div style="flex: 1; text-align: center;">
+                        <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/pipeline.png' 
+                             style='width: 100%; height: auto; border-radius: 12px;' />
+                    </div>
+                    <div style="flex: 2;">
+                        <div style="background-color:#f8f9fa; padding:20px; border-radius:10px;
+                                    border-left:4px solid #1f77b4; color: black; margin-bottom: 20px;">
+                            <h4>1️⃣ Job-Bu 페이지 (기업 추천형 챗봇)</h4>
                             <ul>
-                                <li>✅ Job-Bu 답변: 부산 내 강소기업 추천</li>
-                                <li>📚 추천 기업 상세</li>
-                                <li>🌍 추천 기업 위치</li>
-                                <li>🔍 부산 기업 분포</li>
+                                <li>📋 먼저 사이드바에서 사용자 프로필을 입력하세요.</li>
+                                <li>❓ 조건 입력 후 질문 실행 버튼을 클릭하세요.</li>
+                                <li>📁 결과는 3개의 탭으로 구성되어 있습니다:
+                                    <ul>
+                                        <li>✅ Job-Bu 답변: 부산 내 강소기업 추천</li>
+                                        <li>📚 추천 기업 상세</li>
+                                        <li>🌍 추천 기업 위치</li>
+                                        <li>🔍 부산 기업 분포</li>
+                                    </ul>
+                                </li>
                             </ul>
-                        </li>
-                    </ul>
-                </div>
-            """, unsafe_allow_html=True)
+                        </div>
 
-            # 하단 텍스트 (챗봇 설명)
-            st.markdown("""
-                <div style="background-color:#f8f9fa; padding:20px; border-radius:10px;
-                            border-left:4px solid #1f77b4; color: black;">
-                    <h4>2️⃣ Job-Bu Chatbot (상담형 챗봇)</h4>
-                    <ul>
-                        <li>🤖 기업 추천 이후 추가 질문 가능</li>
-                        <li>📝 Job-Bu 프로필과 문서를 바탕으로 정밀한 답변</li>
-                        <li>💡 예시 질문:
+                        <div style="background-color:#f8f9fa; padding:20px; border-radius:10px;
+                                    border-left:4px solid #1f77b4; color: black;">
+                            <h4>2️⃣ Job-Bu Chatbot (상담형 챗봇)</h4>
                             <ul>
-                                <li style="color:green;">"이 기업의 복지제도는 어떻게 되나요?"</li>
-                                <li style="color:green;">"평균 연봉은 얼마인가요?"</li>
-                                <li style="color:green;">"이 분야의 전망은?"</li>
+                                <li>🤖 기업 추천 이후 추가 질문 가능</li>
+                                <li>📝 Job-Bu 프로필과 문서를 바탕으로 정밀한 답변</li>
+                                <li>💡 예시 질문:
+                                    <ul>
+                                        <li style="color:green;">"이 기업의 복지제도는 어떻게 되나요?"</li>
+                                        <li style="color:green;">"평균 연봉은 얼마인가요?"</li>
+                                        <li style="color:green;">"이 분야의 전망은?"</li>
+                                    </ul>
+                                </li>
                             </ul>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
                 </div>
-            """, unsafe_allow_html=True)
+            </div>
+        """, unsafe_allow_html=True)
 # ───────────────────────────────────────────
 # [8] Job-Bu 페이지: LLM QA + 지도 시각화
 # ───────────────────────────────────────────
