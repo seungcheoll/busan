@@ -218,6 +218,7 @@ if info:
                         <li style="color:green;">"이 기업의 복지제도는 어떻게 되나요?"</li>
                         <li style="color:green;">"평균 연봉은 얼마인가요?"</li>
                         <li style="color:green;">"이 분야의 전망은?"</li>
+                        <li style="color:green;">""</li>
                     </ul>
                 </li>
             </ul>
