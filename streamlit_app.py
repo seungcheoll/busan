@@ -189,7 +189,7 @@ if info:
     
     with col1:
         st.markdown("""
-            <div style="background-color:#f8f9fa; padding:20px; border-radius:10px; border-left:4px solid #1f77b4;">
+            <div style="background-color:#f8f9fa; padding:20px; border-radius:10px; border-left:4px solid #1f77b4; color: black;">
             <h4>1️⃣ Job-Bu 페이지 (기업 추천형 챗봇)</h4>
             <ul style="margin-left: -20px;">
                 <li>📋 먼저 사이드바에서 사용자 프로필을 입력하세요.</li>
@@ -208,7 +208,7 @@ if info:
     
     with col2:
         st.markdown("""
-            <div style="background-color:#f8f9fa; padding:20px; border-radius:10px; border-left:4px solid #1f77b4;">
+            <div style="background-color:#f8f9fa; padding:20px; border-radius:10px; border-left:4px solid #1f77b4; color: black;">
             <h4>2️⃣ Job-Bu Chatbot (상담형 챗봇)</h4>
             <ul style="margin-left: -20px;">
                 <li>🤖 기업 추천을 먼저 받은 후, 이어서 추가적인 질문이 가능합니다.</li>
