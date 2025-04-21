@@ -245,8 +245,11 @@ if info:
     </style>
     <div class="gbox">
       <div class="split">
-        <div class="image-section">
-          <p>Pipeline</p>
+        <div class="image-section"
+             style="--pipeline-text-size:24px;  /* 제목 글자 크기 수정 */
+                    --pipeline-img-width:80%;
+                    --pipeline-img-height:80%;">
+          <p>JobBusan Pipeline</p>
           <hr class="custom"/>
           <img
             src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/pipeline.png"
