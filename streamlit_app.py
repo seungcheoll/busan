@@ -254,7 +254,7 @@ if job_rag:
                     popup=row["회사명"],
                     tooltip=row["회사명"]
                 ).add_to(m)
-            html(m._repr_html_(), height=500)
+            html(m._repr_html_(), height=550)
         else:
             st.info("해당 기업 위치 정보가 없습니다.")
 
