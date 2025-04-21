@@ -67,7 +67,6 @@ def show_job_bu_page(profile):
                 return_source_documents=True,
                 chain_type_kwargs={"prompt": prompt}
             )
-            st.write(query)
             result = qa_chain.invoke({"query": query})
 
             st.session_state.gpt_result = result["result"]
