@@ -173,7 +173,7 @@ if job_rag:
     col1, col2 = st.columns([3, 2])
     with col1:
         st.text_input(
-            "🎯 질문",
+            "🎯 질문으로 상담을 시작하세요!",
             key="query_input",
             value=st.session_state["main_query"],
             placeholder="예: 연봉 3000만원 이상 선박 제조업 추천",
@@ -181,7 +181,7 @@ if job_rag:
         )
     with col2:
         st.selectbox(
-            "👤 유형",
+            "👤 유형을 선택하세요!",
             ["진로 설정을 못한 대학생", "첫 취업 준비", "이직을 준비하는 사람"],
             key="user_type",
             on_change=save_user_inputs
@@ -254,7 +254,7 @@ if job_rag:
                     popup=row["회사명"],
                     tooltip=row["회사명"]
                 ).add_to(m)
-            html(m._repr_html_(), height=600)
+            html(m._repr_html_(), height=500)
         else:
             st.info("해당 기업 위치 정보가 없습니다.")
 
