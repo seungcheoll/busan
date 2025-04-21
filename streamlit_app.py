@@ -173,7 +173,7 @@ if job_rag:
     col1, col2 = st.columns([3, 2])
     with col1:
         st.text_input(
-            "🎯 질문으로 상담을 시작하세요!",
+            "❓ 질문으로 상담을 시작하세요!",
             key="query_input",
             value=st.session_state["main_query"],
             placeholder="예: 연봉 3000만원 이상 선박 제조업 추천",
