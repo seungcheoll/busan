@@ -212,24 +212,24 @@ if info:
                                 </li>
                             </ul>
                         </div>
+                                """, unsafe_allow_html=True)
 
-                        <div style="background-color:#f8f9fa; padding:20px; border-radius:10px;
-                                    border-left:4px solid #1f77b4; color: black;">
-                            <h4>2️⃣ Job-Bu Chatbot (상담형 챗봇)</h4>
-                            <ul>
-                                <li>🤖 기업 추천 이후 추가 질문 가능</li>
-                                <li>📝 Job-Bu 프로필과 문서를 바탕으로 정밀한 답변</li>
-                                <li>💡 예시 질문:
-                                    <ul>
-                                        <li style="color:green;">"이 기업의 복지제도는 어떻게 되나요?"</li>
-                                        <li style="color:green;">"평균 연봉은 얼마인가요?"</li>
-                                        <li style="color:green;">"이 분야의 전망은?"</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+        st.markdown("""
+            <div style="background-color:#f8f9fa; padding:20px; border-radius:10px;
+                        border-left:4px solid #1f77b4; color: black; text-align: left;">
+                <h4>2️⃣ Job-Bu Chatbot (상담형 챗봇)</h4>
+                <ul>
+                    <li>🤖 기업 추천을 먼저 받은 후, 이어서 추가적인 질문이 가능합니다.</li>
+                    <li>📝 Job-Bu에서 확보한 프로필과 문서를 기반으로, 자세한 답변을 제공합니다.</li>
+                    <li>💡 예시 질문:
+                        <ul>
+                            <li style="color:green;">"이 기업의 복지제도는 어떻게 되나요?"</li>
+                            <li style="color:green;">"평균 연봉은 얼마인가요?"</li>
+                            <li style="color:green;">"이 분야의 전망은?"</li>
+                            <li style="color:green;">"이 분야의 전망은?"</li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         """, unsafe_allow_html=True)
 # ───────────────────────────────────────────
