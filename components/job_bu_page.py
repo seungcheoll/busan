@@ -33,7 +33,7 @@ def show_job_bu_page(profile):
 
     def save_user_inputs():
         st.session_state["saved_user_type"] = st.session_state["user_type"]
-        st.session_state["saved_query"] = st.session_state["query_input"]
+        st.session_state["saved_query"] = st.session_state["query_input_inputbox"]
 
     col1, col2 = st.columns([3, 2])
     with col1:
