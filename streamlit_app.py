@@ -60,11 +60,11 @@ for key in ["university", "major", "gpa", "field_pref", "job_pref", "activities"
 # ───────────────────────────────────────────
 # [라우팅] 사이드바 메뉴 선택 및 페이지 이동
 # ───────────────────────────────────────────
-choice = sidebar_ui()
+choice, profile = sidebar_ui()
 
 if choice == "Guide":
     show_guide_page()
 elif choice == "Job-Bu":
-    show_job_bu_page()
+    show_job_bu_page(profile)
 elif choice == "Job-Bu Chatbot":
     show_chatbot_page()
