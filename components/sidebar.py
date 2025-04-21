@@ -1,56 +1,48 @@
-# main.py
+# components/sidebar.py
 import streamlit as st
-from components.sidebar import sidebar_ui
-from components.guide_page import show_guide_page
-from components.job_bu_page import show_job_bu_page
-from components.chatbot_page import show_chatbot_page
-from components.qa_utils import load_api_key
+from streamlit_option_menu import option_menu
 
-# ───────────────────────────────────────────
-# [초기 세팅] Streamlit 환경 설정 및 세션 초기화
-# ───────────────────────────────────────────
+def sidebar_ui():
+    with st.sidebar:
+        # 🔘 페이지 선택 메뉴
+        choice = option_menu(
+            menu_title="Page",
+            options=["Guide", "Job-Bu", "Job-Bu Chatbot"],
+            icons=["info-circle", "", ""],
+            default_index=0,
+            styles={
+                "container": {"padding": "4!important", "background-color": "transparent"},
+                "icon": {"display": "none"},
+                "nav-link": {"font-size": "14px", "--hover-color": "#e5e9f2"},
+                "nav-link-selected": {"background-color": "#3498db", "color": "white"},
+            }
+        )
 
-# ✅ 페이지 기본 설정
-st.set_page_config(
-    page_title="JobBusan",
-    page_icon="https://raw.githubusercontent.com/seungcheoll/busan/main/image/chatbot.png",
-    layout="wide"
-)
+        # ▼ 사용자 프로필 입력
+        with st.expander("📋 사용자 프로필 입력", expanded=False):
+            with st.form("profile_form"):
+                university_temp   = st.text_input("대학교", value=st.session_state.get("university", ""))
+                major_temp        = st.text_input("전공", value=st.session_state.get("major", ""))
+                gpa_temp          = st.text_input("학점", value=st.session_state.get("gpa", ""))
+                field_pref_temp   = st.text_input("선호분야(산업군)", value=st.session_state.get("field_pref", ""))
+                job_pref_temp     = st.text_input("선호직무", value=st.session_state.get("job_pref", ""))
+                activities_temp   = st.text_area("경력사항", value=st.session_state.get("activities", ""))
+                certificates_temp = st.text_area("보유 자격증", value=st.session_state.get("certificates", ""))
 
-# ✅ 기본 UI 숨기기
-st.markdown("""
-    <style>
-        #MainMenu {visibility: hidden;}
-        footer {visibility: hidden;}
-        header {visibility: hidden;}
-    </style>
-""", unsafe_allow_html=True)
+                if st.form_submit_button("입력 완료"):
+                    st.session_state.university   = university_temp
+                    st.session_state.major        = major_temp
+                    st.session_state.gpa          = gpa_temp
+                    st.session_state.field_pref   = field_pref_temp
+                    st.session_state.job_pref     = job_pref_temp
+                    st.session_state.activities   = activities_temp
+                    st.session_state.certificates = certificates_temp
 
-# ✅ 상단 여백 제거
-st.markdown("""
-    <style>
-        .block-container {
-            padding-top: 0rem !important;
-        }
-        header[data-testid="stHeader"] {
-            display: none;
-        }
-    </style>
-""", unsafe_allow_html=True)
+                    st.success("✅ 입력 완료!")
 
-# ✅ 사용자 입력값 초기화
-for key in ["university", "major", "gpa", "field_pref", "job_pref", "activities", "certificates"]:
-    if key not in st.session_state:
-        st.session_state[key] = ""
+        # ▶️ 유튜브 시연 영상
+        st.markdown("---")
+        st.markdown("#### ▶️ 시연 영상")
+        st.video("https://youtu.be/G_MKtEmmJt8")
 
-# ───────────────────────────────────────────
-# [라우팅] 사이드바 메뉴 선택 및 페이지 이동
-# ───────────────────────────────────────────
-choice = sidebar_ui()
-
-if choice == "Guide":
-    show_guide_page()
-elif choice == "Job-Bu":
-    show_job_bu_page()
-elif choice == "Job-Bu Chatbot":
-    show_chatbot_page()
+    return choice
