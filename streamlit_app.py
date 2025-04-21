@@ -240,6 +240,9 @@ if info:
               </ul>
             </li>
           </ul>
+          
+          <div style="height:30px;"></div>
+          
           <h4>2️⃣ Job‑Bu Chatbot (상담형 챗봇)</h4>
           <ul>
             <li>🤖 기업 추천 이후 추가 질문 가능</li>
