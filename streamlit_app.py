@@ -99,8 +99,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # 🔘 사이드바 라디오 메뉴 설정
-menu = st.sidebar.radio("페이지 선택", ["Job Busan", "Groq Chatbot"], key="menu_select")
-job_rag = menu == "Job Busan"
+menu = st.sidebar.radio("페이지 선택", ["Job-Bu", "Groq Chatbot"], key="menu_select")
+job_rag = menu == "Job-Bu"
 chatbot = menu == "Groq Chatbot"
 
 # 📌 Job Busan 페이지 구성
@@ -110,7 +110,7 @@ if job_rag:
             <h1 style='margin:0; font-size:28px; display: flex; align-items: center; gap: 12px;'>
                 <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/chatbot.png' 
                      style='width: 60px; height: auto; vertical-align: middle;'/>
-                부산 취업 상담 챗봇 (JOB BUSAN)
+                Job-Bu
             </h1>
         </div>
     """, unsafe_allow_html=True)
