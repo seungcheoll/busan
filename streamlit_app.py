@@ -242,7 +242,7 @@ if info:
     <div class="gbox">
       <div class="split">
         <div class="image-section">
-          <p style="font-size:1.1rem; font-weight:bold; margin:0;">Pipeline</p>
+          <p style="font-size:20px; font-weight:bold; margin:0; text-align:center;">Pipeline</p>
           <hr class="custom"/>
           <img
             src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/pipeline.png"
