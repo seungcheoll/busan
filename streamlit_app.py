@@ -99,7 +99,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # 🔘 사이드바 라디오 메뉴 설정
-menu = st.sidebar.radio("페이지 선택", ["Job-Bu", "Groq Chatbot"], key="menu_select")
+with st.sidebar:
+    menu = st.radio("페이지 선택", ["Job-Bu", "Groq Chatbot"], key="menu_select")
 job_rag = menu == "Job-Bu"
 chatbot = menu == "Groq Chatbot"
 
