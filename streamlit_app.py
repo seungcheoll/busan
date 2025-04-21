@@ -193,10 +193,29 @@ if info:
                         border: 2px solid #d1dce5; margin-top: 20px; margin-bottom: 20px;">
         """, unsafe_allow_html=True)
 
-        # ⬅️ 왼쪽: 텍스트 / ➡️ 오른쪽: 이미지 + 영상
-        col1, col2 = st.columns([1, 1])
+        # ⬅️ 왼쪽: 이미지 + 영상 / ➡️ 오른쪽: 텍스트
+        col1, col2 = st.columns([1, 1])  # 왼쪽이 col1, 오른쪽이 col2
 
         with col1:
+            st.markdown("""
+                <div style="text-align: center;">
+                    <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/pipeline.png" 
+                         alt="JobBusan RAG 처리 구조도"
+                         style="width: 90%; max-width: 350px; border-radius: 10px;" />
+                </div>
+            """, unsafe_allow_html=True)
+        
+            st.markdown("""
+                <div style="text-align: center; margin-top: 20px;">
+                    <iframe width="350" height="200"
+                        src="https://www.youtube.com/embed/G_MKtEmmJt8"
+                        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            """, unsafe_allow_html=True)
+
+        with col2:
             st.markdown("""
                 <div style="background-color:#f8f9fa; padding:25px; border-radius:12px;
                             border-left:6px solid #1f77b4; color: black;">
@@ -228,24 +247,8 @@ if info:
                 </div>
             """, unsafe_allow_html=True)
 
-        with col2:
-            st.markdown("""
-                <div style="text-align: center;">
-                    <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/pipeline.png" 
-                         alt="JobBusan RAG 처리 구조도"
-                         style="width: 90%; max-width: 350px; border-radius: 10px;" />
-                </div>
-            """, unsafe_allow_html=True)
-        
-            st.markdown("""
-                <div style="text-align: center; margin-top: 20px;">
-                    <iframe width="350" height="200"
-                        src="https://www.youtube.com/embed/G_MKtEmmJt8"
-                        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen>
-                    </iframe>
-                </div>
-            """, unsafe_allow_html=True)
+        # 큰 컨테이너 닫기
+        st.markdown("</div>", unsafe_allow_html=True)
 # ───────────────────────────────────────────
 # [8] Job-Bu 페이지: LLM QA + 지도 시각화
 # ───────────────────────────────────────────
