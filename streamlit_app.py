@@ -231,7 +231,7 @@ if info:
     # ⬇️ 하단 이미지 1장 (가운데 정렬)
     st.markdown("""
         <div style='text-align: center; margin-top: 40px;'>
-            <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/chatbot.png' 
+            <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/pileline.png' 
                  style='width: 180px; height: auto; border-radius: 12px;' />
         </div>
     """, unsafe_allow_html=True)
