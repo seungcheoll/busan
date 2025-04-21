@@ -118,7 +118,6 @@ st.markdown("""
 # ───────────────────────────────────────────
 # [5] 사용자 입력값 세션 초기화
 # ───────────────────────────────────────────
-# 사용자 입력 세션 상태 기본값 초기화
 for key in ["university", "major", "gpa", "field_pref", "job_pref", "activities", "certificates"]:
     if key not in st.session_state:
         st.session_state[key] = ""
