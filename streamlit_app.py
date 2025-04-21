@@ -193,10 +193,17 @@ if info:
         border-radius: 15px;
         margin: 20px 0;
       }
+
+      /* 모든 텍스트를 검정색으로 고정 */
+      .gbox, .gbox * {
+        color: black !important;
+      }
+
       .split {
         display: flex;
         gap: 20px;
       }
+
       /* 왼쪽 이미지 영역 */
       .image-section {
         background-color: #ffffff;
@@ -205,21 +212,25 @@ if info:
         border-left: 6px solid #1f77b4;
         flex: 1;
       }
+
       hr.custom {
         border: none;
         border-top: 1px solid #d1dce5;
         margin: 10px 0 15px;
       }
+
       .image-section p {
         font-size: 20px;
         font-weight: bold;
         margin: 0;
         text-align: center;
       }
+
       .image-section img {
         width: 100%;
         border-radius: 8px;
       }
+
       /* 오른쪽 텍스트 영역: 세로로 두 개 박스 */
       .right-section {
         display: flex;
@@ -227,25 +238,28 @@ if info:
         gap: 20px;
         flex: 1;
       }
+
       .textbox {
         background-color: #ffffff;
         border-left: 6px solid #1f77b4;
         padding: 25px;
         border-radius: 12px;
-        color: black;
       }
+
       .textbox h4 {
         margin-top: 0;
         margin-bottom: 10px;
       }
+
       .textbox ul {
         margin: 0;
         padding-left: 1.2em;
       }
     </style>
+
     <div class="gbox">
       <div class="split">
-        <div class="image-section"
+        <div class="image-section">
           <p style="font-size:30px; font-weight:bold; text-align:center; margin:0;">
             JobBusan Pipeline
           </p>
