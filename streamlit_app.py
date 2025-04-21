@@ -191,12 +191,19 @@ if info:
                 background-color: #f9f9f9;
                 margin-bottom: 20px;
                 border-radius: 6px;
+                color: black;  /* 텍스트 색상 고정 */
+            }
+            .guide-section ul {
+                color: black;  /* 리스트 항목 텍스트도 검정 */
+            }
+            .guide-section h3 {
+                color: black;  /* 제목도 검정 */
             }
         </style>
     """, unsafe_allow_html=True)
-
+    
     st.title("🧾 JobBusan 이용 가이드")
-
+    
     st.markdown("""
     <div class="guide-section">
         <h3>1. Job-Bu 페이지 (기업 추천)</h3>
@@ -213,7 +220,7 @@ if info:
             </li>
         </ul>
     </div>
-
+    
     <div class="guide-section">
         <h3>2. Job-Bu Chatbot (상세 질문 챗봇)</h3>
         <ul>
