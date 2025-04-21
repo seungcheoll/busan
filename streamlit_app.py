@@ -253,17 +253,6 @@ if info:
         margin: 0;
         padding-left: 1.2em;
       }
-
-      .video-link {
-        text-align: left;
-        margin-top: 20px;
-        font-size: 18px;
-      }
-      .video-link a {
-        color: #1f77b4;
-        text-decoration: underline;
-        font-weight: bold;
-      }
     </style>
 
     <div class="gbox">
@@ -311,10 +300,6 @@ if info:
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="video-link">
-      ▶️ <a href="https://youtu.be/G_MKtEmmJt8" target="_blank">시연 영상 보러가기</a>
     </div>
     """, unsafe_allow_html=True)
 # ───────────────────────────────────────────
