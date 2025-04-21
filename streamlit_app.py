@@ -137,13 +137,25 @@ with st.sidebar:
     )
 
     st.markdown("### 사용자 프로필 입력")
-    university   = st.text_input("대학교")
-    major        = st.text_input("전공")
-    gpa          = st.text_input("학점")
-    field_pref   = st.text_input("선호분야")
-    job_pref     = st.text_input("선호직무")
-    activities   = st.text_area("활동이력")
-    certificates = st.text_input("자격증")
+    # ——— 여기에 폼 정의 ———
+    with st.form("profile_form"):
+        university_temp   = st.text_input("대학교", value=st.session_state.get("university", ""))
+        major_temp        = st.text_input("전공", value=st.session_state.get("major", ""))
+        gpa_temp          = st.text_input("학점", value=st.session_state.get("gpa", ""))
+        field_pref_temp   = st.text_input("선호분야", value=st.session_state.get("field_pref", ""))
+        job_pref_temp     = st.text_input("선호직무", value=st.session_state.get("job_pref", ""))
+        activities_temp   = st.text_area("활동이력", value=st.session_state.get("activities", ""))
+        certificates_temp = st.text_input("자격증", value=st.session_state.get("certificates", ""))
+
+        submitted = st.form_submit_button("입력 완료")
+        if submitted:
+            st.session_state.university   = university_temp
+            st.session_state.major        = major_temp
+            st.session_state.gpa          = gpa_temp
+            st.session_state.field_pref   = field_pref_temp
+            st.session_state.job_pref     = job_pref_temp
+            st.session_state.activities   = activities_temp
+            st.session_state.certificates = certificates_temp
 
 job_rag = choice == "Job-Bu"
 chatbot = choice == "Job-Bu Chatbot"
@@ -209,7 +221,7 @@ if job_rag:
         with st.spinner("🤖 Job-Bu가 부산 기업 정보를 검색 중입니다..."):
             selected_template = st.session_state.templates[user_type]
             prompt = PromptTemplate.from_template(selected_template)
-
+            
             qa_chain = RetrievalQA.from_chain_type(
                 llm=st.session_state.llm,
                 retriever=st.session_state.retriever,
