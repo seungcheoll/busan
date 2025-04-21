@@ -119,7 +119,7 @@ with st.sidebar:
             },
             "icon": {"display": "none"},
             "nav-link": {
-                "font-size": "16px",
+                "font-size": "14px",
                 "text-align": "left",
                 "margin": "0px",
                 "--hover-color": "#e5e9f2"
