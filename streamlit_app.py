@@ -232,7 +232,7 @@ if info:
     st.markdown("""
         <div style='text-align: center; margin-top: 40px;'>
             <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/pipeline.png' 
-                 style='width: 180px; height: auto; border-radius: 12px;' />
+                 style='width: 1000px; height: auto; border-radius: 12px;' />
         </div>
     """, unsafe_allow_html=True)
 # ───────────────────────────────────────────
