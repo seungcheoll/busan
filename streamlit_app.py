@@ -110,7 +110,7 @@ with st.sidebar:
         styles={
             "container": {
                 "padding": "4!important",
-                "background-color": "transparent"   # 투명으로 해서 사이드바 색상이 그대로 보이도록
+                "background-color": "transparent"
             },
             "icon": {"display": "none"},
             "nav-link": {
@@ -119,7 +119,10 @@ with st.sidebar:
                 "margin": "0px",
                 "--hover-color": "#e5e9f2"
             },
-            "nav-link-selected": {"background-color": "#08c7b4"},
+            "nav-link-selected": {
+                "background-color": "#3498db",  # 선택 시 파란색
+                "color": "white"               # 선택 시 글자색 흰색으로
+            },
         }
     )
 
