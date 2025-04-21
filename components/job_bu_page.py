@@ -48,7 +48,6 @@ def show_job_bu_page(profile):
         st.selectbox("🏷️ 유형을 선택하세요!", ["대학생", "첫 취업 준비", "이직 준비"], key="user_type", on_change=save_user_inputs)
 
     st.session_state["saved_query"] = st.session_state["query_input"]
-    user_type = st.session_state["user_type"]
 
     if st.button("💬 질문 실행"):
         with st.spinner("🤖 Job-Bu가 부산 기업 정보를 검색 중입니다..."):
