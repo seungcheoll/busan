@@ -425,25 +425,47 @@ if chatbot:
             _, right = st.columns([3, 1])
             with right:
                 st.markdown(
-                    f"<div style='padding:12px; border-radius:8px; background-color:#e0f7fa; width:fit-content; margin-left:auto;'>{msg['content']}</div>",
+                    f"""
+                    <div 
+                        style='
+                            padding: 12px; 
+                            border-radius: 8px; 
+                            background-color: #e0f7fa; 
+                            width: fit-content; 
+                            margin-left: auto; 
+                            color: black;
+                        '
+                    >
+                        {msg['content']}
+                    </div>
+                    """,
                     unsafe_allow_html=True
                 )
         else:
             left, _ = st.columns([2, 3])
             with left:
-                with st.container():
-                    st.markdown(
-                        f"""
-                        <div style='display: flex; align-items: flex-start; gap: 10px;'>
-                            <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/chatbot.png' 
-                                 style='width: 40px; height: auto; margin-top: 4px;'/>
-                            <div style='background-color:#f0f0f0; padding:12px; border-radius:8px; max-width: 100%;'>
-                                {msg['content']}
-                            </div>
+                st.markdown(
+                    f"""
+                    <div style='display: flex; align-items: flex-start; gap: 10px;'>
+                        <img 
+                            src='https://raw.githubusercontent.com/seungcheoll/busan/main/chatbot.png' 
+                            style='width: 40px; height: auto; margin-top: 4px;'
+                        />
+                        <div 
+                            style='
+                                background-color: #f0f0f0; 
+                                padding: 12px; 
+                                border-radius: 8px; 
+                                max-width: 100%; 
+                                color: black;
+                            '
+                        >
+                            {msg['content']}
                         </div>
-                        """,
-                        unsafe_allow_html=True
-                    )
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
 
     prompt = st.chat_input("메시지를 입력하세요...", key="groq_input")
     if prompt:
