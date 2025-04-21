@@ -186,9 +186,8 @@ if info:
     # 제목 가운데 정렬
     st.markdown("<h1 style='text-align: center;'>🧾 JobBusan 이용 가이드</h1>", unsafe_allow_html=True)
 
-    # ✅ Streamlit 컨테이너로 전체 감싸기
     with st.container():
-        # 외부 박스 스타일 (Streamlit-safe 방식)
+        # 전체 컨테이너 스타일 시작
         st.markdown("""
             <style>
                 .outer-box {
@@ -210,7 +209,7 @@ if info:
             <div class="outer-box">
         """, unsafe_allow_html=True)
 
-        # ⬅️ 왼쪽: 이미지+영상 / ➡️ 오른쪽: 텍스트
+        # 좌우 레이아웃 (왼쪽: 이미지+영상, 오른쪽: 텍스트)
         col1, col2 = st.columns([1, 1])
 
         with col1:
@@ -221,7 +220,7 @@ if info:
                          style="width: 90%; max-width: 350px; border-radius: 10px;" />
                 </div>
             """, unsafe_allow_html=True)
-        
+
             st.markdown("""
                 <div style="text-align: center; margin-top: 20px;">
                     <iframe width="350" height="200"
@@ -263,7 +262,7 @@ if info:
                 </div>
             """, unsafe_allow_html=True)
 
-        # ✅ 닫는 div는 반드시 columns() 이후에 닫아야 효과가 살아있음!
+        # 🧨 중요한 부분: outer-box 닫기 (columns 바깥에서 닫아야 모든 요소가 포함됨)
         st.markdown("</div>", unsafe_allow_html=True)
 # ───────────────────────────────────────────
 # [8] Job-Bu 페이지: LLM QA + 지도 시각화
