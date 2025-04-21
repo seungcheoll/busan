@@ -201,7 +201,7 @@ if info:
         flex: 1;
       }
       .imgbox {
-        background-color: #ffffff;
+        background-color: #ffffff; /* 그대로 흰색 */
         padding: 20px;
         border: 1px solid #ccc;
         border-radius: 10px;
@@ -220,7 +220,7 @@ if info:
         border-radius: 8px;
       }
       .textbox {
-        background-color: #f8f9fa;
+        background-color: #ffffff;  /* 여기만 #ffffff 으로 변경 */
         border-left: 6px solid #1f77b4;
         padding: 25px;
         border-radius: 12px;
