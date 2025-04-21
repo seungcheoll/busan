@@ -192,7 +192,7 @@ if job_rag:
 
     # 💬 질문 실행 버튼
     if st.button("💬 질문 실행"):
-        with st.spinner("🤖 JOB BUSAN이 부산 기업 정보를 검색 중입니다..."):
+        with st.spinner("🤖 Job-Bu가 부산 기업 정보를 검색 중입니다..."):
             selected_template = st.session_state.templates[user_type]
             prompt = PromptTemplate.from_template(selected_template)
 
@@ -219,7 +219,7 @@ if job_rag:
 
     # 📁 결과 탭 구성
     selected_tabs = st.tabs([
-        "✅ Job Busan의 답변",
+        "✅ Job-Bu의 답변",
         "📚 참고 문서",
         "🌍 관련 기업 위치",
         "🔍 부산 기업 분포 및 검색"
@@ -227,7 +227,7 @@ if job_rag:
 
     # 1️⃣ 답변 탭
     with selected_tabs[0]:
-        st.write(st.session_state.get("gpt_result", "🔹 Job Busan의 응답 결과가 여기에 표시됩니다."))
+        st.write(st.session_state.get("gpt_result", "🔹 Job-Bu의 응답 결과가 여기에 표시됩니다."))
 
     # 2️⃣ 문서 탭
     with selected_tabs[1]:
@@ -397,7 +397,7 @@ if chatbot:
         ]
 
     if "source_docs" not in st.session_state or not st.session_state.source_docs:
-        st.warning("💡 'JOB BUSAN' 페이지에서 먼저 '질문 실행'을 눌러 참고자료를 확보해 주세요.")
+        st.warning("💡 'Job-Bu' 페이지에서 먼저 '질문 실행'을 눌러 참고자료를 확보해 주세요.")
         st.stop()
 
     # 🔹 사용자 유형과 질문 가져오기
