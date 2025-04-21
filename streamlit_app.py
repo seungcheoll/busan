@@ -152,17 +152,6 @@ with st.sidebar:
             },
         }
     )
-    if st.button("🔄 새로 고침"):
-        # 1) 세션 상태 초기화
-        for key in list(st.session_state.keys()):
-            del st.session_state[key]
-
-        # 2) 캐시된 데이터/리소스 초기화
-        st.cache_data.clear()      # @st.cache_data (예전의 experimental_memo)
-        st.cache_resource.clear()  # @st.cache_resource (예전의 experimental_singleton)
-
-        # 3) 전체 스크립트 다시 실행 (F5와 동일 효과)
-        st.rerun()
 
     # ▼ 사용자 프로필 입력 (expander로 접기/펼치기)
     with st.expander("📋 사용자 프로필 입력", expanded=False):
@@ -380,40 +369,36 @@ if job_rag:
     # 💬 질문 실행 버튼
     if st.button("💬 질문 실행"):
         with st.spinner("🤖 Job-Bu가 부산 기업 정보를 검색 중입니다..."):
-            try:
-                selected_template = st.session_state.templates[user_type]
-                formatted_template = selected_template.format(
-                    university   = st.session_state.university,
-                    major        = st.session_state.major,
-                    gpa          = st.session_state.gpa,
-                    field_pref   = st.session_state.field_pref,
-                    job_pref     = st.session_state.job_pref,
-                    activities   = st.session_state.activities,
-                    certificates = st.session_state.certificates
-                )
-                # 4) 포맷된 문자열로 PromptTemplate 생성
-                prompt = PromptTemplate.from_template(formatted_template)
-                qa_chain = RetrievalQA.from_chain_type(
-                    llm=st.session_state.llm,
-                    retriever=st.session_state.retriever,
-                    return_source_documents=True,
-                    chain_type_kwargs={"prompt": prompt}
-                )
-    
-                result = qa_chain.invoke({"query": query})
-    
-                st.session_state.gpt_result = result["result"]
-                st.session_state.source_docs = result["source_documents"]
-    
-                # 다시 비우기 전 최종 저장
-                st.session_state["saved_query"] = query
-                st.session_state["saved_user_type"] = user_type
-    
-                st.session_state["main_query"] = ""
-                st.rerun()
-            except:
-                st.write("프로필을 입력해 주세요.")
+            selected_template = st.session_state.templates[user_type]
+            formatted_template = selected_template.format(
+                university   = st.session_state.university,
+                major        = st.session_state.major,
+                gpa          = st.session_state.gpa,
+                field_pref   = st.session_state.field_pref,
+                job_pref     = st.session_state.job_pref,
+                activities   = st.session_state.activities,
+                certificates = st.session_state.certificates
+            )
+            # 4) 포맷된 문자열로 PromptTemplate 생성
+            prompt = PromptTemplate.from_template(formatted_template)
+            qa_chain = RetrievalQA.from_chain_type(
+                llm=st.session_state.llm,
+                retriever=st.session_state.retriever,
+                return_source_documents=True,
+                chain_type_kwargs={"prompt": prompt}
+            )
 
+            result = qa_chain.invoke({"query": query})
+
+            st.session_state.gpt_result = result["result"]
+            st.session_state.source_docs = result["source_documents"]
+
+            # 다시 비우기 전 최종 저장
+            st.session_state["saved_query"] = query
+            st.session_state["saved_user_type"] = user_type
+
+            st.session_state["main_query"] = ""
+            st.rerun()
     else:
         st.session_state["main_query"] = query
         
