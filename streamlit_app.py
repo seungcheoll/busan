@@ -106,15 +106,14 @@ chatbot = menu == "Groq Chatbot"
 # 📌 Job Busan 페이지 구성
 if job_rag:
     st.markdown("""
-    <div style='background-color:#f9f9f9; padding:0px 0px; border-radius:12px; border:1px solid #ddd; 
-                width: 60%; margin: 0 auto; text-align: center;'>
-        <h1 style='margin:0; font-size:28px; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 10px 0;'>
-            <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/GPT_image2.png' 
-                 style='width: 48px; height: auto; vertical-align: middle;'/>
-            부산 취업 상담 챗봇 (JOB BUSAN)
-        </h1>
-    </div>
-""", unsafe_allow_html=True)
+        <div style='padding: 10px 0px;'>
+            <h1 style='margin:0; font-size:28px; display: flex; align-items: center; gap: 12px;'>
+                <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/chatbot.png' 
+                     style='width: 48px; height: auto; vertical-align: middle;'/>
+                부산 취업 상담 챗봇 (JOB BUSAN)
+            </h1>
+        </div>
+    """, unsafe_allow_html=True)
 
     # 세션 상태 초기화
     if "llm" not in st.session_state:
