@@ -130,8 +130,8 @@ with st.sidebar:
     # 🔘 페이지 선택 메뉴
     choice = option_menu(
         menu_title="Page",
-        options=["Job-Bu", "Job-Bu Chatbot"],
-        icons=["", ""],
+        options=["이용 가이드","Job-Bu", "Job-Bu Chatbot"],
+        icons=["info-circle","", ""],
         menu_icon="",
         default_index=0,
         styles={
