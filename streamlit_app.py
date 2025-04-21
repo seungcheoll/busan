@@ -127,6 +127,7 @@ for key in ["university", "major", "gpa", "field_pref", "job_pref", "activities"
 # ───────────────────────────────────────────
 # 🔘 사이드바 라디오 메뉴 설정
 with st.sidebar:
+    # 🔘 페이지 선택 메뉴
     choice = option_menu(
         menu_title="Page",
         options=["Job-Bu", "Job-Bu Chatbot"],
@@ -152,22 +153,12 @@ with st.sidebar:
         }
     )
 
-    # 🔹 그룹화 선 제거하는 CSS 인젝션
-    st.markdown("""
-        <style>
-            div[data-testid="stForm"] {
-                border: none;
-                padding: 0;
-            }
-        </style>
-    """, unsafe_allow_html=True)
-
     st.markdown(
         "<hr style='margin:4px 0 4px 0; border:1px solid #ddd'/>",
         unsafe_allow_html=True
     )
 
-    # 📋 사용자 프로필 입력 (expander로 접힘/펼침)
+    # ▼ 사용자 프로필 입력 (expander로 접기/펼치기)
     with st.expander("📋 사용자 프로필 입력", expanded=False):
         with st.form("profile_form"):
             university_temp   = st.text_input("대학교", value=st.session_state.get("university", ""))
