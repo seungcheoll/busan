@@ -158,7 +158,7 @@ if job_rag:
     if "query_input" not in st.session_state:
         st.session_state["query_input"] = ""
     if "user_type" not in st.session_state:
-        st.session_state["user_type"] = ""
+        st.session_state["user_type"] = "대학생"
     if "saved_user_type" not in st.session_state:
         st.session_state["saved_user_type"] = ""
     if "saved_query" not in st.session_state:
