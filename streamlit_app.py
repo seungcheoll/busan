@@ -164,7 +164,8 @@ with st.sidebar:
             st.session_state.job_pref     = job_pref_temp
             st.session_state.activities   = activities_temp
             st.session_state.certificates = certificates_temp
-
+            # 여기서 메시지 출력
+            st.success("✅ 사용자 정보가 입력되었습니다")
 job_rag = choice == "Job-Bu"
 chatbot = choice == "Job-Bu Chatbot"
 
