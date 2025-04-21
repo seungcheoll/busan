@@ -79,7 +79,8 @@ def init_qa_chain():
 # 🧭 Streamlit 기본 설정 및 스타일 숨기기
 st.set_page_config(
     page_title="JobBusan",
-    page_icon="https://raw.githubusercontent.com/seungcheoll/busan/main/chatbot.png"
+    page_icon="https://raw.githubusercontent.com/seungcheoll/busan/main/chatbot.png",
+    layout="wide"
 )
 
 hide_streamlit_style = """
