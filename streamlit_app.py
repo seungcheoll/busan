@@ -186,15 +186,32 @@ if info:
     # 제목 가운데 정렬
     st.markdown("<h1 style='text-align: center;'>🧾 JobBusan 이용 가이드</h1>", unsafe_allow_html=True)
 
+    # ✅ Streamlit 컨테이너로 전체 감싸기
     with st.container():
-        # 큰 컨테이너 시작
+        # 외부 박스 스타일 (Streamlit-safe 방식)
         st.markdown("""
-            <div style="background-color: #f0f4f8; padding: 30px; border-radius: 15px; 
-                        border: 2px solid #d1dce5; margin-top: 20px; margin-bottom: 20px;">
+            <style>
+                .outer-box {
+                    background-color: #f0f4f8;
+                    border: 2px solid #d1dce5;
+                    border-radius: 15px;
+                    padding: 30px;
+                    margin-top: 20px;
+                    margin-bottom: 20px;
+                }
+                .content-box {
+                    background-color:#f8f9fa;
+                    padding:25px;
+                    border-radius:12px;
+                    border-left:6px solid #1f77b4;
+                    color: black;
+                }
+            </style>
+            <div class="outer-box">
         """, unsafe_allow_html=True)
 
-        # ⬅️ 왼쪽: 이미지 + 영상 / ➡️ 오른쪽: 텍스트
-        col1, col2 = st.columns([1, 1])  # 왼쪽이 col1, 오른쪽이 col2
+        # ⬅️ 왼쪽: 이미지+영상 / ➡️ 오른쪽: 텍스트
+        col1, col2 = st.columns([1, 1])
 
         with col1:
             st.markdown("""
@@ -217,8 +234,7 @@ if info:
 
         with col2:
             st.markdown("""
-                <div style="background-color:#f8f9fa; padding:25px; border-radius:12px;
-                            border-left:6px solid #1f77b4; color: black;">
+                <div class="content-box">
                     <h4>1️⃣ Job-Bu 페이지 (기업 추천형 챗봇)</h4>
                     <ul>
                         <li>📋 먼저 사이드바에서 사용자 프로필을 입력하세요.</li>
@@ -247,7 +263,7 @@ if info:
                 </div>
             """, unsafe_allow_html=True)
 
-        # 큰 컨테이너 닫기
+        # ✅ 닫는 div는 반드시 columns() 이후에 닫아야 효과가 살아있음!
         st.markdown("</div>", unsafe_allow_html=True)
 # ───────────────────────────────────────────
 # [8] Job-Bu 페이지: LLM QA + 지도 시각화
