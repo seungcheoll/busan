@@ -55,7 +55,7 @@ def show_job_bu_page(profile):
             with st.spinner("🤖 Job-Bu가 부산 기업 정보를 검색 중입니다..."):
                 formatted_template = st.session_state.templates[user_type].format(**profile)
         except KeyError:
-            st.error("⚠️ 사용자 프로필이나 템플릿이 누락되었습니다. 사이드바에서 프로필을 먼저 입력해주세요.")
+            st.write("⚠️ 사용자 프로필이나 템플릿이 누락되었습니다. 사이드바에서 프로필을 먼저 입력해주세요.")
             return
             prompt = PromptTemplate.from_template(formatted_template)
             qa_chain = RetrievalQA.from_chain_type(
