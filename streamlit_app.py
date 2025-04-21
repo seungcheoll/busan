@@ -130,6 +130,15 @@ with st.sidebar:
             },
         }
     )
+    st.markdown("---")
+    st.markdown("### 사용자 프로필 입력")
+    university   = st.text_input("대학교")
+    major        = st.text_input("전공")
+    gpa          = st.text_input("학점")
+    field_pref   = st.text_input("선호분야")
+    job_pref     = st.text_input("선호직무")
+    activities   = st.text_area("활동이력")
+    certificates = st.text_input("자격증")
 
 job_rag = choice == "Job-Bu"
 chatbot = choice == "Job-Bu Chatbot"
