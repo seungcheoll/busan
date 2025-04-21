@@ -205,20 +205,18 @@ if info:
         background-color: #ffffff;
         padding: 20px;
         border-radius: 10px;
-      }
-      .image-section .title-box {
-        background-color: #1f77b4;
-        color: white;
-        padding: 10px;
-        border-radius: 6px;
-        text-align: center;
-        font-size: 1.1rem;
-        margin-bottom: 10px;
+        border-left: 6px solid #1f77b4;
       }
       hr.custom {
         border: none;
         border-top: 1px solid #d1dce5;
         margin: 10px 0 15px;
+      }
+      .image-section p {
+        font-size: 20px;
+        font-weight: bold;
+        margin: 0;
+        text-align: center;
       }
       .image-section img {
         width: 100%;
@@ -242,7 +240,7 @@ if info:
     <div class="gbox">
       <div class="split">
         <div class="image-section">
-          <p style="font-size:20px; font-weight:bold; margin:0; text-align:center;">Pipeline</p>
+          <p>Pipeline</p>
           <hr class="custom"/>
           <img
             src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/pipeline.png"
