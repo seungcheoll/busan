@@ -219,7 +219,7 @@ if info:
         <div>
           <img
             src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/pipeline.png"
-            style="width:100%; height:1000px; border-radius: 8px;"
+            style="width:100%; height:600px; border-radius: 8px;"
           />
         </div>
         <div class="textbox">
