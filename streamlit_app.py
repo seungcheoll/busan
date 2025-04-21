@@ -194,7 +194,7 @@ if info:
         """, unsafe_allow_html=True)
 
         # ⬅️ 왼쪽: 텍스트 / ➡️ 오른쪽: 이미지 + 영상
-        col1, col2 = st.columns([2, 1])  # 왼쪽이 더 넓게
+        col1, col2 = st.columns([1, 1])
 
         with col1:
             st.markdown("""
@@ -234,7 +234,7 @@ if info:
                 use_container_width=True,
                 caption="JobBusan RAG 처리 구조도"
             )
-            st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+            st.video("https://www.youtube.com/watch?v=G_MKtEmmJt8")
 # ───────────────────────────────────────────
 # [8] Job-Bu 페이지: LLM QA + 지도 시각화
 # ───────────────────────────────────────────
