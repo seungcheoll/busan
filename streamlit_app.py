@@ -190,16 +190,16 @@ if info:
     with col1:
         st.markdown("""
             <div style="background-color:#f8f9fa; padding:20px; border-radius:10px; border-left:4px solid #1f77b4;">
-            <h4>1️⃣ Job-Bu 페이지 (기업 추천)</h4>
+            <h4>1️⃣ Job-Bu 페이지 (기업 추천형 챗봇)</h4>
             <ul style="margin-left: -20px;">
-                <li>📝 <strong>사이드바</strong>에서 사용자 프로필을 입력하세요</li>
-                <li>🎯 상단 입력창에 조건 입력 → <strong>질문 실행</strong> 클릭</li>
-                <li>📁 <strong>결과는 4개의 탭</strong>으로 제공됨:
+                <li>📋 먼저 사이드바에서 사용자 프로필을 입력하세요.</li>
+                <li>❓ 입력창에 원하는 기업의 조건들을 입력하고 질문 실행 버튼을 클릭하세요.</li>
+                <li>📁 결과는 3개의 탭으로 구성되어 있습니다:
                     <ul>
-                        <li>✅ <strong>Job-Bu 답변</strong>: 요약된 추천 결과</li>
-                        <li>📚 <strong>추천 기업 상세</strong>: 참고 문서 리스트</li>
-                        <li>🌐 <strong>기업 위치 지도</strong>: 지도 위 기업 표시</li>
-                        <li>🔍 <strong>부산 기업 검색</strong>: 직접 탐색 가능</li>
+                        <li>✅ <strong>Job-Bu 답변</strong>: 부산 내 강소기업 추천</li>
+                        <li>📚 <strong>추천 기업 상세</strong>: 추천 기업의 상세 정보</li>
+                        <li>🌍 <strong>추천 기업 위치</strong>: 지도에서 추천 기업 위치 확인 가능</li>
+                        <li>🔍 <strong>부산 기업 분포</strong>: 일정 규모 이상의 부산 기업 지도</li>
                     </ul>
                 </li>
             </ul>
@@ -209,16 +209,17 @@ if info:
     with col2:
         st.markdown("""
             <div style="background-color:#f8f9fa; padding:20px; border-radius:10px; border-left:4px solid #1f77b4;">
-            <h4>2️⃣ Job-Bu Chatbot (상세 질문 챗봇)</h4>
+            <h4>2️⃣ Job-Bu Chatbot (상담형 챗봇)</h4>
             <ul style="margin-left: -20px;">
-                <li>🤖 추천 기업에 대해 <strong>추가 질문 가능</strong></li>
-                <li>💡 <strong>예시 질문:</strong>
+                <li>🤖 기업 추천을 먼저 받은 후, 이어서 추가적인 질문이 가능합니다.</li>
+                <li>📝 Job-Bu에서 확보한 프로필과 문서를 기반으로, 자세한 답변을 제공합니다.</li>
+                <li>💡 예시 질문:
                     <ul>
-                        <li style="color:green;">"복지제도가 어떻게 되나요?"</li>
+                        <li style="color:green;">"이 기업의 복지제도는 어떻게 되나요?"</li>
                         <li style="color:green;">"평균 연봉은 얼마인가요?"</li>
+                        <li style="color:green;">"이 분야의 전망은?"</li>
                     </ul>
                 </li>
-                <li>📄 참고 문서를 기반으로 <strong>자세한 응답</strong> 제공</li>
             </ul>
             </div>
         """, unsafe_allow_html=True)
