@@ -314,7 +314,7 @@ if info:
     </div>
 
     <div class="video-link">
-      ▶️ <a href="https://your-demo-link.com" target="_blank">시연 영상 보러가기</a>
+      ▶️ <a href="https://youtu.be/G_MKtEmmJt8" target="_blank">시연 영상 보러가기</a>
     </div>
     """, unsafe_allow_html=True)
 # ───────────────────────────────────────────
