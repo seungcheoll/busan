@@ -108,7 +108,7 @@ st.markdown("""
 with st.sidebar:
     choice = option_menu(
         menu_title="Page",
-        options=["Job-Bu", "Groq Chatbot"],
+        options=["Job-Bu", "Job-Bu Chatbot"],
         icons=["", ""],              # 아이콘 제거
         menu_icon="",                # 사이드바 제목용 아이콘도 없앰
         default_index=0,
@@ -132,7 +132,7 @@ with st.sidebar:
     )
 
 job_rag = choice == "Job-Bu"
-chatbot = choice == "Groq Chatbot"
+chatbot = choice == "Job-Bu Chatbot"
 
 # 📌 Job Busan 페이지 구성
 if job_rag:
