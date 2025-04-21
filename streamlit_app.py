@@ -420,7 +420,7 @@ if chatbot:
             <h1 style='margin:0; font-size:24px; display: flex; align-items: center; justify-content: center; gap: 10px; color: #000;'>
                 <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/GPT_image2.png' 
                      style='width: 40px; height: auto; vertical-align: middle;'/>
-                Groq Chatbot
+                Job-Bu Chatbot
             </h1>
         </div>
     """, unsafe_allow_html=True)
