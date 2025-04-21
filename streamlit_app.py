@@ -223,8 +223,19 @@ if job_rag:
     if st.button("💬 질문 실행"):
         with st.spinner("🤖 Job-Bu가 부산 기업 정보를 검색 중입니다..."):
             selected_template = st.session_state.templates[user_type]
-            prompt = PromptTemplate.from_template(selected_template)
-            
+            formatted_template = selected_template.format(
+                university   = st.session_state.university,
+                major        = st.session_state.major,
+                gpa          = st.session_state.gpa,
+                field_pref   = st.session_state.field_pref,
+                job_pref     = st.session_state.job_pref,
+                activities   = st.session_state.activities,
+                certificates = st.session_state.certificates
+            )
+    
+            # 4) 포맷된 문자열로 PromptTemplate 생성
+            prompt = PromptTemplate.from_template(formatted_template)
+            st.write(prompt)
             qa_chain = RetrievalQA.from_chain_type(
                 llm=st.session_state.llm,
                 retriever=st.session_state.retriever,
