@@ -241,7 +241,6 @@ if job_rag:
     
             # 4) 포맷된 문자열로 PromptTemplate 생성
             prompt = PromptTemplate.from_template(formatted_template)
-            st.write(prompt)
             qa_chain = RetrievalQA.from_chain_type(
                 llm=st.session_state.llm,
                 retriever=st.session_state.retriever,
@@ -455,11 +454,17 @@ if chatbot:
         template=file.read()
     
     system_prompt = template.format(
-        user_type=user_type,
-        user_query=user_query,
-        context_text=context_text
+        university   = st.session_state.university,
+        major        = st.session_state.major,
+        gpa          = st.session_state.gpa,
+        field_pref   = st.session_state.field_pref,
+        job_pref     = st.session_state.job_pref,
+        activities   = st.session_state.activities,
+        certificates = st.session_state.certificates,
+        user_type    = user_type,
+        user_query   = user_query,
+        context_text = context_text
     )
-
     st.markdown("""
         <div style='background-color:#f9f9f9; padding:0px 0px; border-radius:12px; border:1px solid #ddd; 
                     width:20%; margin: 0 auto; text-align: center;'>
