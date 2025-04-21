@@ -185,19 +185,24 @@ chatbot = choice == "Job-Bu Chatbot"
 if info:
     st.markdown("""
         <style>
-            .guide-section {
-                padding: 12px 18px;
+            .guide-container {
+                display: flex;
+                gap: 20px;
+                justify-content: space-between;
+            }
+            .guide-box {
+                flex: 1;
+                padding: 18px;
                 border-left: 4px solid #3498db;
                 background-color: #f9f9f9;
-                margin-bottom: 20px;
                 border-radius: 6px;
-                color: black;  /* 텍스트 색상 고정 */
+                color: black;
             }
-            .guide-section ul {
-                color: black;  /* 리스트 항목 텍스트도 검정 */
+            .guide-box ul {
+                color: black;
             }
-            .guide-section h3 {
-                color: black;  /* 제목도 검정 */
+            .guide-box h3 {
+                color: black;
             }
         </style>
     """, unsafe_allow_html=True)
@@ -205,29 +210,33 @@ if info:
     st.title("🧾 JobBusan 이용 가이드")
     
     st.markdown("""
-    <div class="guide-section">
-        <h3>1. Job-Bu 페이지 (기업 추천)</h3>
-        <ul>
-            <li>📋 먼저 사이드바에서 <strong>사용자 프로필</strong>을 입력하세요.</li>
-            <li>❓ 상단의 입력창에 원하는 조건을 입력하고 <strong>질문 실행</strong> 버튼을 클릭하세요.</li>
-            <li>📁 결과는 4개의 탭으로 구성되어 있습니다:
-                <ul>
-                    <li>✅ <strong>Job-Bu 답변</strong>: 요약된 추천 결과</li>
-                    <li>📚 <strong>추천 기업 상세</strong>: 근거가 된 문서들</li>
-                    <li>🌍 <strong>추천 기업 위치</strong>: 지도 위에 추천된 기업 표시</li>
-                    <li>🔍 <strong>부산 기업 분포</strong>: 검색어로 직접 탐색도 가능</li>
-                </ul>
-            </li>
-        </ul>
-    </div>
+    <div class="guide-container">
     
-    <div class="guide-section">
-        <h3>2. Job-Bu Chatbot (상세 질문 챗봇)</h3>
-        <ul>
-            <li>🤖 기업 추천을 먼저 받은 후, 이어서 추가적인 질문이 가능합니다.</li>
-            <li>💡 예: "이 기업의 복지제도는 어떻게 되나요?", "평균 연봉은 얼마인가요?"</li>
-            <li>📝 Job-Bu에서 확보한 문서를 기반으로, 자세한 답변을 제공합니다.</li>
-        </ul>
+        <div class="guide-box">
+            <h3>1. Job-Bu 페이지 (기업 추천)</h3>
+            <ul>
+                <li>📋 먼저 사이드바에서 <strong>사용자 프로필</strong>을 입력하세요.</li>
+                <li>❓ 상단의 입력창에 원하는 조건을 입력하고 <strong>질문 실행</strong> 버튼을 클릭하세요.</li>
+                <li>📁 결과는 4개의 탭으로 구성되어 있습니다:
+                    <ul>
+                        <li>✅ <strong>Job-Bu 답변</strong>: 요약된 추천 결과</li>
+                        <li>📚 <strong>추천 기업 상세</strong>: 근거가 된 문서들</li>
+                        <li>🌍 <strong>추천 기업 위치</strong>: 지도 위에 추천된 기업 표시</li>
+                        <li>🔍 <strong>부산 기업 분포</strong>: 검색어로 직접 탐색도 가능</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    
+        <div class="guide-box">
+            <h3>2. Job-Bu Chatbot (상세 질문 챗봇)</h3>
+            <ul>
+                <li>🤖 기업 추천을 먼저 받은 후, 이어서 추가적인 질문이 가능합니다.</li>
+                <li>💡 예: "이 기업의 복지제도는 어떻게 되나요?", "평균 연봉은 얼마인가요?"</li>
+                <li>📝 Job-Bu에서 확보한 문서를 기반으로, 자세한 답변을 제공합니다.</li>
+            </ul>
+        </div>
+    
     </div>
     """, unsafe_allow_html=True)
     
