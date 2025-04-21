@@ -405,19 +405,19 @@ if chatbot:
         else:
             left, _ = st.columns([2, 3])
             with left:
-                bubble = st.chat_message("assistant")
-                bubble.markdown(
-                    f"""
-                    <div style='display: flex; align-items: flex-start; gap: 10px;'>
-                        <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/GPT_image2.png' 
-                             style='width: 36px; height: auto; margin-top: 4px;'/>
-                        <div style='background-color:#f0f0f0; padding:12px; border-radius:8px; max-width: 100%;'>
-                            {msg['content']}
+                with st.container():
+                    st.markdown(
+                        f"""
+                        <div style='display: flex; align-items: flex-start; gap: 10px;'>
+                            <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/GPT_image2.png' 
+                                 style='width: 36px; height: auto; margin-top: 4px;'/>
+                            <div style='background-color:#f0f0f0; padding:12px; border-radius:8px; max-width: 100%;'>
+                                {msg['content']}
+                            </div>
                         </div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+                        """,
+                        unsafe_allow_html=True
+                    )
 
     prompt = st.chat_input("메시지를 입력하세요...", key="groq_input")
     if prompt:
