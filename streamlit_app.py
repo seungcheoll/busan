@@ -130,7 +130,12 @@ with st.sidebar:
             },
         }
     )
-    st.markdown("---")
+    
+    st.markdown(
+        "<hr style='margin:4px 0 4px 0; border:1px solid #ddd'/>",
+        unsafe_allow_html=True
+    )
+
     st.markdown("### 사용자 프로필 입력")
     university   = st.text_input("대학교")
     major        = st.text_input("전공")
