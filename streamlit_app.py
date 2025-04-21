@@ -154,7 +154,7 @@ with st.sidebar:
     )
 
     # ▼ 사용자 프로필 입력 (expander로 접기/펼치기)
-    with st.expander("📋 사용자 프로필 입력", expanded=False):
+    with st.expander("📋 프로필을 입력하세요", expanded=False):
         with st.form("profile_form"):
             university_temp   = st.text_input("대학교", value=st.session_state.get("university", ""))
             major_temp        = st.text_input("전공", value=st.session_state.get("major", ""))
