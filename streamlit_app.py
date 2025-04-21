@@ -131,8 +131,8 @@ with st.sidebar:
     choice = option_menu(
         menu_title="Page",
         options=["Job-Bu", "Job-Bu Chatbot"],
-        icons=["", ""],              # 아이콘 제거
-        menu_icon="",                # 사이드바 제목용 아이콘도 없앰
+        icons=["", ""],
+        menu_icon="",
         default_index=0,
         styles={
             "container": {
@@ -158,10 +158,8 @@ with st.sidebar:
         unsafe_allow_html=True
     )
 
-    # 📋 사용자 프로필 입력 (토글 방식)
-    show_profile = st.toggle("📋 사용자 프로필 입력", value=False)
-
-    if show_profile:
+    # ▼ 사용자 프로필 입력 (expander로 접기/펼치기)
+    with st.expander("📋 사용자 프로필 입력", expanded=False):
         with st.form("profile_form"):
             university_temp   = st.text_input("대학교", value=st.session_state.get("university", ""))
             major_temp        = st.text_input("전공", value=st.session_state.get("major", ""))
