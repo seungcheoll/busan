@@ -152,9 +152,20 @@ with st.sidebar:
             },
         }
     )
-    # 🔄 새로고침 버튼 (F5와 동일 동작)
-    if st.button("🔄 새로고침"):
-        st.rerun()
+    if st.button("🔄 완전 초기화"):
+        # 1) 세션 상태 초기화
+        for key in list(st.session_state.keys()):
+            del st.session_state[key]
+
+        # 2) 캐시된 데이터/리소스 모두 초기화
+        st.cache_data.clear()            # @st.cache_data 또는 @st.experimental_memo
+        st.cache_resource.clear()        # @st.cache_resource
+        # (만약 이전 API를 쓰고 있다면 아래도 함께)
+        st.experimental_memo.clear()
+        st.experimental_singleton.clear()
+
+        # 3) 전체 스크립트 다시 실행 (F5와 동일 효과)
+        st.experimental_rerun()
 
     # ▼ 사용자 프로필 입력 (expander로 접기/펼치기)
     with st.expander("📋 사용자 프로필 입력", expanded=False):
