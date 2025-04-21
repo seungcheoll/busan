@@ -102,7 +102,7 @@ st.markdown("""
 # 🔘 사이드바 라디오 메뉴 설정
 with st.sidebar:
     choice = option_menu(
-        menu_title="페이지 선택",
+        menu_title="Page",
         options=["Job-Bu", "Groq Chatbot"],
         icons=["", ""],              # 아이콘 제거
         menu_icon="",                # 사이드바 제목용 아이콘도 없앰
