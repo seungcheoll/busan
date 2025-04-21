@@ -246,14 +246,14 @@ if info:
     <div class="gbox">
       <div class="split">
         <div class="image-section"
-             style="--pipeline-text-size:30px;  /* 제목 글자 크기 수정 */
-                    --pipeline-img-width:80%;
-                    --pipeline-img-height:80%;">
-          <p>JobBusan Pipeline</p>
+          <p style="font-size:30px; font-weight:bold; text-align:center; margin:0;">
+            JobBusan Pipeline
+          </p>
           <hr class="custom"/>
           <img
             src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/pipeline.png"
             alt="JobBusan RAG 처리 구조도"
+            style="width:80%; width:80%; display:block; margin:0 auto;"
           />
         </div>
         <div class="right-section">
