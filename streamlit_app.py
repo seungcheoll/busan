@@ -175,6 +175,11 @@ with st.sidebar:
                 st.session_state.certificates = certificates_temp
 
                 st.success("✅ 입력 완료!")
+
+    # ▶️ 시연 영상 (YouTube 삽입)
+    st.sidebar.markdown("---")
+    st.sidebar.markdown("#### ▶️ 시연 영상")
+    st.sidebar.video("https://youtu.be/G_MKtEmmJt8")  # 여기에 유튜브 링크 삽입
 info = choice == "Guide"
 job_rag = choice == "Job-Bu"
 chatbot = choice == "Job-Bu Chatbot"
