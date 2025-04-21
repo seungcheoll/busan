@@ -120,7 +120,7 @@ def show_job_bu_page():
             search_input = st.text_input(" ", key="search_input", label_visibility="collapsed", placeholder="🔎 회사명으로 검색 (예: 현대, 시스템, 조선 등)")
         with col2:
             if search_input:
-                st.markdown("<div style='padding-top:27px;'></div>", unsafe_allow_html=True)
+                st.markdown("<div style='padding-top:0px;'></div>", unsafe_allow_html=True)
                 st.button("검색 초기화", on_click=reset_search)
 
         st.session_state.search_keyword = search_input
