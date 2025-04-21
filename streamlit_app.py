@@ -222,6 +222,7 @@ if info:
                             <li style="color:green;">"이 기업의 복지제도는 어떻게 되나요?"</li>
                             <li style="color:green;">"평균 연봉은 얼마인가요?"</li>
                             <li style="color:green;">"이 분야의 전망은?"</li>
+                            <li style="color:green;">"이 분야의 전망은?"</li>
                         </ul>
                     </li>
                 </ul>
@@ -232,7 +233,7 @@ if info:
     st.markdown("""
         <div style='text-align: center; margin-top: 40px;'>
             <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/pipeline.png' 
-                 style='width: 1000px; height: auto; border-radius: 12px;' />
+                 style='width: 800px; height: auto; border-radius: 12px;' />
         </div>
     """, unsafe_allow_html=True)
 # ───────────────────────────────────────────
