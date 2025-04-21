@@ -186,27 +186,46 @@ if info:
     # 제목 가운데 정렬
     st.markdown("<h1 style='text-align: center;'>🧾 JobBusan 이용 가이드</h1>", unsafe_allow_html=True)
 
+    # 💡 Streamlit의 columns 사용 + 전체 감싸는 컨테이너 스타일 삽입
     with st.container():
-        # 큰 컨테이너 시작
-        st.markdown("""
-            <div style="background-color: #f0f4f8; padding: 30px; border-radius: 15px; 
-                        border: 2px solid #d1dce5; margin-top: 20px; margin-bottom: 20px;">
-        """, unsafe_allow_html=True)
+        with st.markdown(
+            """
+            <style>
+                .custom-box {
+                    background-color: #f0f4f8;
+                    border: 2px solid #d1dce5;
+                    border-radius: 15px;
+                    padding: 30px;
+                    margin-top: 20px;
+                    margin-bottom: 20px;
+                }
+                .right-box {
+                    background-color: #f8f9fa;
+                    padding: 25px;
+                    border-radius: 12px;
+                    border-left: 6px solid #1f77b4;
+                    color: black;
+                }
+            </style>
+            """,
+            unsafe_allow_html=True
+        ):
+            pass
+
+        # HTML 구조는 Streamlit에서 직접 적용하기 위해 columns로 나눔
+        st.markdown("<div class='custom-box'>", unsafe_allow_html=True)
 
         col1, col2 = st.columns([1, 2])
 
         with col1:
-            st.markdown("""
-                <div style='text-align: center;'>
-                    <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/pipeline.png' 
-                         style='width: 100%; height: auto; border-radius: 12px;' />
-                </div>
-            """, unsafe_allow_html=True)
+            st.image(
+                "https://raw.githubusercontent.com/seungcheoll/busan/main/image/pipeline.png",
+                use_column_width=True,
+            )
 
         with col2:
             st.markdown("""
-                <div style="background-color:#f8f9fa; padding:25px; border-radius:12px;
-                            border-left:6px solid #1f77b4; color: black;">
+                <div class="right-box">
                     <h4>1️⃣ Job-Bu 페이지 (기업 추천형 챗봇)</h4>
                     <ul>
                         <li>📋 먼저 사이드바에서 사용자 프로필을 입력하세요.</li>
@@ -236,9 +255,7 @@ if info:
                 </div>
             """, unsafe_allow_html=True)
 
-        # 큰 컨테이너 닫기
         st.markdown("</div>", unsafe_allow_html=True)
-
 # ───────────────────────────────────────────
 # [8] Job-Bu 페이지: LLM QA + 지도 시각화
 # ───────────────────────────────────────────
