@@ -204,7 +204,6 @@ if info:
         gap: 20px;
       }
 
-      /* 왼쪽 이미지 영역 */
       .image-section {
         background-color: #ffffff;
         padding: 20px;
@@ -231,7 +230,6 @@ if info:
         border-radius: 8px;
       }
 
-      /* 오른쪽 텍스트 영역: 세로로 두 개 박스 */
       .right-section {
         display: flex;
         flex-direction: column;
@@ -254,6 +252,17 @@ if info:
       .textbox ul {
         margin: 0;
         padding-left: 1.2em;
+      }
+
+      .video-link {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 18px;
+      }
+      .video-link a {
+        color: #1f77b4;
+        text-decoration: underline;
+        font-weight: bold;
       }
     </style>
 
@@ -302,6 +311,10 @@ if info:
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="video-link">
+      ▶️ <a href="https://your-demo-link.com" target="_blank">시연 영상 보러가기</a>
     </div>
     """, unsafe_allow_html=True)
 # ───────────────────────────────────────────
