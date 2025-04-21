@@ -187,22 +187,30 @@ if info:
         <style>
             .guide-container {
                 display: flex;
+                flex-direction: row;
                 gap: 20px;
                 justify-content: space-between;
             }
+    
             .guide-box {
                 flex: 1;
+                min-width: 0;
                 padding: 18px;
                 border-left: 4px solid #3498db;
                 background-color: #f9f9f9;
                 border-radius: 6px;
                 color: black;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.05);
             }
-            .guide-box ul {
+    
+            .guide-box ul, .guide-box h3 {
                 color: black;
             }
-            .guide-box h3 {
-                color: black;
+    
+            @media screen and (max-width: 768px) {
+                .guide-container {
+                    flex-direction: column;
+                }
             }
         </style>
     """, unsafe_allow_html=True)
