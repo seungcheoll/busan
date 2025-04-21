@@ -55,9 +55,9 @@ def load_api_key():
 # 🧩 사용자 유형별 템플릿 불러오기
 def load_all_templates():
     templates = {
-        "진로 설정을 못한 대학생": open("template/template_un.txt", "r", encoding="utf-8").read(),
+        "대학생": open("template/template_un.txt", "r", encoding="utf-8").read(),
         "첫 취업 준비": open("template/template_first.txt", "r", encoding="utf-8").read(),
-        "이직을 준비하는 사람": open("template/template_move.txt", "r", encoding="utf-8").read(),
+        "이직 준비": open("template/template_move.txt", "r", encoding="utf-8").read(),
     }
     return templates
 
@@ -181,8 +181,8 @@ if job_rag:
         )
     with col2:
         st.selectbox(
-            "👤 유형을 선택하세요!",
-            ["진로 설정을 못한 대학생", "첫 취업 준비", "이직을 준비하는 사람"],
+            "🏷️ 유형을 선택하세요!",
+            ["대학생", "첫 취업 준비", "이직 준비"],
             key="user_type",
             on_change=save_user_inputs
         )
