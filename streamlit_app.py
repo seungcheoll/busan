@@ -104,6 +104,11 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# 사용자 입력 세션 상태 기본값 초기화
+for key in ["university", "major", "gpa", "field_pref", "job_pref", "activities", "certificates"]:
+    if key not in st.session_state:
+        st.session_state[key] = ""
+        
 # 🔘 사이드바 라디오 메뉴 설정
 with st.sidebar:
     choice = option_menu(
