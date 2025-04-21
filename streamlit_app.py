@@ -229,12 +229,23 @@ if info:
             """, unsafe_allow_html=True)
 
         with col2:
-            st.image(
-                "https://raw.githubusercontent.com/seungcheoll/busan/main/image/pipeline.png",
-                use_container_width=True,
-                caption="JobBusan RAG 처리 구조도"
-            )
-            st.video("https://www.youtube.com/watch?v=G_MKtEmmJt8")
+            st.markdown("""
+                <div style="text-align: center;">
+                    <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/pipeline.png" 
+                         alt="JobBusan RAG 처리 구조도"
+                         style="width: 90%; max-width: 350px; border-radius: 10px;" />
+                </div>
+            """, unsafe_allow_html=True)
+        
+            st.markdown("""
+                <div style="text-align: center; margin-top: 20px;">
+                    <iframe width="350" height="200"
+                        src="https://www.youtube.com/embed/G_MKtEmmJt8"
+                        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            """, unsafe_allow_html=True)
 # ───────────────────────────────────────────
 # [8] Job-Bu 페이지: LLM QA + 지도 시각화
 # ───────────────────────────────────────────
