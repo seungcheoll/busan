@@ -205,12 +205,15 @@ if info:
         padding: 20px;
         border: 1px solid #ccc;
         border-radius: 10px;
-        text-align: center;
       }
-      .imgbox h3 {
-        margin: 0 0 10px;
-        font-size: 1.25rem;
-        color: #333;
+      .imgbox .title-box {
+        background-color: #1f77b4;
+        color: white;
+        padding: 10px;
+        border-radius: 6px;
+        text-align: center;
+        font-size: 1.1rem;
+        margin-bottom: 15px;
       }
       .imgbox img {
         width: 100%;
@@ -234,7 +237,7 @@ if info:
     <div class="gbox">
       <div class="split">
         <div class="imgbox">
-          <h3>Pipeline</h3>
+          <div class="title-box">Pipeline</div>
           <img
             src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/pipeline.png"
             alt="JobBusan RAG 처리 구조도"
