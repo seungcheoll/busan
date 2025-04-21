@@ -52,7 +52,7 @@ def show_job_bu_page(profile):
     if st.button("💬 질문 실행"):
         with st.spinner("🤖 Job-Bu가 부산 기업 정보를 검색 중입니다..."):
             try:
-                formatted_template = st.session_state.templates[user_type].format(
+                formatted_template = st.session_state.templates[st.session_state["user_type"]].format(
                     university   = st.session_state.university,
                     major        = st.session_state.major,
                     gpa          = st.session_state.gpa,
