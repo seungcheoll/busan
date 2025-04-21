@@ -90,7 +90,7 @@ def init_qa_chain():
 # 🧭 Streamlit 기본 설정 및 스타일 숨기기
 st.set_page_config(
     page_title="JobBusan",
-    page_icon="https://raw.githubusercontent.com/seungcheoll/busan/main/chatbot.png",
+    page_icon="https://raw.githubusercontent.com/seungcheoll/busan/main/image/chatbot.png",
     layout="wide"
 )
 
@@ -232,7 +232,7 @@ if info:
     # ⬇️ 하단 이미지 1장 (가운데 정렬)
     st.markdown("""
         <div style='text-align: center; margin-top: 40px;'>
-            <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/pipeline.png' 
+            <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/pipeline.png' 
                  style='width: 800px; height: auto; border-radius: 12px;' />
         </div>
     """, unsafe_allow_html=True)
@@ -244,7 +244,7 @@ if job_rag:
     st.markdown("""
         <div style='padding: 10px 0px;'>
             <h1 style='margin:0; font-size:28px; display: flex; align-items: center; gap: 12px;'>
-                <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/chatbot.png' 
+                <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/chatbot.png' 
                      style='width: 60px; height: auto; vertical-align: middle;'>
                 부산시 취업 상담 챗봇(Job-Bu)
             </h1>
@@ -545,7 +545,7 @@ if chatbot:
         <div style='background-color:#f9f9f9; padding:0px 0px; border-radius:12px; border:1px solid #ddd; 
                     width:20%; margin: 0 auto; text-align: center;'>
             <h1 style='margin:0; font-size:24px; display: flex; align-items: center; justify-content: center; gap: 10px; color: #000;'>
-                <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/GPT_image2.png' 
+                <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/GPT_image2.png' 
                      style='width: 40px; height: auto; vertical-align: middle;'/>
                 Job-Bu Chatbot
             </h1>
@@ -580,7 +580,7 @@ if chatbot:
                     f"""
                     <div style='display: flex; align-items: flex-start; gap: 10px;'>
                         <img 
-                            src='https://raw.githubusercontent.com/seungcheoll/busan/main/chatbot.png' 
+                            src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/chatbot.png' 
                             style='width: 40px; height: auto; margin-top: 4px;'
                         />
                         <div 
