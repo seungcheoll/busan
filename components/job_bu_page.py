@@ -1,3 +1,4 @@
+# components/job_bu_page.py
 import streamlit as st
 import pandas as pd
 import folium
@@ -5,9 +6,8 @@ from streamlit.components.v1 import html
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from components.qa_utils import init_qa_chain, load_all_templates, load_api_key
-from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode, DataReturnMode
 
-def show_job_bu_page():
+def show_job_bu_page(profile):
     st.markdown("""
         <div style='padding: 10px 0px;'>
             <h1 style='margin:0; font-size:28px; display: flex; align-items: center; gap: 12px;'>
@@ -48,15 +48,7 @@ def show_job_bu_page():
 
     if st.button("💬 질문 실행"):
         with st.spinner("🤖 Job-Bu가 부산 기업 정보를 검색 중입니다..."):
-            formatted_template = st.session_state.templates[user_type].format(
-                university   = st.session_state.university,
-                major        = st.session_state.major,
-                gpa          = st.session_state.gpa,
-                field_pref   = st.session_state.field_pref,
-                job_pref     = st.session_state.job_pref,
-                activities   = st.session_state.activities,
-                certificates = st.session_state.certificates
-            )
+            formatted_template = st.session_state.templates[user_type].format(**profile)
             prompt = PromptTemplate.from_template(formatted_template)
             qa_chain = RetrievalQA.from_chain_type(
                 llm=st.session_state.llm,
@@ -72,6 +64,7 @@ def show_job_bu_page():
             st.rerun()
     else:
         st.session_state["main_query"] = query
+
 
     selected_tabs = st.tabs(["✅ Job-Bu 답변", "📚 추천 기업 상세", "🌍 추천 기업 위치", "🔍 부산 기업 분포 및 검색"])
 
