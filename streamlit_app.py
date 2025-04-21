@@ -79,20 +79,8 @@ def init_qa_chain():
 # 🧭 Streamlit 기본 설정 및 스타일 숨기기
 st.set_page_config(
     page_title="JobBusan",
-    page_icon="https://raw.githubusercontent.com/seungcheoll/busan/main/chatbot.png",
-    layout="wide"
+    page_icon="https://raw.githubusercontent.com/seungcheoll/busan/main/chatbot.png"
 )
-
-# 탭 제목에서 “– Streamlit” 제거 용 스크립트
-st.markdown(
-    """
-    <script>
-    document.title = "JobBusan";
-    </script>
-    """,
-    unsafe_allow_html=True
-)
-
 
 hide_streamlit_style = """
     <style>
