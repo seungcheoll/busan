@@ -186,54 +186,55 @@ if info:
     # 제목 가운데 정렬
     st.markdown("<h1 style='text-align: center;'>🧾 JobBusan 이용 가이드</h1>", unsafe_allow_html=True)
     
-    # 컬럼 박스를 화면 가운데에 배치
-    centered_container = st.container()
-    with centered_container:
-        st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allow_html=True)
+    # ⬆️ 상단 텍스트 2개 (좌우 컬럼)
+    col1, col2 = st.columns([1, 1], gap="large")
     
-        col1, col2 = st.columns([1, 1], gap="large")
+    with col1:
+        st.markdown("""
+            <div style="background-color:#f8f9fa; padding:20px; border-radius:10px;
+                        border-left:4px solid #1f77b4; color: black; text-align: left;">
+                <h4>1️⃣ Job-Bu 페이지 (기업 추천형 챗봇)</h4>
+                <ul>
+                    <li>📋 먼저 사이드바에서 사용자 프로필을 입력하세요.</li>
+                    <li>❓ 입력창에 원하는 기업의 조건들을 입력하고 질문 실행 버튼을 클릭하세요.</li>
+                    <li>📁 결과는 3개의 탭으로 구성되어 있습니다:
+                        <ul>
+                            <li>✅ <strong>Job-Bu 답변</strong>: 부산 내 강소기업 추천</li>
+                            <li>📚 <strong>추천 기업 상세</strong>: 추천 기업의 상세 정보</li>
+                            <li>🌍 <strong>추천 기업 위치</strong>: 지도에서 추천 기업 위치 확인 가능</li>
+                            <li>🔍 <strong>부산 기업 분포</strong>: 일정 규모 이상의 부산 기업 지도</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        """, unsafe_allow_html=True)
     
-        with col1:
-            st.markdown("""
-                <div style="background-color:#f8f9fa; padding:20px; border-radius:10px;
-                            border-left:4px solid #1f77b4; color: black; text-align: left;">
-                    <h4>1️⃣ Job-Bu 페이지 (기업 추천형 챗봇)</h4>
-                    <ul>
-                        <li>📋 먼저 사이드바에서 사용자 프로필을 입력하세요.</li>
-                        <li>❓ 입력창에 원하는 기업의 조건들을 입력하고 질문 실행 버튼을 클릭하세요.</li>
-                        <li>📁 결과는 3개의 탭으로 구성되어 있습니다:
-                            <ul>
-                                <li>✅ <strong>Job-Bu 답변</strong>: 부산 내 강소기업 추천</li>
-                                <li>📚 <strong>추천 기업 상세</strong>: 추천 기업의 상세 정보</li>
-                                <li>🌍 <strong>추천 기업 위치</strong>: 지도에서 추천 기업 위치 확인 가능</li>
-                                <li>🔍 <strong>부산 기업 분포</strong>: 일정 규모 이상의 부산 기업 지도</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            """, unsafe_allow_html=True)
+    with col2:
+        st.markdown("""
+            <div style="background-color:#f8f9fa; padding:20px; border-radius:10px;
+                        border-left:4px solid #1f77b4; color: black; text-align: left;">
+                <h4>2️⃣ Job-Bu Chatbot (상담형 챗봇)</h4>
+                <ul>
+                    <li>🤖 기업 추천을 먼저 받은 후, 이어서 추가적인 질문이 가능합니다.</li>
+                    <li>📝 Job-Bu에서 확보한 프로필과 문서를 기반으로, 자세한 답변을 제공합니다.</li>
+                    <li>💡 예시 질문:
+                        <ul>
+                            <li style="color:green;">"이 기업의 복지제도는 어떻게 되나요?"</li>
+                            <li style="color:green;">"평균 연봉은 얼마인가요?"</li>
+                            <li style="color:green;">"이 분야의 전망은?"</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        """, unsafe_allow_html=True)
     
-        with col2:
-            st.markdown("""
-                <div style="background-color:#f8f9fa; padding:20px; border-radius:10px;
-                            border-left:4px solid #1f77b4; color: black; text-align: left;">
-                    <h4>2️⃣ Job-Bu Chatbot (상담형 챗봇)</h4>
-                    <ul>
-                        <li>🤖 기업 추천을 먼저 받은 후, 이어서 추가적인 질문이 가능합니다.</li>
-                        <li>📝 Job-Bu에서 확보한 프로필과 문서를 기반으로, 자세한 답변을 제공합니다.</li>
-                        <li>💡 예시 질문:
-                            <ul>
-                                <li style="color:green;">"이 기업의 복지제도는 어떻게 되나요?"</li>
-                                <li style="color:green;">"평균 연봉은 얼마인가요?"</li>
-                                <li style="color:green;">"이 분야의 전망은?"</li>
-                                <li style="color:green;">"이 분야의 전망은?"</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            """, unsafe_allow_html=True)
-    
-        st.markdown("</div>", unsafe_allow_html=True)
+    # ⬇️ 하단 이미지 1장 (가운데 정렬)
+    st.markdown("""
+        <div style='text-align: center; margin-top: 40px;'>
+            <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/chatbot.png' 
+                 style='width: 180px; height: auto; border-radius: 12px;' />
+        </div>
+    """, unsafe_allow_html=True)
 # ───────────────────────────────────────────
 # [8] Job-Bu 페이지: LLM QA + 지도 시각화
 # ───────────────────────────────────────────
