@@ -6,7 +6,7 @@ from streamlit.components.v1 import html
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from components.qa_utils import init_qa_chain, load_all_templates, load_api_key
-
+from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode, DataReturnMode
 def show_job_bu_page(profile):
     st.markdown("""
         <div style='padding: 10px 0px;'>
