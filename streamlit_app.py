@@ -239,8 +239,7 @@ if info:
                             </ul>
                         </li>
                     </ul>
-
-                    <h4 style="margin-top:30px;">2️⃣ Job-Bu Chatbot (상담형 챗봇)</h4>
+                    <h4>2️⃣ Job-Bu Chatbot (상담형 챗봇)</h4>
                     <ul>
                         <li>🤖 기업 추천 이후 추가 질문 가능</li>
                         <li>📝 Job-Bu 프로필과 문서를 바탕으로 정밀한 답변</li>
