@@ -159,10 +159,10 @@ with st.sidebar:
             university_temp   = st.text_input("대학교", value=st.session_state.get("university", ""))
             major_temp        = st.text_input("전공", value=st.session_state.get("major", ""))
             gpa_temp          = st.text_input("학점", value=st.session_state.get("gpa", ""))
-            field_pref_temp   = st.text_input("선호분야", value=st.session_state.get("field_pref", ""))
+            field_pref_temp   = st.text_input("선호분야(산업군)", value=st.session_state.get("field_pref", ""))
             job_pref_temp     = st.text_input("선호직무", value=st.session_state.get("job_pref", ""))
-            activities_temp   = st.text_area("활동이력", value=st.session_state.get("activities", ""))
-            certificates_temp = st.text_area("자격증", value=st.session_state.get("certificates", ""))
+            activities_temp   = st.text_area("경력사항", value=st.session_state.get("activities", ""))
+            certificates_temp = st.text_area("보유 자격증", value=st.session_state.get("certificates", ""))
 
             submitted = st.form_submit_button("입력 완료")
             if submitted:
