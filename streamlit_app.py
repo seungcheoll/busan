@@ -175,11 +175,66 @@ with st.sidebar:
                 st.session_state.certificates = certificates_temp
 
                 st.success("✅ 입력 완료!")
+info = choice == "이용 가이드"
 job_rag = choice == "Job-Bu"
 chatbot = choice == "Job-Bu Chatbot"
 
 # ───────────────────────────────────────────
-# [7] Job-Bu 페이지: LLM QA + 지도 시각화
+# [7] 이용 가이드 페이지
+# ───────────────────────────────────────────
+if info:
+    st.markdown("""
+        <style>
+            .guide-section {
+                padding: 12px 18px;
+                border-left: 4px solid #3498db;
+                background-color: #f9f9f9;
+                margin-bottom: 20px;
+                border-radius: 6px;
+            }
+        </style>
+    """, unsafe_allow_html=True)
+
+    st.title("🧾 JobBusan 이용 가이드")
+
+    st.markdown("""
+    <div class="guide-section">
+        <h3>1. Job-Bu 페이지 (기업 추천)</h3>
+        <ul>
+            <li>📋 먼저 사이드바에서 <strong>사용자 프로필</strong>을 입력하세요.</li>
+            <li>❓ 상단의 입력창에 원하는 조건을 입력하고 <strong>질문 실행</strong> 버튼을 클릭하세요.</li>
+            <li>📁 결과는 4개의 탭으로 구성되어 있습니다:
+                <ul>
+                    <li>✅ <strong>Job-Bu 답변</strong>: 요약된 추천 결과</li>
+                    <li>📚 <strong>추천 기업 상세</strong>: 근거가 된 문서들</li>
+                    <li>🌍 <strong>추천 기업 위치</strong>: 지도 위에 추천된 기업 표시</li>
+                    <li>🔍 <strong>부산 기업 분포</strong>: 검색어로 직접 탐색도 가능</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="guide-section">
+        <h3>2. Job-Bu Chatbot (상세 질문 챗봇)</h3>
+        <ul>
+            <li>🤖 기업 추천을 먼저 받은 후, 이어서 추가적인 질문이 가능합니다.</li>
+            <li>💡 예: "이 기업의 복지제도는 어떻게 되나요?", "평균 연봉은 얼마인가요?"</li>
+            <li>📝 Job-Bu에서 확보한 문서를 기반으로, 자세한 답변을 제공합니다.</li>
+        </ul>
+    </div>
+
+    <div class="guide-section">
+        <h3>3. 자주 묻는 질문 (FAQ)</h3>
+        <ul>
+            <li><strong>Q. 사용자 프로필을 꼭 입력해야 하나요?</strong><br/>➡ 더 정확한 추천을 위해 권장됩니다.</li>
+            <li><strong>Q. 지도에 기업이 안 보이면?</strong><br/>➡ 입력한 검색어에 해당하는 기업이 없을 수 있어요.</li>
+            <li><strong>Q. 질문을 바꿔서 다시 하려면?</strong><br/>➡ 질문 입력 후 <strong>다시 실행</strong> 버튼을 눌러주세요.</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
+    
+# ───────────────────────────────────────────
+# [8] Job-Bu 페이지: LLM QA + 지도 시각화
 # ───────────────────────────────────────────
 # 📌 Job Busan 페이지 구성
 if job_rag:
@@ -275,7 +330,7 @@ if job_rag:
         st.session_state["main_query"] = query
         
     # ───────────────────────────────────────
-    # [7-1] 결과 탭 구성
+    # [8-1] 결과 탭 구성
     # ───────────────────────────────────────
     # 📁 결과 탭 구성
     selected_tabs = st.tabs([
@@ -447,7 +502,7 @@ if job_rag:
                 st.caption("※ 전체 기업 분포를 표시 중입니다.")
 
 # ───────────────────────────────────────────
-# [8] Groq Chatbot 페이지 (Job-Bu Chatbot)
+# [9] Groq Chatbot 페이지 (Job-Bu Chatbot)
 # ───────────────────────────────────────────
 # 🤖 Groq Chatbot 페이지
 if chatbot:
