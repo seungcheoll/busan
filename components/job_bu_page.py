@@ -51,8 +51,12 @@ def show_job_bu_page(profile):
     user_type = st.session_state["user_type"]
 
     if st.button("💬 질문 실행"):
-        with st.spinner("🤖 Job-Bu가 부산 기업 정보를 검색 중입니다..."):
+      with st.spinner("🤖 Job-Bu가 부산 기업 정보를 검색 중입니다..."):
+            try:
             formatted_template = st.session_state.templates[user_type].format(**profile)
+        except KeyError:
+            st.error("⚠️ 사용자 프로필이나 템플릿이 누락되었습니다. 사이드바에서 프로필을 먼저 입력해주세요.")
+            return
             prompt = PromptTemplate.from_template(formatted_template)
             qa_chain = RetrievalQA.from_chain_type(
                 llm=st.session_state.llm,
