@@ -22,8 +22,6 @@ def show_job_bu_page(profile):
         st.session_state.llm, st.session_state.retriever, st.session_state.company_df, st.session_state.map_html = init_qa_chain(load_api_key())
     if "templates" not in st.session_state:
         st.session_state.templates = load_all_templates()
-    if "query_input" not in st.session_state:
-        st.session_state["query_input"] = ""
     if "main_query" not in st.session_state:
         st.session_state["main_query"] = ""
     if "user_type" not in st.session_state:
@@ -39,11 +37,17 @@ def show_job_bu_page(profile):
 
     col1, col2 = st.columns([3, 2])
     with col1:
-        st.text_input("❓ 질문으로 상담을 시작하세요!", key="query_input", value=st.session_state["main_query"], placeholder="예: 연봉 3000만원 이상 선박 제조업 추천", on_change=save_user_inputs)
+        query = st.text_input(
+            "❓ 질문으로 상담을 시작하세요!",
+            value=st.session_state["main_query"],
+            key="query_input_inputbox",
+            placeholder="예: 연봉 3000만원 이상 선박 제조업 추천",
+            on_change=save_user_inputs
+        )
     with col2:
         st.selectbox("🏷️ 유형을 선택하세요!", ["대학생", "첫 취업 준비", "이직 준비"], key="user_type", on_change=save_user_inputs)
 
-    query = st.session_state["query_input"]
+    st.session_state["query_input"] = query
     user_type = st.session_state["user_type"]
 
     if st.button("💬 질문 실행"):
@@ -64,7 +68,6 @@ def show_job_bu_page(profile):
             st.rerun()
     else:
         st.session_state["main_query"] = query
-
 
     selected_tabs = st.tabs(["✅ Job-Bu 답변", "📚 추천 기업 상세", "🌍 추천 기업 위치", "🔍 부산 기업 분포 및 검색"])
 
