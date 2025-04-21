@@ -51,12 +51,6 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
-
-# ✅ 사용자 입력값 초기화
-for key in ["university", "major", "gpa", "field_pref", "job_pref", "activities", "certificates"]:
-    if key not in st.session_state:
-        st.session_state[key] = ""
-
 # ───────────────────────────────────────────
 # [라우팅] 사이드바 메뉴 선택 및 페이지 이동
 # ───────────────────────────────────────────
