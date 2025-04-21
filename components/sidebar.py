@@ -45,4 +45,12 @@ def sidebar_ui():
         st.markdown("#### ▶️ 시연 영상")
         st.video("https://youtu.be/G_MKtEmmJt8")
 
-    return choice
+    return choice,return choice, {
+    "university": st.session_state.university,
+    "major": st.session_state.major,
+    "gpa": st.session_state.gpa,
+    "field_pref": st.session_state.field_pref,
+    "job_pref": st.session_state.job_pref,
+    "activities": st.session_state.activities,
+    "certificates": st.session_state.certificates
+}
