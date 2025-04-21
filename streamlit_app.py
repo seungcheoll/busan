@@ -246,7 +246,7 @@ if info:
     <div class="gbox">
       <div class="split">
         <div class="image-section"
-             style="--pipeline-text-size:24px;  /* 제목 글자 크기 수정 */
+             style="--pipeline-text-size:30px;  /* 제목 글자 크기 수정 */
                     --pipeline-img-width:80%;
                     --pipeline-img-height:80%;">
           <p>JobBusan Pipeline</p>
