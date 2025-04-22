@@ -1,5 +1,5 @@
 # ───────────────────────────────────────────
-# [1] 라이브러리 임포트 및 GroqLlamaChat 클래스 정의
+# [1] 라이브러리 임포트
 # ───────────────────────────────────────────
 import streamlit as st
 from streamlit_option_menu import option_menu
@@ -14,16 +14,17 @@ from langchain.schema.messages import BaseMessage, HumanMessage, AIMessage
 from langchain.chat_models.base import BaseChatModel
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.schema import ChatResult
-from groq import Groq
-# ✅ Groq API를 활용한 LangChain용 LLM 클래스 정의
-class GroqLlamaChat(BaseChatModel):
-    groq_api_key: str
-    model: str = "meta-llama/llama-4-scout-17b-16e-instruct"
-    _client: Groq = None
+from openai import OpenAI
+
+# ✅ GPT용 LLM 클래스 정의
+class GPTChatWrapper(BaseChatModel):
+    openai_api_key: str
+    model: str = "gpt-4o"
+    _client: OpenAI = None
 
     def __init__(self, **data):
         super().__init__(**data)
-        self._client = Groq(api_key=self.groq_api_key)
+        self._client = OpenAI(api_key=self.openai_api_key)
 
     def _call(self, messages, **kwargs):
         formatted = []
@@ -32,6 +33,7 @@ class GroqLlamaChat(BaseChatModel):
                 formatted.append({"role": "user", "content": m.content})
             elif isinstance(m, AIMessage):
                 formatted.append({"role": "assistant", "content": m.content})
+
         response = self._client.chat.completions.create(
             model=self.model,
             messages=formatted,
@@ -44,7 +46,7 @@ class GroqLlamaChat(BaseChatModel):
 
     @property
     def _llm_type(self):
-        return "groq-llama-4"
+        return "openai-gpt"
 
     @property
     def _identifying_params(self):
@@ -69,20 +71,21 @@ def load_all_templates():
 # ───────────────────────────────────────────
 # [3] 벡터 DB 및 QA 체인 초기화 함수
 # ───────────────────────────────────────────
-# 🧠 벡터 DB 및 QA 체인 초기화
+# ✅ GPTChatWrapper 적용을 위해 init_qa_chain 함수
 @st.cache_resource
 def init_qa_chain():
     api_key = load_api_key()
     embedding_model = HuggingFaceEmbeddings(model_name="jhgan/ko-sbert-nli")
     vectorstore = FAISS.load_local("busan_db", embedding_model, allow_dangerous_deserialization=True)
-    retriever = vectorstore.as_retriever(search_kwargs={"k": 5})
-    llm = GroqLlamaChat(groq_api_key=api_key)
+    retriever = vectorstore.as_retriever(search_kwargs={"k": 10})
+    llm = GPTChatWrapper(openai_api_key=api_key)
 
     company_df = pd.read_excel("map_busan.xlsx")
     with open("map_company.html", "r", encoding="utf-8") as f:
         map_html_content = f.read()
 
     return llm, retriever, company_df, map_html_content
+
 
 # ───────────────────────────────────────────
 # [4] Streamlit 기본 설정 및 스타일 커스터마이징
@@ -575,15 +578,15 @@ if job_rag:
                 st.caption("※ 전체 기업 분포를 표시 중입니다.")
 
 # ───────────────────────────────────────────
-# [9] Groq Chatbot 페이지 (Job-Bu Chatbot)
+# [9] gpt Chatbot 페이지 (Job-Bu Chatbot)
 # ───────────────────────────────────────────
-# 🤖 Groq Chatbot 페이지
+# 🤖 chatbot 페이지
 if chatbot:
-    if "groq_chat" not in st.session_state:
-        st.session_state.groq_chat = GroqLlamaChat(groq_api_key=load_api_key())
+    if "gpt_chat" not in st.session_state:
+        st.session_state.gpt_chat = GPTChatWrapper(openai_api_key=load_api_key())
 
-    if "groq_history" not in st.session_state:
-        st.session_state.groq_history = [
+    if "gpt_history" not in st.session_state:
+        st.session_state.gpt_history = [
             {"role": "assistant", "content": "안녕하세요! 무엇을 도와드릴까요?"}
         ]
 
@@ -622,7 +625,7 @@ if chatbot:
         </div>
     """, unsafe_allow_html=True)
 
-    for msg in st.session_state.groq_history:
+    for msg in st.session_state.gpt_history:
         if msg["role"] == "user":
             _, right = st.columns([3, 1])
             with right:
@@ -669,12 +672,12 @@ if chatbot:
                     unsafe_allow_html=True
                 )
 
-    prompt = st.chat_input("메시지를 입력하세요...", key="groq_input")
+    prompt = st.chat_input("메시지를 입력하세요...", key="gpt_input")
     if prompt:
-        st.session_state.groq_history.append({"role": "user", "content": prompt})
+        st.session_state.gpt_history.append({"role": "user", "content": prompt})
         
         # ✅ 최근 5개만 포함
-        recent_messages = st.session_state.groq_history[-5:]
+        recent_messages = st.session_state.gpt_history[-5:]
         
         # ✅ system_prompt 고정 + 최근 메시지 순차 삽입
         history = [HumanMessage(content=system_prompt)]
@@ -683,6 +686,6 @@ if chatbot:
                 (HumanMessage if m["role"] == "user" else AIMessage)(content=m["content"])
             )
 
-        answer = st.session_state.groq_chat._call(history)
-        st.session_state.groq_history.append({"role": "assistant", "content": answer})
+        answer = st.session_state.gpt_chat._call(history)
+        st.session_state.gpt_history.append({"role": "assistant", "content": answer})
         st.rerun()
