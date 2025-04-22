@@ -569,6 +569,7 @@ if job_rag:
             elif not matched_df.empty:
                 m = folium.Map(location=[matched_df['위도'].mean(), matched_df['경도'].mean()], zoom_start=12)
                 for _, row in matched_df.iterrows():
+                    # 원으로 기업 위치 시각화
                     folium.CircleMarker(
                         location=[row['위도'], row['경도']],
                         radius=5,
@@ -579,6 +580,13 @@ if job_rag:
                         popup=row['회사명'],
                         tooltip=row['회사명']
                     ).add_to(m)
+                
+                    # 텍스트만 띄우는 마커 추가 (항상 보임)
+                    folium.Marker(
+                        location=[row['위도'], row['경도']],
+                        icon=folium.DivIcon(html=f"""<div style="font-size: 12px; color: black; font-weight: bold;">{row['회사명']}</div>""")
+                    ).add_to(m)
+                
                 html(m._repr_html_(), height=480)
                 st.caption(f"※ '{keyword}'를 포함한 기업 {len(matched_df)}곳을 지도에 표시했습니다.")
             elif keyword:
