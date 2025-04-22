@@ -554,16 +554,26 @@ if job_rag:
                 df_map = pd.DataFrame(selected)
                 m = folium.Map(location=[df_map['위도'].mean(), df_map['경도'].mean()], zoom_start=12)
                 for _, row in df_map.iterrows():
+                    # 1️⃣ 원(CircleMarker)으로 기업 위치 표시
                     folium.CircleMarker(
                         location=[row['위도'], row['경도']],
                         radius=6,
-                        color='green',
+                        color='blue',
                         fill=True,
-                        fill_color='green',
+                        fill_color='blue',
                         fill_opacity=0.8,
-                        popup=row['회사명'],
                         tooltip=row['회사명']
                     ).add_to(m)
+                
+                    # 2️⃣ 말풍선 팝업을 항상 보이도록 설정 (Marker + Popup + show=True)
+                    popup = folium.Popup(row["회사명"], max_width=200, show=True)
+                    folium.Marker(
+                        location=[row["위도"], row["경도"]],
+                        popup=popup,
+                        icon=folium.DivIcon(icon_size=(0, 0))  # 마커 아이콘 숨기고 말풍선만 표시
+                    ).add_to(m)
+                
+                # 3️⃣ 지도 출력 및 안내 문구
                 html(m._repr_html_(), height=480)
                 st.caption(f"✅ 선택된 기업 {len(df_map)}곳을 지도에 표시했습니다.")
             elif not matched_df.empty:
@@ -573,9 +583,9 @@ if job_rag:
                     folium.CircleMarker(
                         location=[row['위도'], row['경도']],
                         radius=5,
-                        color='green',
+                        color='blue',
                         fill=True,
-                        fill_color='green',
+                        fill_color='blue',
                         fill_opacity=0.7,
                         popup=row['회사명'],
                         tooltip=row['회사명']
