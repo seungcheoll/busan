@@ -5,6 +5,7 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 import pandas as pd
 import folium
+from folium import Popup, Marker
 from streamlit.components.v1 import html
 from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode, DataReturnMode
 from langchain_community.vectorstores import FAISS
@@ -434,17 +435,18 @@ if job_rag:
         matched_df = st.session_state.company_df[st.session_state.company_df['회사명'].isin(company_names)]
         if not matched_df.empty:
             m = folium.Map(location=[matched_df["위도"].mean(), matched_df["경도"].mean()], zoom_start=12)
+            
             for _, row in matched_df.iterrows():
-                folium.CircleMarker(
+                popup = folium.Popup(row["회사명"], max_width=200)
+                marker = folium.Marker(
                     location=[row["위도"], row["경도"]],
-                    radius=5,
-                    color="blue",
-                    fill=True,
-                    fill_color="blue",
-                    fill_opacity=0.7,
-                    popup=row["회사명"],
-                    tooltip=row["회사명"]
-                ).add_to(m)
+                    tooltip=row["회사명"],
+                    popup=popup
+                )
+                popup.add_to(marker)  # 팝업에 항상 열리는 속성 추가
+                popup.options = {'autoClose': False, 'closeOnClick': False}
+                marker.add_to(m)
+            
             html(m._repr_html_(), height=550)
         else:
             st.info("해당 기업 위치 정보가 없습니다.")
