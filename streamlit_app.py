@@ -525,7 +525,7 @@ if job_rag:
                     fit_columns_on_grid_load=True,
                     theme='blue',
                     enable_enterprise_modules=True,
-                    height=420,
+                    height=418,
                     width='100%',
                     allow_unsafe_jscode=True
                 )
