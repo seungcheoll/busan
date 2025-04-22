@@ -437,21 +437,13 @@ if job_rag:
             m = folium.Map(location=[matched_df["위도"].mean(), matched_df["경도"].mean()], zoom_start=12)
             
             for _, row in matched_df.iterrows():
-                folium.CircleMarker(
-                    location=[row["위도"], row["경도"]],
-                    radius=5,
-                    color="blue",
-                    fill=True,
-                    fill_color="blue",
-                    fill_opacity=0.5
-                ).add_to(m)
-            
                 popup = folium.Popup(row["회사명"], max_width=200, show=True)
-                folium.Marker(
+                marker = folium.Marker(
                     location=[row["위도"], row["경도"]],
                     popup=popup,
-                    icon=folium.Icon(color='white', icon_color='black', icon='info-sign')
-                ).add_to(m)
+                    tooltip=row["회사명"]
+                )
+                marker.add_to(m)
             
             html(m._repr_html_(), height=550)
         else:
