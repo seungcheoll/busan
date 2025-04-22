@@ -4,7 +4,7 @@ streamlit_option_menu
 langchain
 langchain-community
 langchain-huggingface
-groq
+openai
 sentence-transformers
 faiss-cpu
 pandas
