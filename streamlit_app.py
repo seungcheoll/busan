@@ -437,14 +437,12 @@ if job_rag:
             m = folium.Map(location=[matched_df["위도"].mean(), matched_df["경도"].mean()], zoom_start=12)
             
             for _, row in matched_df.iterrows():
-                popup = folium.Popup(row["회사명"], max_width=200)
+                popup = folium.Popup(row["회사명"], max_width=200, show=True)
                 marker = folium.Marker(
                     location=[row["위도"], row["경도"]],
-                    tooltip=row["회사명"],
-                    popup=popup
+                    popup=popup,
+                    tooltip=row["회사명"]
                 )
-                popup.add_to(marker)  # 팝업에 항상 열리는 속성 추가
-                popup.options = {'autoClose': False, 'closeOnClick': False}
                 marker.add_to(m)
             
             html(m._repr_html_(), height=550)
