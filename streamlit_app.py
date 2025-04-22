@@ -78,7 +78,7 @@ def init_qa_chain():
     api_key = load_api_key()
     embedding_model = HuggingFaceEmbeddings(model_name="jhgan/ko-sbert-nli")
     vectorstore = FAISS.load_local("busan_db", embedding_model, allow_dangerous_deserialization=True)
-    retriever = vectorstore.as_retriever(search_kwargs={"k": 10})
+    retriever = vectorstore.as_retriever(search_kwargs={"k": 5})
     llm = GPTChatWrapper(openai_api_key=api_key)
 
     company_df = pd.read_excel("map_busan.xlsx")
