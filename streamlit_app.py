@@ -371,7 +371,7 @@ if job_rag:
 
     # 💬 질문 실행 버튼
     if st.button("💬 질문 실행"):
-        with st.spinner("🔎 Job-Bu가 부산 기업 정보를 검색 중입니다..."):
+        with st.spinner("🔎 Job-Bu가 부산 기업 정보를 검색 중입니다."):
             selected_template = st.session_state.templates[user_type]
             formatted_template = selected_template.format(
                 university   = st.session_state.university,
