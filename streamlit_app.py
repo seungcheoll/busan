@@ -321,7 +321,7 @@ if job_rag:
             <h1 style='margin:0; font-size:28px; display: flex; align-items: center; gap: 12px;'>
                 <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/chatbot.png' 
                      style='width: 60px; height: auto; vertical-align: middle;'>
-                부산 기업 추천 시스템(Job-Bu)
+                부산시 취업 상담 챗봇(Job-Bu)
             </h1>
         </div>
     """, unsafe_allow_html=True)
