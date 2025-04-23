@@ -160,13 +160,13 @@ with st.sidebar:
     # ▼ 사용자 프로필 입력 (expander로 접기/펼치기)
     with st.expander("📋 사용자 프로필 입력", expanded=False):
         with st.form("profile_form"):
-            university_temp   = st.text_input("대학교", value=st.session_state.get("university", ""))
-            major_temp        = st.text_input("전공", value=st.session_state.get("major", ""))
-            gpa_temp          = st.text_input("학점", value=st.session_state.get("gpa", ""))
-            field_pref_temp   = st.text_input("선호분야(산업군)", value=st.session_state.get("field_pref", ""))
-            job_pref_temp     = st.text_input("선호직무", value=st.session_state.get("job_pref", ""))
-            activities_temp   = st.text_area("경력사항", value=st.session_state.get("activities", ""))
-            certificates_temp = st.text_area("보유 자격증", value=st.session_state.get("certificates", ""))
+            university_temp   = st.text_input("대학교", value=st.session_state.get("university", ""), placeholder="예: OO대학교")
+            major_temp        = st.text_input("전공", value=st.session_state.get("major", ""), placeholder="예: OO학과")
+            gpa_temp          = st.text_input("학점", value=st.session_state.get("gpa", ""), placeholder="예: 4.5")
+            field_pref_temp   = st.text_input("선호분야(산업군)", value=st.session_state.get("field_pref", ""), placeholder="예: OO대학교")
+            job_pref_temp     = st.text_input("선호직무", value=st.session_state.get("job_pref", ""), placeholder="예: OO대학교")
+            activities_temp   = st.text_area("경력사항", value=st.session_state.get("activities", ""), placeholder="예: OO공모전 수상 \n (")
+            certificates_temp = st.text_area("보유 자격증", value=st.session_state.get("certificates", ""), placeholder="예: ADsP ...")
 
             submitted = st.form_submit_button("입력 완료")
             if submitted:
