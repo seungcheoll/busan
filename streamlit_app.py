@@ -192,7 +192,7 @@ chatbot = choice == "Job-Bu Chatbot"
 # [7] 이용 가이드 페이지
 # ───────────────────────────────────────────
 if info:
-    st.markdown("<h1 style='text-align: center;'>🧾 JobBusan 이용 가이드</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center;'>🧾 Job-Bu 이용 가이드</h1>", unsafe_allow_html=True)
     st.markdown("""
     <style>
       .gbox {
@@ -268,7 +268,7 @@ if info:
       <div class="split">
         <div class="image-section">
           <p style="font-size:30px; font-weight:bold; text-align:center; margin:0;">
-            JobBusan Pipeline
+            System Workflow
           </p>
           <hr class="custom"/>
           <img
