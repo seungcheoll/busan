@@ -165,8 +165,8 @@ with st.sidebar:
             gpa_temp          = st.text_input("학점", value=st.session_state.get("gpa", ""), placeholder="예: 4.5")
             field_pref_temp   = st.text_input("선호분야(산업군)", value=st.session_state.get("field_pref", ""), placeholder="예: OO대학교")
             job_pref_temp     = st.text_input("선호직무", value=st.session_state.get("job_pref", ""), placeholder="예: OO대학교")
-            activities_temp   = st.text_area("경력사항", value=st.session_state.get("activities", ""), placeholder="예: OO공모전 수상 \n (")
-            certificates_temp = st.text_area("보유 자격증", value=st.session_state.get("certificates", ""), placeholder="예: ADsP ...")
+            activities_temp   = st.text_area("경력사항", value=st.session_state.get("activities", ""), placeholder="예: OO공모전 수상 \n OO서포터즈")
+            certificates_temp = st.text_area("보유 자격증", value=st.session_state.get("certificates", ""), placeholder="예: ADsP\nSQLD")
 
             submitted = st.form_submit_button("입력 완료")
             if submitted:
