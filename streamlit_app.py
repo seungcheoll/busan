@@ -321,7 +321,7 @@ if job_rag:
             <h1 style='margin:0; font-size:28px; display: flex; align-items: center; gap: 12px;'>
                 <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/chatbot.png' 
                      style='width: 60px; height: auto; vertical-align: middle;'>
-                부산시 취업 상담 챗봇(Job-Bu)
+                부산시 기업 추천 시스템(Job-Bu)
             </h1>
         </div>
     """, unsafe_allow_html=True)
@@ -607,7 +607,7 @@ if chatbot:
 
     if "gpt_history" not in st.session_state:
         st.session_state.gpt_history = [
-            {"role": "assistant", "content": "안녕하세요! 무엇을 도와드릴까요?"}
+            {"role": "assistant", "content": "안녕하세요! 부산시 취업 상담 챗봇 Job-Bu입니다! 무엇을 도와드릴까요?"}
         ]
 
     if "source_docs" not in st.session_state or not st.session_state.source_docs:
