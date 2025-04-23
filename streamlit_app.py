@@ -272,7 +272,7 @@ if info:
           </p>
           <hr class="custom"/>
           <img
-            src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/workflow.png"
+            src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/workflow.PNG"
             alt="JobBusan RAG 처리 구조도"
             style="width:680px; height:505px; display:block; margin:0 auto;"
           />
