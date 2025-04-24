@@ -318,7 +318,7 @@ if info:
 if job_rag:
     st.markdown("""
         <div style='padding: 10px 0px;'>
-            <h1 style='margin:0; font-size:28px; display: flex; align-items: center; gap: 12px;'>
+            <h1 style='margin:0; font-size:28px; display: flex; align-items: center; gap: 0px;'>
                 <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/chatbot.png' 
                      style='width: 60px; height: auto; vertical-align: middle;'>
                 부산시 취업 상담 챗봇(Job-Bu)
