@@ -134,7 +134,7 @@ with st.sidebar:
     # 🔘 페이지 선택 메뉴
     choice = option_menu(
         menu_title="Page",
-        options=["Guide","Job-Bu", "Job-Bu Chatbot"],
+        options=["Guide","Job-Busan", "Job-Busan Chatbot"],
         icons=["info-circle","", ""],
         menu_icon="",
         default_index=0,
@@ -185,14 +185,14 @@ with st.sidebar:
     st.sidebar.markdown("#### ▶️ 시연 영상")
     st.sidebar.video("https://youtu.be/G_MKtEmmJt8")  # 여기에 유튜브 링크 삽입
 info = choice == "Guide"
-job_rag = choice == "Job-Bu"
-chatbot = choice == "Job-Bu Chatbot"
+job_rag = choice == "Job-Busan"
+chatbot = choice == "Job-Busan Chatbot"
 
 # ───────────────────────────────────────────
 # [7] 이용 가이드 페이지
 # ───────────────────────────────────────────
 if info:
-    st.markdown("<h1 style='text-align: center;'>🧾 Job-Bu 이용 가이드</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center;'>🧾 Job-Busan 이용 가이드</h1>", unsafe_allow_html=True)
     st.markdown("""
     <style>
       .gbox {
@@ -279,13 +279,13 @@ if info:
         </div>
         <div class="right-section">
           <div class="textbox">
-            <h4>1️⃣ Job‑Bu (기업 추천 시스템)</h4>
+            <h4>1️⃣ Job-Busan (기업 매칭 서비스)</h4>
             <ul>
               <li>📋 먼저 사이드바에서 사용자 프로필을 입력하세요.</li>
               <li>❓ 질문 입력 및 유형 선택 후 질문 실행 버튼을 클릭하세요.</li>
               <li>📁 결과는 4개의 탭으로 구성되어 있습니다.
                 <ul>
-                  <li>✅ Job‑Bu 답변: 부산 내 강소기업 추천</li>
+                  <li>✅ Job-Busan 답변: 부산 내 강소기업 추천</li>
                   <li>📚 추천 기업 상세</li>
                   <li>🌍 추천 기업 위치</li>
                   <li>🔍 부산 기업 분포 : 원하는 기업 검색</li>
@@ -294,7 +294,7 @@ if info:
             </ul>
           </div>
           <div class="textbox">
-            <h4>2️⃣ Job‑Bu Chatbot (사용자 맞춤 상담 챗봇)</h4>
+            <h4>2️⃣ Job-Busan Chatbot (취업 상담 파트너)</h4>
             <ul>
               <li>🤖 기업 추천 이후 추가 질문 가능</li>
               <li>📝 사용자 프로필 및 추천 기업 정보를 바탕으로 정밀한 답변 제공</li>
@@ -312,7 +312,7 @@ if info:
     </div>
     """, unsafe_allow_html=True)
 # ───────────────────────────────────────────
-# [8] Job-Bu 페이지: LLM QA + 지도 시각화
+# [8] Job-Busan 페이지: LLM QA + 지도 시각화
 # ───────────────────────────────────────────
 # 📌 Job Busan 페이지 구성
 if job_rag:
@@ -372,7 +372,7 @@ if job_rag:
 
     # 💬 질문 실행 버튼
     if st.button("💬 질문 실행"):
-        with st.spinner("🔎 Job-Bu가 부산 기업 정보를 검색 중입니다."):
+        with st.spinner("🔎 Job-Busan이 부산 기업 정보를 검색 중입니다."):
             selected_template = st.session_state.templates[user_type]
             formatted_template = selected_template.format(
                 university   = st.session_state.university,
@@ -411,7 +411,7 @@ if job_rag:
     # ───────────────────────────────────────
     # 📁 결과 탭 구성
     selected_tabs = st.tabs([
-        "✅ Job-Bu 답변",
+        "✅ Job-Busan 답변",
         "📚 추천 기업 상세",
         "🌍 추천 기업 위치",
         "🔍 부산 기업 분포 및 검색"
@@ -419,7 +419,7 @@ if job_rag:
 
     # 1️⃣ 답변 탭
     with selected_tabs[0]:
-        st.write(st.session_state.get("gpt_result", "🔹 Job-Bu의 응답 결과가 여기에 표시됩니다."))
+        st.write(st.session_state.get("gpt_result", "🔹 Job-Busan의 응답 결과가 여기에 표시됩니다."))
 
     # 2️⃣ 문서 탭
     with selected_tabs[1]:
@@ -607,11 +607,11 @@ if chatbot:
 
     if "gpt_history" not in st.session_state:
         st.session_state.gpt_history = [
-            {"role": "assistant", "content": "안녕하세요! 부산 취업 상담 챗봇 Job-Bu입니다! 무엇을 도와드릴까요?"}
+            {"role": "assistant", "content": "안녕하세요! 부산 취업 상담 챗봇 Job-Busan입니다! 무엇을 도와드릴까요?"}
         ]
 
     if "source_docs" not in st.session_state or not st.session_state.source_docs:
-        st.warning("💡 'Job-Bu' 페이지에서 먼저 '질문 실행'을 눌러 상담에 필요한 참고자료를 확보해 주세요.")
+        st.warning("💡 'Job-Busan' 페이지에서 먼저 '질문 실행'을 눌러 상담에 필요한 참고자료를 확보해 주세요.")
         st.stop()
 
     # 🔹 사용자 유형과 질문 가져오기
