@@ -696,8 +696,8 @@ if chatbot:
     if prompt:
         st.session_state.gpt_history.append({"role": "user", "content": prompt})
         
-        # ✅ 최근 5개만 포함
-        recent_messages = st.session_state.gpt_history[-5:]
+        # ✅ 최근 10개만 포함
+        recent_messages = st.session_state.gpt_history[-10:]
         
         # ✅ system_prompt 고정 + 최근 메시지 순차 삽입
         history = [HumanMessage(content=system_prompt)]
