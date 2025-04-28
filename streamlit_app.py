@@ -426,7 +426,6 @@ if job_rag:
         source_docs = st.session_state.get("source_docs", [])
         for i, doc in enumerate(source_docs):
             with st.expander(f"문서 {i+1}"):
-                st.write(doc.metadata.get('score'))
                 st.write(doc.page_content)
 
     # 3️⃣ 기업 위치 지도
