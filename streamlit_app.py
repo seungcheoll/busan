@@ -481,13 +481,17 @@ if job_rag:
 
             desc = str(row.get("기업설명", "")).strip()
             return f"1. 기업정보\n\n{info}\n\n\n2. 기업설명\n\n{desc}"
-
+            
+        st.session_state.setdefault("content_to_gpt", [])
         # 👉 Expander에 표시
         for _, row in matched_df_by_gpt.iterrows():
+            content_to_gpt={}
             with st.expander(row['회사명']):
                 content = format_row(row)
+                st.session_state.content_to_gpt.append(content)
                 st.write(content)
-
+        st.write("▶ 저장된 content_to_gpt:", st.session_state.content_to_gpt)
+        
     # 3️⃣ JOBKOREA
     with selected_tabs[2]:
         raw_names = st.session_state.get("company_name_by_gpt", "")
