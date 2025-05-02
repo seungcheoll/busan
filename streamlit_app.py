@@ -434,7 +434,7 @@ if job_rag:
     selected_tabs = st.tabs([
         "✅ Job-Busan 답변",
         "📚 추천 기업 상세",
-        "📢 관련 채용 정보(JOBKOREA)",
+        "📢 관련 채용 정보(JobKorea)",
         "🌍 추천 기업 위치",
         "🔍 부산 기업 분포 및 검색"
     ])
@@ -489,7 +489,7 @@ if job_rag:
             # 👉 Expander에 표시
             for _, row in matched_df_by_gpt.iterrows():
                 content_to_gpt={}
-                with st.expander(row['회사명']):
+                with st.expander(f"**{row['회사명']}** 상세 정보):
                     content = format_row(row)
                     st.session_state.content_to_gpt.append(content)
                     st.write(content)
@@ -509,7 +509,7 @@ if job_rag:
                 name = row['회사명']
                 jk_url = row['잡코리아 주소']
                 # expander 생성
-                with st.expander(f"JobKorea에서 **{name}** 채용공고 보기"):
+                with st.expander(f"JobKorea에서 **{name}** 채용정보"):
                     # iframe으로 잡코리아 페이지 임베딩
                     components.iframe(
                         src=jk_url,
