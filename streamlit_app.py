@@ -16,6 +16,22 @@ from langchain.chat_models.base import BaseChatModel
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.schema import ChatResult
 from openai import OpenAI
+import json
+
+
+
+def strip_code_blocks(text):
+    if text.startswith("```json"):
+        text = text.replace("```json", "").replace("```", "").strip()
+    return text
+
+def text_to_json(text):
+    try:
+        result = json.loads(text)
+        return result
+    except json.JSONDecodeError as e:
+        return f"JSON 변환 오류: {e}"
+        
 
 # ✅ GPT용 LLM 클래스 정의
 class GPTChatWrapper(BaseChatModel):
@@ -58,8 +74,8 @@ class GPTChatWrapper(BaseChatModel):
 # ───────────────────────────────────────────
 # 🔑 API Key 불러오기
 def load_api_key():
-        return st.secrets["general"]["API_KEY"]
-
+    return st.secrets["general"]["API_KEY"]
+    
 # 🧩 사용자 유형별 템플릿 불러오기
 def load_all_templates():
     templates = {
@@ -80,12 +96,12 @@ def init_qa_chain():
     vectorstore = FAISS.load_local("busan_db", embedding_model, allow_dangerous_deserialization=True)
     retriever = vectorstore.as_retriever(search_kwargs={"k": 5})
     llm = GPTChatWrapper(openai_api_key=api_key)
-
-    company_df = pd.read_excel("map_busan.xlsx")
+    company_df_for_gpt = pd.read_excel("main.xlsx")
+    company_df_for_map = pd.read_excel("map_busan.xlsx")
     with open("map_company.html", "r", encoding="utf-8") as f:
         map_html_content = f.read()
 
-    return llm, retriever, company_df, map_html_content
+    return llm, retriever, company_df_for_gpt, company_df_for_map, map_html_content
 
 
 # ───────────────────────────────────────────
@@ -328,7 +344,7 @@ if job_rag:
 
     # 세션 상태 초기화
     if "llm" not in st.session_state:
-        st.session_state.llm, st.session_state.retriever, st.session_state.company_df, st.session_state.map_html = init_qa_chain()
+        st.session_state.llm, st.session_state.retriever, st.session_state.company_df_for_gpt, st.session_state.company_df_for_map, st.session_state.map_html = init_qa_chain()
     if "templates" not in st.session_state:
         st.session_state.templates = load_all_templates()
     if "query" not in st.session_state:
@@ -391,10 +407,17 @@ if job_rag:
                 return_source_documents=True,
                 chain_type_kwargs={"prompt": prompt}
             )
-
-            result = qa_chain.invoke({"query": query})
-
-            st.session_state.gpt_result = result["result"]
+            while True:
+                try:
+                    result = qa_chain.invoke({"query": query})
+                    text = result["result"]
+                    text = strip_code_blocks(text)
+                    text = text_to_json(text)
+                    st.session_state.gpt_result = text["전체 출력 결과"]
+                    st.session_state.company_name_by_gpt = text["기업명"]
+                    break
+                except:
+                    continue
             st.session_state.source_docs = result["source_documents"]
 
             # 다시 비우기 전 최종 저장
@@ -423,16 +446,54 @@ if job_rag:
 
     # 2️⃣ 문서 탭
     with selected_tabs[1]:
-        source_docs = st.session_state.get("source_docs", [])
-        for i, doc in enumerate(source_docs):
-            with st.expander(f"문서 {i+1}"):
-                st.write(doc.page_content)
+        raw_names = st.session_state.get("company_name_by_gpt", "")
+        company_name_by_gpt = [name.strip() for name in raw_names.split(",")]
+        # 2. isin()으로 필터링
+        matched_df_by_gpt = st.session_state.company_df_for_gpt[
+            st.session_state.company_df_for_gpt['회사명'].isin(company_name_by_gpt)
+        ]
+        # 필드 분류
+        basic_fields = [
+            '회사명', '잡코리아 주소','홈페이지', '구분', '업 종', '상세업종', '사업분야','실수령액(월)', '실수령액(연)',
+            '평균초임', '평균연봉', '기업규모',
+            '매출액 (백만원)', '직원수(계)', '직원수(정규직)', '직원수(비정규직)',
+            '소재 구군', '도로명', '주요제품 / 서비스', '대표번호', '비 고'
+        ]
+        work_life_fields = [f'워라벨{i}' for i in range(1, 11)]
+        training_fields = [f'직무교육{i}' for i in range(1, 7)]
+        welfare_fields = [f'복리후생{i}' for i in range(1, 14)]
+
+        # 병합 유틸
+        def join_fields(row, fields):
+            values = [str(row[f]).strip() for f in fields if pd.notna(row[f]) and str(row[f]).strip() != '']
+            return ' / '.join(values)
+
+        # 행 포맷 함수
+        def format_row(row):
+            lines = []
+            for field in basic_fields:
+                value = row.get(field, '')
+                if pd.notna(value) and str(value).strip() != '':
+                    lines.append(f"{field}: {str(value).strip()}")
+            lines.append(f"워라벨: {join_fields(row, work_life_fields)}")
+            lines.append(f"직무교육: {join_fields(row, training_fields)}")
+            lines.append(f"복리후생: {join_fields(row, welfare_fields)}")
+            info = "\n\n".join(lines)
+
+            desc = str(row.get("기업설명", "")).strip()
+            return f"1. 기업정보\n\n{info}\n\n\n2. 기업설명\n\n{desc}"
+
+        # 👉 Expander에 표시
+        for _, row in matched_df_by_gpt.iterrows():
+            with st.expander(row['회사명']):
+                content = format_row(row)
+                st.write(content)
 
     # 3️⃣ 기업 위치 지도
     with selected_tabs[2]:
-        docs = st.session_state.get("source_docs", [])
-        company_names = [doc.metadata.get("company") for doc in docs if "company" in doc.metadata]
-        matched_df = st.session_state.company_df[st.session_state.company_df['회사명'].isin(company_names)]
+        raw_names = st.session_state.get("company_name_by_gpt", "")
+        company_name_by_gpt = [name.strip() for name in raw_names.split(",")]
+        matched_df = st.session_state.company_df_for_map[st.session_state.company_df_for_map['회사명'].isin(company_name_by_gpt)]
         if not matched_df.empty:
             m = folium.Map(location=[matched_df["위도"].mean(), matched_df["경도"].mean()], zoom_start=12)
             
@@ -487,8 +548,8 @@ if job_rag:
         matched_df = pd.DataFrame()
         keyword = st.session_state.search_keyword.strip()
         if keyword:
-            matched_df = st.session_state.company_df[
-                st.session_state.company_df["회사명"].str.contains(keyword, case=False, na=False)
+            matched_df = st.session_state.company_df_for_map[
+                st.session_state.company_df_for_map["회사명"].str.contains(keyword, case=False, na=False)
             ]
 
         col1, col2 = st.columns([2, 1])
