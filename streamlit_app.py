@@ -451,45 +451,48 @@ if job_rag:
         matched_df_by_gpt = st.session_state.company_df_for_gpt[
             st.session_state.company_df_for_gpt['회사명'].isin(company_name_by_gpt)
         ]
-        # 필드 분류
-        basic_fields = [
-            '회사명', '홈페이지', '구분', '업 종', '상세업종', '사업분야','실수령액(월)', '실수령액(연)',
-            '평균초임', '평균연봉', '기업규모',
-            '매출액 (백만원)', '직원수(계)', '직원수(정규직)', '직원수(비정규직)',
-            '소재 구군', '도로명', '주요제품 / 서비스', '대표번호', '비 고'
-        ]
-        work_life_fields = [f'워라벨{i}' for i in range(1, 11)]
-        training_fields = [f'직무교육{i}' for i in range(1, 7)]
-        welfare_fields = [f'복리후생{i}' for i in range(1, 14)]
-
-        # 병합 유틸
-        def join_fields(row, fields):
-            values = [str(row[f]).strip() for f in fields if pd.notna(row[f]) and str(row[f]).strip() != '']
-            return ' / '.join(values)
-
-        # 행 포맷 함수
-        def format_row(row):
-            lines = []
-            for field in basic_fields:
-                value = row.get(field, '')
-                if pd.notna(value) and str(value).strip() != '':
-                    lines.append(f"{field}: {str(value).strip()}")
-            lines.append(f"워라벨: {join_fields(row, work_life_fields)}")
-            lines.append(f"직무교육: {join_fields(row, training_fields)}")
-            lines.append(f"복리후생: {join_fields(row, welfare_fields)}")
-            info = "\n\n".join(lines)
-
-            desc = str(row.get("기업설명", "")).strip()
-            return f"1. 기업정보\n\n{info}\n\n\n2. 기업설명\n\n{desc}"
-            
-        st.session_state.setdefault("content_to_gpt", [])
-        # 👉 Expander에 표시
-        for _, row in matched_df_by_gpt.iterrows():
-            content_to_gpt={}
-            with st.expander(row['회사명']):
-                content = format_row(row)
-                st.session_state.content_to_gpt.append(content)
-                st.write(content)
+        if matched_df_by_gpt.empty:
+            st.warning("일치하는 기업이 없습니다.")
+        else:        
+            # 필드 분류
+            basic_fields = [
+                '회사명', '홈페이지', '구분', '업 종', '상세업종', '사업분야','실수령액(월)', '실수령액(연)',
+                '평균초임', '평균연봉', '기업규모',
+                '매출액 (백만원)', '직원수(계)', '직원수(정규직)', '직원수(비정규직)',
+                '소재 구군', '도로명', '주요제품 / 서비스', '대표번호', '비 고'
+            ]
+            work_life_fields = [f'워라벨{i}' for i in range(1, 11)]
+            training_fields = [f'직무교육{i}' for i in range(1, 7)]
+            welfare_fields = [f'복리후생{i}' for i in range(1, 14)]
+    
+            # 병합 유틸
+            def join_fields(row, fields):
+                values = [str(row[f]).strip() for f in fields if pd.notna(row[f]) and str(row[f]).strip() != '']
+                return ' / '.join(values)
+    
+            # 행 포맷 함수
+            def format_row(row):
+                lines = []
+                for field in basic_fields:
+                    value = row.get(field, '')
+                    if pd.notna(value) and str(value).strip() != '':
+                        lines.append(f"{field}: {str(value).strip()}")
+                lines.append(f"워라벨: {join_fields(row, work_life_fields)}")
+                lines.append(f"직무교육: {join_fields(row, training_fields)}")
+                lines.append(f"복리후생: {join_fields(row, welfare_fields)}")
+                info = "\n\n".join(lines)
+    
+                desc = str(row.get("기업설명", "")).strip()
+                return f"1. 기업정보\n\n{info}\n\n\n2. 기업설명\n\n{desc}"
+                
+            st.session_state.setdefault("content_to_gpt", [])
+            # 👉 Expander에 표시
+            for _, row in matched_df_by_gpt.iterrows():
+                content_to_gpt={}
+                with st.expander(row['회사명']):
+                    content = format_row(row)
+                    st.session_state.content_to_gpt.append(content)
+                    st.write(content)
         
     # 3️⃣ JOBKOREA
     with selected_tabs[2]:
@@ -543,7 +546,7 @@ if job_rag:
             
             html(m._repr_html_(), height=550)
         else:
-            st.info("해당 기업 위치 정보가 없습니다.")
+            st.warning("해당 기업 위치 정보가 없습니다.")
 
     # 5️⃣ 기업 검색 및 지도 표시
     with selected_tabs[4]:
