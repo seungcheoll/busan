@@ -17,6 +17,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.schema import ChatResult
 from openai import OpenAI
 import json
+import streamlit.components.v1 as components
 
 def strip_code_blocks(text):
     if text.startswith("```json"):
