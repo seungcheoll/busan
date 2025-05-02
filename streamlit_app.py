@@ -509,7 +509,7 @@ if job_rag:
                 name = row['회사명']
                 jk_url = row['잡코리아 주소']
                 # expander 생성
-                with st.expander(f"JobKorea에서 **{name}** 채용정보"):
+                with st.expander(f"JobKorea **{name}** 채용정보"):
                     # iframe으로 잡코리아 페이지 임베딩
                     components.iframe(
                         src=jk_url,
