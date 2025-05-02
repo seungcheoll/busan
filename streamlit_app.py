@@ -18,8 +18,6 @@ from langchain.schema import ChatResult
 from openai import OpenAI
 import json
 
-
-
 def strip_code_blocks(text):
     if text.startswith("```json"):
         text = text.replace("```json", "").replace("```", "").strip()
@@ -32,7 +30,6 @@ def text_to_json(text):
     except json.JSONDecodeError as e:
         return f"JSON 변환 오류: {e}"
         
-
 # ✅ GPT용 LLM 클래스 정의
 class GPTChatWrapper(BaseChatModel):
     openai_api_key: str
@@ -436,6 +433,7 @@ if job_rag:
     selected_tabs = st.tabs([
         "✅ Job-Busan 답변",
         "📚 추천 기업 상세",
+        "📢 관련 채용 정보(JOBKOREA)",
         "🌍 추천 기업 위치",
         "🔍 부산 기업 분포 및 검색"
     ])
@@ -489,8 +487,17 @@ if job_rag:
                 content = format_row(row)
                 st.write(content)
 
-    # 3️⃣ 기업 위치 지도
+    # 3️⃣ JOBKOREA
     with selected_tabs[2]:
+        raw_names = st.session_state.get("company_name_by_gpt", "")
+        company_name_by_gpt = [name.strip() for name in raw_names.split(",")]
+        # 2. isin()으로 필터링
+        matched_df_by_gpt = st.session_state.company_df_for_gpt[
+            st.session_state.company_df_for_gpt['회사명'].isin(company_name_by_gpt)
+        ]
+        st.write(matched_df_by_gpt)
+    # 4️⃣ 기업 위치 지도
+    with selected_tabs[3]:
         raw_names = st.session_state.get("company_name_by_gpt", "")
         company_name_by_gpt = [name.strip() for name in raw_names.split(",")]
         matched_df = st.session_state.company_df_for_map[st.session_state.company_df_for_map['회사명'].isin(company_name_by_gpt)]
@@ -520,8 +527,8 @@ if job_rag:
         else:
             st.info("해당 기업 위치 정보가 없습니다.")
 
-    # 4️⃣ 기업 검색 및 지도 표시
-    with selected_tabs[3]:
+    # 5️⃣ 기업 검색 및 지도 표시
+    with selected_tabs[4]:
         if "search_keyword" not in st.session_state:
             st.session_state.search_keyword = ""
         if "reset_triggered" not in st.session_state:
