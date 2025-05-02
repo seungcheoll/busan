@@ -509,8 +509,7 @@ if job_rag:
                 name = row['회사명']
                 jk_url = row['잡코리아 주소']
                 # expander 생성
-                with st.expander(f"{name}"):
-                    st.markdown(f"**JobKorea에서 `{name}` 채용공고 보기**")
+                with st.expander(f"**JobKorea에서 `{name}` 채용공고 보기**"):
                     # iframe으로 잡코리아 페이지 임베딩
                     components.iframe(
                         src=jk_url,
@@ -546,7 +545,7 @@ if job_rag:
             
             html(m._repr_html_(), height=550)
         else:
-            st.warning("해당 기업 위치 정보가 없습니다.")
+            st.warning("일치하는 기업이 없습니다.")
 
     # 5️⃣ 기업 검색 및 지도 표시
     with selected_tabs[4]:
