@@ -301,7 +301,7 @@ if info:
                 <ul>
                   <li>✅ Job-Busan 답변: 부산 내 강소기업 추천</li>
                   <li>📚 추천 기업 상세</li>
-                  <li>"📢 관련 채용 정보(JobKorea)"</li>
+                  <li>📢 관련 채용 정보(JobKorea)</li>
                   <li>🌍 추천 기업 위치</li>
                   <li>🔍 부산 기업 분포 : 원하는 기업 검색</li>
                 </ul>
