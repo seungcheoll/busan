@@ -490,7 +490,6 @@ if job_rag:
                 content = format_row(row)
                 st.session_state.content_to_gpt.append(content)
                 st.write(content)
-        st.write("▶ 저장된 content_to_gpt:", st.session_state.content_to_gpt)
         
     # 3️⃣ JOBKOREA
     with selected_tabs[2]:
@@ -705,7 +704,7 @@ if chatbot:
     user_type = st.session_state.get("saved_user_type", "알 수 없음")
     user_query = st.session_state.get("saved_query", "입력된 질문이 없습니다")
     # 🔹 참고자료 포함 system prompt 구성
-    context_text = "\n\n".join(doc.page_content for doc in st.session_state.source_docs)
+    context_text = "\n\n".join(st.session_state.content_to_gpt)
     with open("template/sys_template.txt", "r", encoding="utf-8") as file:
         template=file.read()
     
