@@ -489,8 +489,7 @@ if job_rag:
             # 👉 Expander에 표시
             for _, row in matched_df_by_gpt.iterrows():
                 content_to_gpt={}
-                name=row['회사명']
-                with st.expander(f"**{name}** 상세 정보):
+                with st.expander(f"**{row['회사명']}** 상세 정보"):
                     content = format_row(row)
                     st.session_state.content_to_gpt.append(content)
                     st.write(content)
