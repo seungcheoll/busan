@@ -508,7 +508,7 @@ if job_rag:
                     # iframe으로 잡코리아 페이지 임베딩
                     components.iframe(
                         src=jk_url,
-                        height=600,      # iframe 높이 (필요에 따라 조정)
+                        height=1000,      # iframe 높이 (필요에 따라 조정)
                         scrolling=True
                     )
     # 4️⃣ 기업 위치 지도
