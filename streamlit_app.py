@@ -495,7 +495,21 @@ if job_rag:
         matched_df_by_gpt = st.session_state.company_df_for_gpt[
             st.session_state.company_df_for_gpt['회사명'].isin(company_name_by_gpt)
         ]
-        st.write(matched_df_by_gpt)
+        if matched_df_by_gpt.empty:
+            st.warning("일치하는 기업이 없습니다.")
+        else:
+            for _, row in matched_df_by_gpt.iterrows():
+                name = row['회사명']
+                jk_url = row['잡코리아 주소']
+                # expander 생성
+                with st.expander(f"{name}"):
+                    st.markdown(f"**JobKorea에서 `{name}` 채용공고 보기**")
+                    # iframe으로 잡코리아 페이지 임베딩
+                    components.iframe(
+                        src=jk_url,
+                        height=600,      # iframe 높이 (필요에 따라 조정)
+                        scrolling=True
+                    )
     # 4️⃣ 기업 위치 지도
     with selected_tabs[3]:
         raw_names = st.session_state.get("company_name_by_gpt", "")
