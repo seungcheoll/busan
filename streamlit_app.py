@@ -75,7 +75,7 @@ def input_profile():
             st.markdown('<h2 style="text-align:center;">📋 사용자 정보를 입력해주세요</h2>', unsafe_allow_html=True)
             st.markdown("""
             <div style="text-align:center; color:red; font-weight:bold; font-size:16px;">
-            ※ 정보 미입력 시 진로 상담 챗봇(DreamChat)의 사용이 제한됩니다. ※
+            ※ 정보 미입력 시 진로 상담 챗봇(Dream Chat)의 사용이 제한됩니다. ※
             </div>
             """, unsafe_allow_html=True)
             
@@ -271,7 +271,13 @@ Dreamer = choice == "Dream Chat"
 # [7] 이용 가이드 페이지
 # ───────────────────────────────────────────
 if info:
-    st.markdown("<h1 style='text-align: center;'>🧾 JOB-IS 이용 가이드</h1>", unsafe_allow_html=True)
+    st.markdown("""
+    <h1 style='text-align: center;'>
+      <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/logo.png" 
+           style="width: 30px; height: 30px; vertical-align: middle; margin-right: 10px;">
+      JOB-IS 이용 가이드
+    </h1>
+    """, unsafe_allow_html=True)
     st.markdown("""
     <style>
       .gbox {
