@@ -31,22 +31,29 @@ def start_page():
         col1, col2, col3 = st.columns([1, 2, 1])  # 가운데 정렬
         with col2:
             st.markdown("""
-                <div style="text-align: center;">
-                    <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/logo.png" 
-                         style="width: 500px; height: 400px;">
+                <div style="
+                    background-color: #f9f9f9;
+                    padding: 0px;
+                    border-radius: 10px;
+                    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+                    text-align: center;
+                    width: 500px;
+                    margin: 0 auto;
+                ">
+                    <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/logo_raw.png" 
+                         style="width: 500px; height: 400px; display: block; margin: 0 auto;">
                 </div>
             """, unsafe_allow_html=True)
 
-        # 버튼 가운데 정렬
+        # 버튼만 따로 가운데 정렬
         btn_col1, btn_col2, btn_col3 = st.columns([1.75, 1, 1])
         with btn_col2:
-            st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
-            if st.button("이용하러 가기"):
+            st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)  # 버튼 위 여백 최소
+            if st.button("👉 이용하러 가기"):
                 st.session_state.started = True
                 st.rerun()
 
         st.stop()
-
         
 def check_login():
     if not st.session_state.get("authenticated", False):
@@ -273,9 +280,9 @@ Dreamer = choice == "Dream Chat"
 if info:
     st.markdown("""
     <h1 style='text-align: center;'>
-      <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/logo.png" 
-           style="width: 30px; height: 30px; vertical-align: middle; margin-right: 10px;">
-      JOB-IS 이용 가이드
+      <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/logo_guide.png" 
+           style="width: 150px; height: 150px; vertical-align: middle; margin-right: 10px;">
+      이용 가이드
     </h1>
     """, unsafe_allow_html=True)
     st.markdown("""
