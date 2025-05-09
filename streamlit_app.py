@@ -30,7 +30,7 @@ def authenticate():
                 st.session_state.authenticated = True
                 st.success("로그인 성공!")
                 # 리로드 없이 바로 넘어가려면 다음 줄 주석 해제
-                # st.experimental_rerun()
+                # st.rerun()
             else:
                 st.error("비밀번호가 올바르지 않습니다")
         # 인증 전에는 더 이상의 코드 실행을 막습니다
