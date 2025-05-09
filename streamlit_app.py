@@ -19,6 +19,14 @@ from openai import OpenAI
 import json
 import streamlit.components.v1 as components
 #---
+
+# 🧭 Streamlit 기본 설정 및 스타일 숨기기
+st.set_page_config(
+    page_title="JobBusan",
+    page_icon="https://raw.githubusercontent.com/seungcheoll/busan/main/image/chatbot.png",
+    layout="wide"
+)
+
 st.markdown("""
     <style>
       /* 이걸 body 바로 위에 붙이면, 로그인 전용 오버레이가 화면 전체를 덮게 됩니다 */
@@ -184,12 +192,6 @@ def init_qa_chain():
 # ───────────────────────────────────────────
 # [4] Streamlit 기본 설정 및 스타일 커스터마이징
 # ───────────────────────────────────────────
-# 🧭 Streamlit 기본 설정 및 스타일 숨기기
-st.set_page_config(
-    page_title="JobBusan",
-    page_icon="https://raw.githubusercontent.com/seungcheoll/busan/main/image/chatbot.png",
-    layout="wide"
-)
 
 hide_streamlit_style = """
     <style>
