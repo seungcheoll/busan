@@ -46,6 +46,7 @@ def start_page():
         # 버튼만 따로 가운데 정렬
         btn_col1, btn_col2, btn_col3 = st.columns([1.75, 1, 1])
         with btn_col2:
+            st.markdown("")
             if st.button("👉 이용하러 가기"):
                 st.session_state.started = True
                 st.rerun()
