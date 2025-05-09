@@ -82,17 +82,21 @@ st.markdown("""
 
 def authenticate():
     if not st.session_state.get("authenticated", False):
-        # container 열기
-        st.markdown('<div class="login-container"><div class="login-card">', unsafe_allow_html=True)
-
         st.markdown('<h2>🚀 지금 바로 JOBBUSAN을 시작하세요!</h2>', unsafe_allow_html=True)
-        with st.form("login_form"):
-            pw = st.text_input("", type="password", placeholder="비밀번호를 입력하세요.")
-            submitted = st.form_submit_button("로그인")
-            # ... 인증 로직 생략 ...
 
-        # container 닫기
-        st.markdown('</div></div>', unsafe_allow_html=True)
+        with st.form("login_form"):
+            pw = st.text_input("", type="password",placeholder='비밀번호를 입력하세요.')
+            submitted = st.form_submit_button("로그인")
+            if submitted:
+                if pw == st.secrets["general"]["APP_PASSWORD"]:
+                    st.session_state.authenticated = True
+                    st.success("로그인 성공!")
+                    st.rerun()
+                else:
+                    st.error("비밀번호가 올바르지 않습니다")
+
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
         st.stop()
         
 authenticate()
