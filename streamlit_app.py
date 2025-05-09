@@ -463,7 +463,7 @@ if Career:
     
 
         if st.button("💬 질문 실행"):
-            with st.spinner("🔎 Job-Busan이 부산 기업 정보를 검색 중입니다."):
+            with st.spinner("🔎 JOB-IS가 부산 기업 정보를 검색 중입니다."):
                 selected_template = st.session_state.templates[user_type]
                 formatted_template = selected_template.format(
                     university   = st.session_state.university,
@@ -768,11 +768,11 @@ if Career:
         if st.button("🔙 JOB-IS 페이지로 돌아가기"):
             st.session_state.current_page = "Career_rag"
             st.rerun()
-        if "gpt_chat" not in st.session_state:
+        if "career_chat" not in st.session_state:
             st.session_state.gpt_chat = GPTChatWrapper(openai_api_key=load_api_key())
         
-        if "gpt_history" not in st.session_state:
-            st.session_state.gpt_history = [
+        if "career_history" not in st.session_state:
+            st.session_state.career_history = [
                 {"role": "assistant", "content": "안녕하세요! 취업 상담 챗봇 JOB-IS입니다! 무엇을 도와드릴까요?"}
             ]
     
@@ -794,7 +794,7 @@ if Career:
         with open("template/sys_template_gpt_rag.txt", "r", encoding="utf-8") as file:
             template=file.read()
         
-        system_prompt = template.format(
+        system_prompt_career = template.format(
             university   = st.session_state.university,
             major        = st.session_state.major,
             gpa          = st.session_state.gpa,
@@ -817,7 +817,7 @@ if Career:
             </div>
         """, unsafe_allow_html=True)
     
-        for msg in st.session_state.gpt_history:
+        for msg in st.session_state.career_history:
             if msg["role"] == "user":
                 _, right = st.columns([3, 1])
                 with right:
@@ -864,33 +864,33 @@ if Career:
                         unsafe_allow_html=True
                     )
     
-        prompt = st.chat_input("메시지를 입력하세요...", key="gpt_input")
-        if prompt:
-            st.session_state.gpt_history.append({"role": "user", "content": prompt})
+        user_career = st.chat_input("메시지를 입력하세요...", key="career_input")
+        if user_career:
+            st.session_state.career_history.append({"role": "user", "content": user_career})
             
             # ✅ 최근 10개만 포함
-            recent_messages = st.session_state.gpt_history[-10:]
+            recent_messages = st.session_state.career_history[-10:]
             
             # ✅ system_prompt 고정 + 최근 메시지 순차 삽입
-            history = [HumanMessage(content=system_prompt)]
+            history = [HumanMessage(content=system_prompt_career)]
             for m in recent_messages:
                 history.append(
                     (HumanMessage if m["role"] == "user" else AIMessage)(content=m["content"])
                 )
     
-            answer = st.session_state.gpt_chat._call(history)
-            st.session_state.gpt_history.append({"role": "assistant", "content": answer})
+            answer_career = st.session_state.career_chat._call(history)
+            st.session_state.career_history.append({"role": "assistant", "content": answer_career})
             st.rerun()
 # ───────────────────────────────────────────
 # [9] gpt Chatbot 페이지 (Job-Bu Chatbot)
 # ───────────────────────────────────────────
 # 🤖 chatbot 페이지
 if Dreamer:
-    if "gpt_chat" not in st.session_state:
-        st.session_state.gpt_chat = GPTChatWrapper(openai_api_key=load_api_key())
+    if "dream_chat" not in st.session_state:
+        st.session_state.dream_chat = GPTChatWrapper(openai_api_key=load_api_key())
 
-    if "gpt_history" not in st.session_state:
-        st.session_state.gpt_history = [
+    if "dream_history" not in st.session_state:
+        st.session_state.dream_history = [
             {"role": "assistant", "content": "안녕하세요! 진로 상담 챗봇 Dreamer입니다! 무엇을 도와드릴까요?"}
         ]
 
@@ -912,7 +912,7 @@ if Dreamer:
     with open("template/sys_template_gpt_job.txt", "r", encoding="utf-8") as file:
         template = file.read()
 
-    system_prompt = template.format(
+    system_prompt_dream = template.format(
         university   = university,
         major        = major,
         gpa          = gpa,
@@ -935,7 +935,7 @@ if Dreamer:
     """, unsafe_allow_html=True)
 
     # 💬 히스토리
-    for msg in st.session_state.gpt_history:
+    for msg in st.session_state.dream_history:
         if msg["role"] == "user":
             _, right = st.columns([3, 1])
             with right:
@@ -964,18 +964,18 @@ if Dreamer:
                 )
 
     # 📥 입력받기
-    prompt = st.chat_input("메시지를 입력하세요...", key="gpt_input")
-    if prompt:
-        st.session_state.gpt_history.append({"role": "user", "content": prompt})
+    user_dream = st.chat_input("메시지를 입력하세요...", key="dream_input")
+    if user_dream:
+        st.session_state.dream_history.append({"role": "user", "content": user_dream})
 
         # 최근 10개 메시지로 히스토리 구성
-        recent_messages = st.session_state.gpt_history[-10:]
-        history = [HumanMessage(content=system_prompt)]
+        recent_messages = st.session_state.dream_history[-10:]
+        history_dream = [HumanMessage(content=system_prompt_dream)]
         for m in recent_messages:
-            history.append(
+            history_dream.append(
                 (HumanMessage if m["role"] == "user" else AIMessage)(content=m["content"])
             )
 
-        answer = st.session_state.gpt_chat._call(history)
-        st.session_state.gpt_history.append({"role": "assistant", "content": answer})
+        answer_dream = st.session_state.dream_chat._call(history_dream)
+        st.session_state.dream_history.append({"role": "assistant", "content": answer_dream})
         st.rerun()
