@@ -32,10 +32,9 @@ def start_page():
         with col2:
             st.markdown("""
                 <div style="
-                    background-color: #f9f9f9;
+                    background-color: #000000;
                     padding: 0px;
                     border-radius: 10px;
-                    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
                     text-align: center;
                     width: 500px;
                     margin: 0 auto;
