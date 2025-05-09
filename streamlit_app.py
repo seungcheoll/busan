@@ -413,7 +413,7 @@ if job_rag:
 
     # ✅ job_rag 페이지 로직
     if st.session_state.current_page == "job_rag":
-        if st.button("📄 다른 페이지로 이동하기"):
+        if st.button("🔙 Chatbot 이용하기"):
             st.session_state.current_page = "extra_page"
             st.rerun()
             
