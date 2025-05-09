@@ -49,14 +49,14 @@ def input_profile():
     if "profile_done" not in st.session_state:
         col1, col2, col3 = st.columns([1, 2, 1])  # 가운데 열을 더 넓게
 
-        with col2:  # 두 번째 컬럼에만 폼 표시
+        with col2:
             st.markdown('<h2 style="text-align:center;">📋 사용자 정보를 입력해주세요</h2>', unsafe_allow_html=True)
             st.markdown("""
             <div style="text-align:center; color:red; font-weight:bold; font-size:16px;">
             ※ 정보 미입력 시 진로 상담 챗봇(DreamChat)의 사용이 제한됩니다. ※
             </div>
             """, unsafe_allow_html=True)
-            
+
             with st.form("profile_form"):
                 university   = st.text_input("대학교", placeholder="예: OO대학교")
                 major        = st.text_input("전공", placeholder="예: OO학과")
@@ -65,8 +65,14 @@ def input_profile():
                 job_pref     = st.text_input("선호직무", placeholder="예: 개발자")
                 activities   = st.text_area("경력사항", placeholder="예: OO공모전 수상 \n OO서포터즈 ...")
                 certificates = st.text_area("보유 자격증", placeholder="예: ADsP\nSQLD")
-                
-                agree = st.checkbox("개인정보 수집 및 이용에 동의합니다.")
+
+                col_agree, col_policy = st.columns([5, 2])
+                with col_agree:
+                    agree = st.checkbox("개인정보 수집 및 이용에 동의합니다.")
+                with col_policy:
+                    if st.form_submit_button("이용방침 보기"):
+                        st.info("입력하신 정보는 외부에 공개되지 않으며, 오직 진로 상담 챗봇 기능 제공을 위한 내부 참고 자료로만 사용됩니다.")
+
                 submitted = st.form_submit_button("입력 완료")
 
                 if submitted:
@@ -84,6 +90,7 @@ def input_profile():
                         st.success("✅ 프로필 정보 저장 완료!")
                         st.rerun()
         st.stop()
+        
 # 실행 흐름
 check_login()
 input_profile()
