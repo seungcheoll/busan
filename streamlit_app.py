@@ -768,7 +768,7 @@ if Career:
         
         if "career_history" not in st.session_state:
             st.session_state.career_history = [
-                {"role": "assistant", "content": "안녕하세요! 취업 상담 챗봇 CareerChat입니다! 무엇을 도와드릴까요?"}
+                {"role": "assistant", "content": "안녕하세요! 취업 상담 챗봇 Career Chat입니다! 무엇을 도와드릴까요?"}
             ]
     
         if "source_docs" not in st.session_state or not st.session_state.source_docs:
@@ -807,7 +807,7 @@ if Career:
                 <h1 style='margin:0; font-size:24px; display: flex; align-items: center; justify-content: center; gap: 10px; color: #000;'>
                     <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/GPT_image2.png' 
                          style='width: 40px; height: auto; vertical-align: middle;'/>
-                    CareerChat
+                    Career Chat
                 </h1>
             </div>
         """, unsafe_allow_html=True)
@@ -886,7 +886,7 @@ if Dreamer:
 
     if "dream_history" not in st.session_state:
         st.session_state.dream_history = [
-            {"role": "assistant", "content": "안녕하세요! 진로 상담 챗봇 DreamChat입니다! 무엇을 도와드릴까요?"}
+            {"role": "assistant", "content": "안녕하세요! 진로 상담 챗봇 Dream Chat입니다! 무엇을 도와드릴까요?"}
         ]
 
     # 🔹 사용자 프로필 입력값 확인
@@ -924,7 +924,7 @@ if Dreamer:
             <h1 style='margin:0; font-size:24px; display: flex; align-items: center; justify-content: center; gap: 10px; color: #000;'>
                 <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/GPT_image2.png' 
                      style='width: 40px; height: auto; vertical-align: middle;'/>
-                DreamChat
+                Dream Chat
             </h1>
         </div>
     """, unsafe_allow_html=True)
