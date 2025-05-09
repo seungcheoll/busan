@@ -98,6 +98,8 @@ def authenticate():
 
         st.markdown('</div></div>', unsafe_allow_html=True)
         st.stop()
+
+authenticate()
 #---
 
 def strip_code_blocks(text):
