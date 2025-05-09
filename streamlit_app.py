@@ -261,29 +261,6 @@ with st.sidebar:
         }
     )
 
-    # ▼ 사용자 프로필 입력 (expander로 접기/펼치기)
-    with st.expander("📋 사용자 프로필 입력", expanded=False):
-        with st.form("profile_form"):
-            university_temp   = st.text_input("대학교", value=st.session_state.get("university", ""), placeholder="예: OO대학교")
-            major_temp        = st.text_input("전공", value=st.session_state.get("major", ""), placeholder="예: OO학과")
-            gpa_temp          = st.text_input("학점", value=st.session_state.get("gpa", ""), placeholder="예: 4.5")
-            field_pref_temp   = st.text_input("선호분야(산업군)", value=st.session_state.get("field_pref", ""), placeholder="예: 제조업")
-            job_pref_temp     = st.text_input("선호직무", value=st.session_state.get("job_pref", ""), placeholder="예: 개발자")
-            activities_temp   = st.text_area("경력사항", value=st.session_state.get("activities", ""), placeholder="예: OO공모전 수상 \n OO서포터즈 \n ...")
-            certificates_temp = st.text_area("보유 자격증", value=st.session_state.get("certificates", ""), placeholder="예: ADsP\nSQLD\n ...")
-
-            submitted = st.form_submit_button("입력 완료")
-            if submitted:
-                st.session_state.university   = university_temp
-                st.session_state.major        = major_temp
-                st.session_state.gpa          = gpa_temp
-                st.session_state.field_pref   = field_pref_temp
-                st.session_state.job_pref     = job_pref_temp
-                st.session_state.activities   = activities_temp
-                st.session_state.certificates = certificates_temp
-
-                st.success("✅ 입력 완료!")
-
     # ▶️ 시연 영상 (YouTube 삽입)
     st.markdown("")
     st.sidebar.markdown("#### ▶️ 시연 영상")
