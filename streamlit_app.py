@@ -78,7 +78,7 @@ st.markdown("""
 
 def authenticate():
     if not st.session_state.get("authenticated", False):
-        st.markdown('<h2>🔒 JOBBUSAN 로그인</h2>', unsafe_allow_html=True)
+        st.markdown('<h2>🚀 지금 바로 JOBBUSAN을 시작하세요!</h2>', unsafe_allow_html=True)
 
         with st.form("login_form"):
             pw = st.text_input(
