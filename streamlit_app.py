@@ -38,7 +38,8 @@ def start_page():
                     box-shadow: 0 2px 6px rgba(0,0,0,0.08);
                     text-align: center;
                     width: 500px;
-                    margin: 0;
+                    height: 400px;
+                    margin: 0 auto;
                 ">
                     <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/logo.png" 
                          style="width: 500px; height: 400px; display: block; margin: 0 auto;">
