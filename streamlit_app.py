@@ -30,7 +30,7 @@ def authenticate():
                 st.session_state.authenticated = True
                 st.success("로그인 성공!")
                 # 로그인 성공 직후 앱을 리런하여 authenticate() 재진입 시 패스하도록 함
-                st.experimental_rerun()
+                st.rerun()
             else:
                 st.error("비밀번호가 올바르지 않습니다")
         # 인증 전에는 여기서 멈춰야 하므로 stop()
