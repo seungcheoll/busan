@@ -236,7 +236,7 @@ with st.sidebar:
     # 🔘 페이지 선택 메뉴
     choice = option_menu(
         menu_title="Page",
-        options=["Guide","CareerChat", "DreamChat"],
+        options=["Guide","Career Chat", "Dream Chat"],
         icons=["info-circle","", ""],
         menu_icon="",
         default_index=0,
@@ -264,8 +264,8 @@ with st.sidebar:
     st.sidebar.markdown("#### ▶️ 시연 영상")
     st.sidebar.video("https://youtu.be/G_MKtEmmJt8")  # 여기에 유튜브 링크 삽입
 info = choice == "Guide"
-Career = choice == "CareerChat"
-Dreamer = choice == "DreamChat"
+Career = choice == "Career Chat"
+Dreamer = choice == "Dream Chat"
 
 # ───────────────────────────────────────────
 # [7] 이용 가이드 페이지
@@ -357,36 +357,36 @@ if info:
           />
         </div>
         <div class="right-section">
-          <div class="textbox">
-            <h4>1️⃣ Job-Busan (기업 매칭 서비스)</h4>
-            <ul>
-              <li>📋 먼저 사이드바에서 사용자 프로필을 입력하세요.</li>
-              <li>❓ 질문 입력 및 유형 선택 후 질문 실행 버튼을 클릭하세요.</li>
-              <li>📁 결과는 5개의 탭으로 구성되어 있습니다.
-                <ul>
-                  <li>✅ Job-Busan 답변: 부산 내 강소기업 추천</li>
-                  <li>📚 추천 기업 상세</li>
-                  <li>📢 관련 채용 정보(JobKorea)</li>
-                  <li>🌍 추천 기업 위치</li>
-                  <li>🔍 부산 기업 분포 : 원하는 기업 검색</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-          <div class="textbox">
-            <h4>2️⃣ Job-Busan Chatbot (취업 상담 파트너)</h4>
-            <ul>
-              <li>🤖 기업 추천 이후 추가 질문 가능</li>
-              <li>📝 사용자 프로필 및 추천 기업 정보를 바탕으로 정밀한 답변 제공</li>
-              <li>💡 예시 질문
-                <ul>
-                  <li>"이 기업의 복지제도는 어떻게 되나요?"</li>
-                  <li>"평균 연봉은 얼마인가요?"</li>
-                  <li>"이 분야의 전망은?"</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
+            <div class="textbox">
+              <h4>1️⃣ Career Chat (기업 매칭 서비스)</h4>
+              <ul>
+                <li>❓ 질문 입력 및 유형 선택 후 질문 실행 버튼을 클릭하세요.</li>
+                <li>📁 결과는 5개의 탭으로 구성되어 있습니다.
+                  <ul>
+                    <li>✅ Job-Busan 답변: 부산 내 강소기업 추천</li>
+                    <li>📚 추천 기업 상세</li>
+                    <li>📢 관련 채용 정보(JobKorea)</li>
+                    <li>🌍 추천 기업 위치</li>
+                    <li>🔍 부산 기업 분포 : 원하는 기업 검색</li>
+                  </ul>
+                </li>
+                <li>💬 JOB-IS 답변 기반 취업 상담 챗봇이 함께 제공됩니다.</li>
+              </ul>
+            </div>
+            <div class="textbox">
+              <h4>2️⃣ Dream Chat (진로 상담 서비스)</h4>
+              <ul>
+                <li>🧠 사용자가 입력한 프로필 정보를 바탕으로 진로 상담을 제공합니다.</li>
+                <li>💡 예시 질문
+                  <ul>
+                    <li>"제 전공에 맞는 직무가 궁금해요."</li>
+                    <li>"관심 분야에서 필요한 자격증은 뭔가요?"</li>
+                    <li>"해외 취업도 고려 중인데, 어떤 준비가 필요할까요?"</li>
+                    <li>"저와 비슷한 경력을 가진 사람들은 어떤 기업에 입사하나요?"</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
         </div>
       </div>
     </div>
@@ -409,7 +409,7 @@ if Career:
             <div style='padding: 10px 0px; display: flex; align-items: center; gap: 10px;'>
                 <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/jobis.png' 
                      style='width: 45px; height: 45px;'>
-                <span style='font-size:28px; font-weight: bold;'>기업 매칭 서비스(JOB-IS)</span>
+                <span style='font-size:28px; font-weight: bold;'>Career Chat(기업 매칭 서비스)</span>
             </div>
         """, unsafe_allow_html=True)
     
