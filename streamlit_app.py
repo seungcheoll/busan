@@ -787,8 +787,14 @@ if chatbot:
     # 🔹 사용자 유형과 질문 가져오기
     user_type = st.session_state.get("saved_user_type", "알 수 없음")
     user_query = st.session_state.get("saved_query", "입력된 질문이 없습니다")
-    # 🔹 참고자료 포함 system prompt 구성
-    context_text = "\n\n".join(st.session_state.content_to_gpt)
+    # 🔹 content_to_gpt 가 없거나 비어 있으면 빈 리스트, 아니면 그 값을 사용
+    context_list = st.session_state.get("content_to_gpt", [])
+    
+    # 🔹 context_text 생성: 리스트에 내용이 있으면 join, 없으면 빈 문자열
+    if context_list:
+        context_text = "\n\n".join(context_list)
+    else:
+        context_text = ""
     with open("template/sys_template.txt", "r", encoding="utf-8") as file:
         template=file.read()
     
