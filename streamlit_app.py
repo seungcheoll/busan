@@ -414,7 +414,7 @@ if job_rag:
     # ✅ job_rag 페이지 로직
     if st.session_state.current_page == "job_rag":
         if st.button("🔙 Chatbot 이용하기"):
-            st.session_state.current_page = "extra_page"
+            st.session_state.current_page = "job_busan_chatbot"
             st.rerun()
             
         st.markdown("""
@@ -772,8 +772,8 @@ if job_rag:
                     html(st.session_state.map_html, height=480)
                     st.caption("※ 전체 기업 분포를 표시 중입니다.")
 
-    # ✅ extra_page 콘텐츠
-    elif st.session_state.current_page == "extra_page":
+    # ✅ job_busan_chatbot 콘텐츠
+    elif st.session_state.current_page == "job_busan_chatbot":
                 # 🔙 돌아가기 버튼
         if st.button("🔙 Job-Busan 페이지로 돌아가기"):
             st.session_state.current_page = "job_rag"
