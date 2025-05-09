@@ -33,36 +33,22 @@ def start_page():
             st.markdown("""
                 <div style="
                     background-color: #f9f9f9;
-                    padding: 30px;
+                    padding: 20px;
                     border-radius: 12px;
                     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
                     text-align: center;
                 ">
                     <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/logo.png" 
-                         style="width: 500px; height: 400px; margin-bottom: 20px;">
-                    <p style="font-size: 18px; margin-top: 0;">맞춤형 취업 상담을 지금 시작해보세요!</p>
+                         style="width: 500px; height: 400px;">
                 </div>
             """, unsafe_allow_html=True)
 
         # 버튼만 따로 가운데 정렬
         btn_col1, btn_col2, btn_col3 = st.columns([1.75, 1, 1])
         with btn_col2:
-            st.markdown("""
-                <div style='
-                    background-color: #ffffff;
-                    padding: 20px;
-                    border: 1px solid #ccc;
-                    border-radius: 10px;
-                    text-align: center;
-                    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-                '>
-            """, unsafe_allow_html=True)
-
             if st.button("👉 이용하러 가기"):
                 st.session_state.started = True
                 st.rerun()
-
-            st.markdown("</div>", unsafe_allow_html=True)
 
         st.stop()
 
