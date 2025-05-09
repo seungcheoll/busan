@@ -872,13 +872,13 @@ if Career:
             recent_messages = st.session_state.career_history[-10:]
             
             # ✅ system_prompt 고정 + 최근 메시지 순차 삽입
-            history = [HumanMessage(content=system_prompt_career)]
+            history_career = [HumanMessage(content=system_prompt_career)]
             for m in recent_messages:
-                history.append(
+                history_career.append(
                     (HumanMessage if m["role"] == "user" else AIMessage)(content=m["content"])
                 )
     
-            answer_career = st.session_state.career_chat._call(history)
+            answer_career = st.session_state.career_chat._call(history_career)
             st.session_state.career_history.append({"role": "assistant", "content": answer_career})
             st.rerun()
 # ───────────────────────────────────────────
