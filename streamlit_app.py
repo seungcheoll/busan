@@ -34,6 +34,7 @@ def start_page():
             st.markdown('<p style="text-align:center;">맞춤형 취업 상담을 지금 시작해보세요!</p>', unsafe_allow_html=True)
             if st.button("👉 이용하러 가기"):
                 st.session_state.started = True
+                st.rerun()
         st.stop()  # 이용하러 가기 누르기 전까지는 이후 실행 막음
         
 def check_login():
