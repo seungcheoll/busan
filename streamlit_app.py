@@ -385,7 +385,7 @@ if Career:
         st.markdown("""
             <div style='padding: 10px 0px; display: flex; align-items: center; gap: 10px;'>
                 <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/jobis.png' 
-                     style='width: 50px; height: 50px;'>
+                     style='width: 45px; height: 45px;'>
                 <span style='font-size:28px; font-weight: bold;'>취업 상담 챗봇(JOB-IS)</span>
             </div>
         """, unsafe_allow_html=True)
