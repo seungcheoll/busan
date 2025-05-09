@@ -28,17 +28,21 @@ st.set_page_config(
 
 def check_login():
     if not st.session_state.get("authenticated", False):
-        with st.form("login_form"):
-            st.markdown('<h2>🚀 JOB-IS 시작을 위해 로그인하세요</h2>', unsafe_allow_html=True)
-            pw = st.text_input("비밀번호", type="password")
-            submitted = st.form_submit_button("로그인")
-            if submitted:
-                if pw == st.secrets["general"]["APP_PASSWORD"]:
-                    st.session_state.authenticated = True
-                    st.success("✅ 로그인 성공!")
-                    st.rerun()
-                else:
-                    st.error("비밀번호가 올바르지 않습니다")
+        col1, col2, col3 = st.columns([1, 2, 1])  # 가운데 열이 넓도록 설정
+
+        with col2:
+            st.markdown('<h2 style="text-align:center;">🚀 JOB-IS 시작을 위해 로그인하세요</h2>', unsafe_allow_html=True)
+
+            with st.form("login_form"):
+                pw = st.text_input("비밀번호", type="password", placeholder="비밀번호를 입력하세요")
+                submitted = st.form_submit_button("로그인")
+                if submitted:
+                    if pw == st.secrets["general"]["APP_PASSWORD"]:
+                        st.session_state.authenticated = True
+                        st.success("✅ 로그인 성공!")
+                        st.rerun()
+                    else:
+                        st.error("비밀번호가 올바르지 않습니다")
         st.stop()
 
 def input_profile():
