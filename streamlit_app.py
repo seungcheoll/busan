@@ -31,7 +31,7 @@ def check_login():
         col1, col2, col3 = st.columns([1, 2, 1])  # 가운데 열이 넓도록 설정
 
         with col2:
-            st.markdown('<h2 style="text-align:center;">🚀 JOB-IS 시작을 위해 로그인하세요</h2>', unsafe_allow_html=True)
+            st.markdown('<h2 style="text-align:center;">😊 JOB-IS에 오신 걸 환영합니다!</h2>', unsafe_allow_html=True)
 
             with st.form("login_form"):
                 pw = st.text_input("비밀번호", type="password", placeholder="비밀번호를 입력하세요")
