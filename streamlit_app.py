@@ -41,7 +41,7 @@ def start_page():
                     margin: 0 auto;
                 ">
                     <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/logo_raw.png" 
-                         style="width: 500px; height: 400px; display: block; margin: 0 auto;">
+                         style="width: 500px; height: 250px; display: block; margin: 0 auto;">
                 </div>
             """, unsafe_allow_html=True)
 
