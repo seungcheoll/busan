@@ -19,7 +19,6 @@ from openai import OpenAI
 import json
 import streamlit.components.v1 as components
 #---
-
 # 🧭 Streamlit 기본 설정 및 스타일 숨기기
 st.set_page_config(
     page_title="JobBusan",
@@ -35,7 +34,7 @@ st.markdown("""
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 100%;
+        width: 50%;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -101,9 +100,8 @@ def authenticate():
         st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
         st.stop()
+        
 authenticate()
-
-
 #---
 
 def strip_code_blocks(text):
