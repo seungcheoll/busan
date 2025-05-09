@@ -353,7 +353,7 @@ if info:
           <img
             src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/flow.png"
             alt="JobBusan RAG 처리 구조도"
-            style="width:600px; height:485px; display:block; margin:0 auto; padding-top: 20px;"
+            style="width:600px; height:510px; display:block; margin:0 auto; padding-top: 20px;"
           />
         </div>
         <div class="right-section">
