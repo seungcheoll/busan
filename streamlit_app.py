@@ -225,7 +225,7 @@ with st.sidebar:
     # 🔘 페이지 선택 메뉴
     choice = option_menu(
         menu_title="Page",
-        options=["Guide","Job-Busan", "Job-Busan Chatbot"],
+        options=["Guide","Career", "Dreamer"],
         icons=["info-circle","", ""],
         menu_icon="",
         default_index=0,
@@ -276,14 +276,14 @@ with st.sidebar:
     st.sidebar.markdown("#### ▶️ 시연 영상")
     st.sidebar.video("https://youtu.be/G_MKtEmmJt8")  # 여기에 유튜브 링크 삽입
 info = choice == "Guide"
-job_rag = choice == "Job-Busan"
-chatbot = choice == "Job-Busan Chatbot"
+Career = choice == "Career"
+Dreamer = choice == "Dreamer"
 
 # ───────────────────────────────────────────
 # [7] 이용 가이드 페이지
 # ───────────────────────────────────────────
 if info:
-    st.markdown("<h1 style='text-align: center;'>🧾 Job-Busan 이용 가이드</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center;'>🧾 JOB-IS 이용 가이드</h1>", unsafe_allow_html=True)
     st.markdown("""
     <style>
       .gbox {
@@ -407,14 +407,14 @@ if info:
 # [8] Job-Busan 페이지: LLM QA + 지도 시각화
 # ───────────────────────────────────────────
 # 📌 Job Busan 페이지 구성
-if job_rag:
+if Career:
     if "current_page" not in st.session_state:
-        st.session_state.current_page = "job_rag"
+        st.session_state.current_page = "Career_rag"
 
     # ✅ job_rag 페이지 로직
-    if st.session_state.current_page == "job_rag":
+    if st.session_state.current_page == "Career_rag":
         if st.button("🔙 Chatbot 이용하기"):
-            st.session_state.current_page = "job_busan_chatbot"
+            st.session_state.current_page = "Career_chatbot"
             st.rerun()
             
         st.markdown("""
@@ -422,7 +422,7 @@ if job_rag:
                 <h1 style='margin:0; font-size:28px; display: flex; align-items: center; gap: 0px;'>
                     <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/chatbot.png' 
                          style='width: 60px; height: auto; vertical-align: middle;'>
-                    부산시 취업 상담 챗봇(Job-Busan)
+                    취업 상담 챗봇(JOB-IS)
                 </h1>
             </div>
         """, unsafe_allow_html=True)
@@ -519,7 +519,7 @@ if job_rag:
         # ───────────────────────────────────────
         # 📁 결과 탭 구성
         selected_tabs = st.tabs([
-            "✅ Job-Busan 답변",
+            "✅ JOB-IS 답변",
             "📚 추천 기업 상세",
             "📢 관련 채용 정보(JobKorea)",
             "🌍 추천 기업 위치",
@@ -528,7 +528,7 @@ if job_rag:
     
         # 1️⃣ 답변 탭
         with selected_tabs[0]:
-            st.write(st.session_state.get("gpt_result", "🔹 Job-Busan의 응답 결과가 여기에 표시됩니다."))
+            st.write(st.session_state.get("gpt_result", "🔹 JOB-IS의 응답 결과가 여기에 표시됩니다."))
     
         # 2️⃣ 문서 탭
         with selected_tabs[1]:
@@ -772,22 +772,22 @@ if job_rag:
                     html(st.session_state.map_html, height=480)
                     st.caption("※ 전체 기업 분포를 표시 중입니다.")
 
-    # ✅ job_busan_chatbot 콘텐츠
-    elif st.session_state.current_page == "job_busan_chatbot":
+    # ✅ Career_chatbot 콘텐츠
+    elif st.session_state.current_page == "Career_chatbot":
                 # 🔙 돌아가기 버튼
-        if st.button("🔙 Job-Busan 페이지로 돌아가기"):
-            st.session_state.current_page = "job_rag"
+        if st.button("🔙 JOB-IS 페이지로 돌아가기"):
+            st.session_state.current_page = "Career_rag"
             st.rerun()
         if "gpt_chat" not in st.session_state:
             st.session_state.gpt_chat = GPTChatWrapper(openai_api_key=load_api_key())
         
         if "gpt_history" not in st.session_state:
             st.session_state.gpt_history = [
-                {"role": "assistant", "content": "안녕하세요! 부산 취업 상담 챗봇 Job-Busan입니다! 무엇을 도와드릴까요?"}
+                {"role": "assistant", "content": "안녕하세요! 부산 취업 상담 챗봇 JOB-IS입니다! 무엇을 도와드릴까요?"}
             ]
     
         if "source_docs" not in st.session_state or not st.session_state.source_docs:
-            st.warning("💡 'Job-Busan' 페이지에서 먼저 '질문 실행'을 눌러 상담에 필요한 참고자료를 확보해 주세요.")
+            st.warning("💡 'JOB-IS' 페이지에서 먼저 '질문 실행'을 눌러 상담에 필요한 참고자료를 확보해 주세요.")
             st.stop()
     
         # 🔹 사용자 유형과 질문 가져오기
@@ -822,7 +822,7 @@ if job_rag:
                 <h1 style='margin:0; font-size:24px; display: flex; align-items: center; justify-content: center; gap: 10px; color: #000;'>
                     <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/GPT_image2.png' 
                          style='width: 40px; height: auto; vertical-align: middle;'/>
-                    Job-Bu Chatbot
+                    Career Chatbot
                 </h1>
             </div>
         """, unsafe_allow_html=True)
@@ -895,13 +895,13 @@ if job_rag:
 # [9] gpt Chatbot 페이지 (Job-Bu Chatbot)
 # ───────────────────────────────────────────
 # 🤖 chatbot 페이지
-if chatbot:
+if Dreamer:
     if "gpt_chat" not in st.session_state:
         st.session_state.gpt_chat = GPTChatWrapper(openai_api_key=load_api_key())
 
     if "gpt_history" not in st.session_state:
         st.session_state.gpt_history = [
-            {"role": "assistant", "content": "안녕하세요! 부산 취업 상담 챗봇 Job-Busan입니다! 무엇을 도와드릴까요?"}
+            {"role": "assistant", "content": "안녕하세요! 부산 진로 상담 챗봇 Dreamer입니다! 무엇을 도와드릴까요?"}
         ]
 
     # 🔹 사용자 프로필 입력값 확인
@@ -939,7 +939,7 @@ if chatbot:
             <h1 style='margin:0; font-size:24px; display: flex; align-items: center; justify-content: center; gap: 10px; color: #000;'>
                 <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/GPT_image2.png' 
                      style='width: 40px; height: auto; vertical-align: middle;'/>
-                Job-Bu Chatbot
+                Dream Chatbot
             </h1>
         </div>
     """, unsafe_allow_html=True)
