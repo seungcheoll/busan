@@ -23,17 +23,17 @@ import streamlit.components.v1 as components
 # 비밀번호 인증 로직
 # ───────────────────────────────────────────
 def authenticate():
-    if "authenticated" not in st.session_state:
+    if not st.session_state.get("authenticated", False):
         pw = st.text_input("앱 비밀번호를 입력하세요", type="password")
         if st.button("로그인"):
             if pw == st.secrets["general"]["APP_PASSWORD"]:
                 st.session_state.authenticated = True
                 st.success("로그인 성공!")
-                # 리로드 없이 바로 넘어가려면 다음 줄 주석 해제
-                # st.rerun()
+                # 로그인 성공 직후 앱을 리런하여 authenticate() 재진입 시 패스하도록 함
+                st.experimental_rerun()
             else:
                 st.error("비밀번호가 올바르지 않습니다")
-        # 인증 전에는 더 이상의 코드 실행을 막습니다
+        # 인증 전에는 여기서 멈춰야 하므로 stop()
         st.stop()
 
 # 앱 시작 시 바로 인증 수행
