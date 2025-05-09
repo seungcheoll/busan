@@ -34,21 +34,21 @@ def start_page():
                 <div style="
                     background-color: #f9f9f9;
                     padding: 0px;
-                    border-radius: 12px;
-                    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                    border-radius: 10px;
+                    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
                     text-align: center;
-                    max-width: 510px;
-                    max-height: 410px;
+                    width: 500px;
+                    margin: 0 auto;
                 ">
                     <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/logo.png" 
-                         style="width: 500px; height: 400px;">
+                         style="width: 500px; height: 400px; display: block; margin: 0 auto;">
                 </div>
             """, unsafe_allow_html=True)
 
         # 버튼만 따로 가운데 정렬
         btn_col1, btn_col2, btn_col3 = st.columns([1.75, 1, 1])
         with btn_col2:
-            st.markdown("")
+            st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)  # 버튼 위 여백 최소
             if st.button("👉 이용하러 가기"):
                 st.session_state.started = True
                 st.rerun()
