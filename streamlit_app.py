@@ -78,7 +78,7 @@ st.markdown("""
 
 def authenticate():
     if not st.session_state.get("authenticated", False):
-        st.markdown('<div class="login-container">', unsafe_allow_html=True)
+        #st.markdown('<div class="login-container">', unsafe_allow_html=True)
         st.markdown('<div class="login-card">', unsafe_allow_html=True)
         st.markdown('<h2>🔒 앱 로그인</h2>', unsafe_allow_html=True)
 
