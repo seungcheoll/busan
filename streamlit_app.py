@@ -760,7 +760,7 @@ if Career:
 
     # ✅ Career_chatbot 콘텐츠
     elif st.session_state.current_page == "Career_chatbot":
-        if st.button("◀️ JOB-IS 페이지로 돌아가기"):
+        if st.button("◀️ 이전 페이지로 돌아가기"):
             st.session_state.current_page = "Career_rag"
             st.rerun()
         if "career_chat" not in st.session_state:
@@ -772,7 +772,7 @@ if Career:
             ]
     
         if "source_docs" not in st.session_state or not st.session_state.source_docs:
-            st.warning("💡 'JOB-IS' 페이지에서 먼저 '질문 실행'을 눌러 상담에 필요한 참고자료를 확보해 주세요.")
+            st.warning("💡 이전 페이지에서 먼저 '질문 실행'을 눌러 상담에 필요한 참고자료를 확보해 주세요.")
             st.stop()
     
         # 🔹 사용자 유형과 질문 가져오기
