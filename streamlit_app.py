@@ -53,9 +53,10 @@ def input_profile():
             st.markdown('<h2 style="text-align:center;">📋 사용자 정보를 입력해주세요</h2>', unsafe_allow_html=True)
             st.markdown("""
             <div style="text-align:center; color:red; font-weight:bold; font-size:16px;">
-            ※ 아무 정보도 입력하지 않을 시 진로 상담 챗봇(Dreamer)의 사용이 제한됩니다.
+            ※ 정보 미입력 시 진로 상담 챗봇(DreamChat)의 사용이 제한됩니다. ※
             </div>
             """, unsafe_allow_html=True)
+            
             with st.form("profile_form"):
                 university   = st.text_input("대학교", placeholder="예: OO대학교")
                 major        = st.text_input("전공", placeholder="예: OO학과")
@@ -64,21 +65,25 @@ def input_profile():
                 job_pref     = st.text_input("선호직무", placeholder="예: 개발자")
                 activities   = st.text_area("경력사항", placeholder="예: OO공모전 수상 \n OO서포터즈 ...")
                 certificates = st.text_area("보유 자격증", placeholder="예: ADsP\nSQLD")
+                
+                agree = st.checkbox("개인정보 수집 및 이용에 동의합니다.")
                 submitted = st.form_submit_button("입력 완료")
 
                 if submitted:
-                    st.session_state.university   = university
-                    st.session_state.major        = major
-                    st.session_state.gpa          = gpa
-                    st.session_state.field_pref   = field_pref
-                    st.session_state.job_pref     = job_pref
-                    st.session_state.activities   = activities
-                    st.session_state.certificates = certificates
-                    st.session_state.profile_done = True
-                    st.success("✅ 프로필 정보 저장 완료!")
-                    st.rerun()
+                    if not agree:
+                        st.warning("❗ 개인정보 수집 및 이용에 동의해야 합니다.")
+                    else:
+                        st.session_state.university   = university
+                        st.session_state.major        = major
+                        st.session_state.gpa          = gpa
+                        st.session_state.field_pref   = field_pref
+                        st.session_state.job_pref     = job_pref
+                        st.session_state.activities   = activities
+                        st.session_state.certificates = certificates
+                        st.session_state.profile_done = True
+                        st.success("✅ 프로필 정보 저장 완료!")
+                        st.rerun()
         st.stop()
-
 # 실행 흐름
 check_login()
 input_profile()
