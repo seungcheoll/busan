@@ -33,9 +33,7 @@ def start_page():
             st.markdown("""
                 <div style="text-align:center;">
                     <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/logo.png" 
-                         style="width: 500px; height: 400px; margin-bottom: 10px;">
-                    <h1 style="margin:0;">🎯 JOB-IS 취업 상담 챗봇</h1>
-                    <p>맞춤형 취업 상담을 지금 시작해보세요!</p>
+                         style="width: 500px; height: 400px;">
                 </div>
             """, unsafe_allow_html=True)
 
