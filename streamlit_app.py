@@ -26,39 +26,43 @@ st.set_page_config(
     layout="wide"
 )
 
-def authenticate():
+def check_login():
     if not st.session_state.get("authenticated", False):
-        st.markdown('<h2>🚀 지금 바로 JOB-IS를 시작해보세요!</h2>', unsafe_allow_html=True)
-
         with st.form("login_form"):
-            pw = st.text_input("비밀번호", type="password", placeholder="비밀번호를 입력하세요.")
-            university   = st.text_input("대학교", placeholder="예: OO대학교")
-            major        = st.text_input("전공", placeholder="예: OO학과")
-            gpa          = st.text_input("학점", placeholder="예: 4.5")
-            field_pref   = st.text_input("선호분야(산업군)", placeholder="예: 제조업")
-            job_pref     = st.text_input("선호직무", placeholder="예: 개발자")
-            activities   = st.text_area("경력사항", placeholder="예: OO공모전 수상 \n OO서포터즈 ...")
-            certificates = st.text_area("보유 자격증", placeholder="예: ADsP\nSQLD")
-
-            submitted = st.form_submit_button("로그인 및 정보 입력")
+            st.markdown('<h2>🚀 JOB-IS 시작을 위해 로그인하세요</h2>', unsafe_allow_html=True)
+            pw = st.text_input("비밀번호", type="password")
+            submitted = st.form_submit_button("로그인")
             if submitted:
                 if pw == st.secrets["general"]["APP_PASSWORD"]:
                     st.session_state.authenticated = True
-                    # 프로필 정보도 세션에 저장
-                    st.session_state.university   = university
-                    st.session_state.major        = major
-                    st.session_state.gpa          = gpa
-                    st.session_state.field_pref   = field_pref
-                    st.session_state.job_pref     = job_pref
-                    st.session_state.activities   = activities
-                    st.session_state.certificates = certificates
-                    st.success("✅ 로그인 성공 및 프로필 정보 저장 완료!")
+                    st.success("✅ 로그인 성공!")
                     st.rerun()
                 else:
                     st.error("비밀번호가 올바르지 않습니다")
         st.stop()
-        
-authenticate()
+
+def input_profile():
+    if "profile_done" not in st.session_state:
+        with st.form("profile_form"):
+            st.markdown("### 📋 사용자 정보를 입력해주세요")
+            st.session_state.university   = st.text_input("대학교", placeholder="예: OO대학교")
+            st.session_state.major        = st.text_input("전공", placeholder="예: OO학과")
+            st.session_state.gpa          = st.text_input("학점", placeholder="예: 4.5")
+            st.session_state.field_pref   = st.text_input("선호분야(산업군)", placeholder="예: 제조업")
+            st.session_state.job_pref     = st.text_input("선호직무", placeholder="예: 개발자")
+            st.session_state.activities   = st.text_area("경력사항", placeholder="예: OO공모전 수상 \n OO서포터즈 ...")
+            st.session_state.certificates = st.text_area("보유 자격증", placeholder="예: ADsP\nSQLD")
+
+            submitted = st.form_submit_button("입력 완료")
+            if submitted:
+                st.session_state.profile_done = True
+                st.success("✅ 프로필 정보 저장 완료!")
+                st.rerun()
+        st.stop()
+
+# 실행 흐름
+check_login()
+input_profile()
 #---
 
 def strip_code_blocks(text):
