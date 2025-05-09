@@ -771,7 +771,6 @@ if job_rag:
                 else:
                     html(st.session_state.map_html, height=480)
                     st.caption("※ 전체 기업 분포를 표시 중입니다.")
-        with col_btn2:
 
     # ✅ extra_page 콘텐츠
     elif st.session_state.current_page == "extra_page":
