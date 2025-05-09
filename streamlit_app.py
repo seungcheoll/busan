@@ -86,7 +86,7 @@ def authenticate():
                 if pw == st.secrets["general"]["APP_PASSWORD"]:
                     st.session_state.authenticated = True
                     st.success("로그인 성공!")
-                    st.experimental_rerun()
+                    st.rerun()
                 else:
                     st.error("비밀번호가 올바르지 않습니다")
 
