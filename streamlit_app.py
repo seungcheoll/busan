@@ -801,7 +801,7 @@ if job_rag:
             context_text = "\n\n".join(context_list)
         else:
             context_text = ""
-        with open("template/sys_template.txt", "r", encoding="utf-8") as file:
+        with open("template/sys_template_gpt_rag.txt", "r", encoding="utf-8") as file:
             template=file.read()
         
         system_prompt = template.format(
