@@ -82,7 +82,7 @@ st.markdown("""
 
 def authenticate():
     if not st.session_state.get("authenticated", False):
-        # st.markdown('<div class="login-container">', unsafe_allow_html=True)
+        st.markdown('<div class="login-container">', unsafe_allow_html=True)
         # st.markdown('<div class="login-card">', unsafe_allow_html=True)
         st.markdown('<h2>🚀 지금 바로 JOBBUSAN을 시작하세요!</h2>', unsafe_allow_html=True)
 
