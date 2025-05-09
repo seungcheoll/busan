@@ -28,14 +28,6 @@ st.set_page_config(
 
 st.markdown("""
     <style>
-      .login-card {
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        padding: 40px;
-        width: 100px;
-        text-align: center;
-      }
       .login-card input {
         width: 100%;
         padding: 12px;
