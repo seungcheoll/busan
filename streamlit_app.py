@@ -409,7 +409,7 @@ if info:
 # 📌 Job Busan 페이지 구성
 if job_rag:
     if "current_page" not in st.session_state:
-    st.session_state.current_page = "job_rag"
+        st.session_state.current_page = "job_rag"
 
     # ✅ job_rag 페이지 로직
     if st.session_state.current_page == "job_rag":
