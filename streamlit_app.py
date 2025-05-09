@@ -781,7 +781,7 @@ if job_rag:
             st.session_state.current_page = "job_rag"
             st.rerun()
         if "gpt_chat" not in st.session_state:
-        st.session_state.gpt_chat = GPTChatWrapper(openai_api_key=load_api_key())
+            st.session_state.gpt_chat = GPTChatWrapper(openai_api_key=load_api_key())
         
         if "gpt_history" not in st.session_state:
             st.session_state.gpt_history = [
