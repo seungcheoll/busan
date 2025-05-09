@@ -51,7 +51,11 @@ def input_profile():
 
         with col2:  # 두 번째 컬럼에만 폼 표시
             st.markdown('<h2 style="text-align:center;">📋 사용자 정보를 입력해주세요</h2>', unsafe_allow_html=True)
-            st.markdown('<h2 style="text-align:center;">※ 아무 정보도 입력하지 않을 시 진로 상담 챗봇(Dreamer)의 사용이 제한됩니다.</h2>', unsafe_allow_html=True)
+            st.markdown("""
+            <div style="text-align:center; color:red; font-weight:bold; font-size:16px;">
+            ※ 아무 정보도 입력하지 않을 시 진로 상담 챗봇(Dreamer)의 사용이 제한됩니다.
+            </div>
+            """, unsafe_allow_html=True)
             with st.form("profile_form"):
                 university   = st.text_input("대학교", placeholder="예: OO대학교")
                 major        = st.text_input("전공", placeholder="예: OO학과")
