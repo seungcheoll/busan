@@ -24,11 +24,17 @@ import streamlit.components.v1 as components
 # ───────────────────────────────────────────
 st.markdown("""
     <style>
+      /* 이걸 body 바로 위에 붙이면, 로그인 전용 오버레이가 화면 전체를 덮게 됩니다 */
       .login-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 60vh;
+        z-index: 999;
       }
       .login-card {
         background: white;
@@ -63,20 +69,19 @@ st.markdown("""
       .login-card button:hover {
         background-color: #2980b9;
       }
+      /* 배경 흐리게 하고 싶다면 아래 주석 해제 */
+      /* .stApp > header, .stApp > footer, .block-container > :not(.login-container) {
+           filter: blur(2px);
+      } */
     </style>
 """, unsafe_allow_html=True)
 
-# ───────────────────────────────────────────
-# 인증 함수
-# ───────────────────────────────────────────
 def authenticate():
     if not st.session_state.get("authenticated", False):
-        # 중앙 배치를 위한 컨테이너
         st.markdown('<div class="login-container">', unsafe_allow_html=True)
         st.markdown('<div class="login-card">', unsafe_allow_html=True)
         st.markdown('<h2>🔒 앱 로그인</h2>', unsafe_allow_html=True)
 
-        # st.form 으로 묶어서 엔터나 버튼 클릭 시 한 번에 처리
         with st.form("login_form"):
             pw = st.text_input("", type="password", placeholder="비밀번호를 입력하세요")
             submitted = st.form_submit_button("로그인")
@@ -84,17 +89,14 @@ def authenticate():
                 if pw == st.secrets["general"]["APP_PASSWORD"]:
                     st.session_state.authenticated = True
                     st.success("로그인 성공!")
-                    # 즉시 재실행하여 인증 로직 통과
                     st.experimental_rerun()
                 else:
                     st.error("비밀번호가 올바르지 않습니다")
 
         st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
-        # 인증 전에는 더 이상 앱을 그리지 않도록 멈춤
         st.stop()
 
-# 앱 시작 시 바로 인증 수행
 authenticate()
 #---
 
