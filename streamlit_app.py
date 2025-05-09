@@ -83,7 +83,12 @@ def authenticate():
         st.markdown('<h2>🔒 앱 로그인</h2>', unsafe_allow_html=True)
 
         with st.form("login_form"):
-            pw = st.text_input("", type="password", placeholder="비밀번호를 입력하세요")
+            pw = st.text_input(
+                label="",  # 레이블 자체는 빈 문자열로
+                placeholder="비밀번호를 입력하세요",
+                type="password",
+                label_visibility="collapsed"  # 레이블 자리 숨기기
+            )
             submitted = st.form_submit_button("로그인")
             if submitted:
                 if pw == st.secrets["general"]["APP_PASSWORD"]:
