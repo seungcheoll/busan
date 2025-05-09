@@ -30,12 +30,20 @@ def start_page():
     if "started" not in st.session_state:
         col1, col2, col3 = st.columns([1, 2, 1])  # 가운데 정렬
         with col2:
-            st.markdown('<h1 style="text-align:center;">🎯 JOB-IS 취업 상담 챗봇</h1>', unsafe_allow_html=True)
-            st.markdown('<p style="text-align:center;">맞춤형 취업 상담을 지금 시작해보세요!</p>', unsafe_allow_html=True)
-            if st.button("👉 이용하러 가기"):
+            st.markdown("""
+                <div style="text-align:center;">
+                    <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/logo.png" 
+                         style="width: 120px; margin-bottom: 10px;">
+                    <h1 style="margin:0;">🎯 JOB-IS 취업 상담 챗봇</h1>
+                    <p>맞춤형 취업 상담을 지금 시작해보세요!</p>
+                </div>
+            """, unsafe_allow_html=True)
+
+            if st.button("이용하러 가기"):
                 st.session_state.started = True
                 st.rerun()
-        st.stop()  # 이용하러 가기 누르기 전까지는 이후 실행 막음
+
+        st.stop()
         
 def check_login():
     if not st.session_state.get("authenticated", False):
