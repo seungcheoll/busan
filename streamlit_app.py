@@ -43,21 +43,32 @@ def check_login():
 
 def input_profile():
     if "profile_done" not in st.session_state:
-        with st.form("profile_form"):
-            st.markdown("### 📋 사용자 정보를 입력해주세요")
-            st.session_state.university   = st.text_input("대학교", placeholder="예: OO대학교")
-            st.session_state.major        = st.text_input("전공", placeholder="예: OO학과")
-            st.session_state.gpa          = st.text_input("학점", placeholder="예: 4.5")
-            st.session_state.field_pref   = st.text_input("선호분야(산업군)", placeholder="예: 제조업")
-            st.session_state.job_pref     = st.text_input("선호직무", placeholder="예: 개발자")
-            st.session_state.activities   = st.text_area("경력사항", placeholder="예: OO공모전 수상 \n OO서포터즈 ...")
-            st.session_state.certificates = st.text_area("보유 자격증", placeholder="예: ADsP\nSQLD")
+        st.markdown("### 📋 사용자 정보를 입력해주세요")
 
-            submitted = st.form_submit_button("입력 완료")
-            if submitted:
-                st.session_state.profile_done = True
-                st.success("✅ 프로필 정보 저장 완료!")
-                st.rerun()
+        col1, col2, col3 = st.columns([1, 2, 1])  # 가운데 열을 더 넓게
+
+        with col2:  # 두 번째 컬럼에만 폼 표시
+            with st.form("profile_form"):
+                university   = st.text_input("대학교", placeholder="예: OO대학교")
+                major        = st.text_input("전공", placeholder="예: OO학과")
+                gpa          = st.text_input("학점", placeholder="예: 4.5")
+                field_pref   = st.text_input("선호분야(산업군)", placeholder="예: 제조업")
+                job_pref     = st.text_input("선호직무", placeholder="예: 개발자")
+                activities   = st.text_area("경력사항", placeholder="예: OO공모전 수상 \n OO서포터즈 ...")
+                certificates = st.text_area("보유 자격증", placeholder="예: ADsP\nSQLD")
+                submitted = st.form_submit_button("입력 완료")
+
+                if submitted:
+                    st.session_state.university   = university
+                    st.session_state.major        = major
+                    st.session_state.gpa          = gpa
+                    st.session_state.field_pref   = field_pref
+                    st.session_state.job_pref     = job_pref
+                    st.session_state.activities   = activities
+                    st.session_state.certificates = certificates
+                    st.session_state.profile_done = True
+                    st.success("✅ 프로필 정보 저장 완료!")
+                    st.rerun()
         st.stop()
 
 # 실행 흐름
