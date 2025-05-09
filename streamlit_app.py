@@ -769,7 +769,7 @@ if Career:
             st.session_state.current_page = "Career_rag"
             st.rerun()
         if "career_chat" not in st.session_state:
-            st.session_state.gpt_chat = GPTChatWrapper(openai_api_key=load_api_key())
+            st.session_state.career_chat = GPTChatWrapper(openai_api_key=load_api_key())
         
         if "career_history" not in st.session_state:
             st.session_state.career_history = [
