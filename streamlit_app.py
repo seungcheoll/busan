@@ -383,12 +383,10 @@ if Career:
             st.rerun()
             
         st.markdown("""
-            <div style='padding: 10px 0px;'>
-                <h1 style='margin:0; font-size:28px; display: flex; align-items: center; gap: 0px;'>
-                    <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/jobis.png' 
-                         style='width: 50px; height: auto; vertical-align: middle;'>
-                    취업 상담 챗봇(JOB-IS)
-                </h1>
+            <div style='padding: 10px 0px; display: flex; align-items: center; gap: 10px;'>
+                <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/jobis.png' 
+                     style='width: 50px; height: 50px;'>
+                <span style='font-size:28px; font-weight: bold;'>취업 상담 챗봇(JOB-IS)</span>
             </div>
         """, unsafe_allow_html=True)
     
