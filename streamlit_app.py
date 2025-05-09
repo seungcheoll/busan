@@ -378,7 +378,7 @@ if Career:
 
     # ✅ job_rag 페이지 로직
     if st.session_state.current_page == "Career_rag":
-        if st.button("🔙 Chatbot 이용하기"):
+        if st.button("◀️ Chatbot 이용하기"):
             st.session_state.current_page = "Career_chatbot"
             st.rerun()
             
@@ -739,8 +739,7 @@ if Career:
 
     # ✅ Career_chatbot 콘텐츠
     elif st.session_state.current_page == "Career_chatbot":
-                # 🔙 돌아가기 버튼
-        if st.button("🔙 JOB-IS 페이지로 돌아가기"):
+        if st.button("◀️ JOB-IS 페이지로 돌아가기"):
             st.session_state.current_page = "Career_rag"
             st.rerun()
         if "career_chat" not in st.session_state:
