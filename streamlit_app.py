@@ -26,32 +26,6 @@ st.set_page_config(
     layout="wide"
 )
 
-st.markdown("""
-    <style>
-      .login-card input {
-        width: 100%;
-        padding: 12px;
-        margin-bottom: 16px;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        font-size: 16px;
-      }
-      .login-card button {
-        width: 100%;
-        padding: 12px;
-        background-color: #3498db;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        font-size: 16px;
-        cursor: pointer;
-      }
-      .login-card button:hover {
-        background-color: #2980b9;
-      }
-    </style>
-""", unsafe_allow_html=True)
-
 def authenticate():
     if not st.session_state.get("authenticated", False):
         st.markdown('<h2>🚀 지금 바로 JOB-IS를 시작해보세요!</h2>', unsafe_allow_html=True)
