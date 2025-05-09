@@ -66,8 +66,7 @@ def input_profile():
                 activities   = st.text_area("경력사항", placeholder="예: OO공모전 수상 \n OO서포터즈 ...")
                 certificates = st.text_area("보유 자격증", placeholder="예: ADsP\nSQLD")
                 
-                agree = st.checkbox("개인정보 수집 및 이용 동의.")
-                st.markdown("(입력된 정보는 외부에 공개되지 않으며, 맞춤형 취업 상담을 위한 목적으로만 사용됩니다.)", unsafe_allow_html=False)
+                agree = st.checkbox("개인정보 수집 및 이용 동의(※ 입력된 정보는 외부에 공개되지 않으며, 맞춤형 취업 상담을 위한 목적으로만 사용됩니다.)")
                 submitted = st.form_submit_button("입력 완료")
 
                 if submitted:
