@@ -85,18 +85,31 @@ def authenticate():
         st.markdown('<h2>🚀 지금 바로 JOB-IS를 시작해보세요!</h2>', unsafe_allow_html=True)
 
         with st.form("login_form"):
-            pw = st.text_input("", type="password",placeholder='비밀번호를 입력하세요.')
-            submitted = st.form_submit_button("로그인")
+            pw = st.text_input("비밀번호", type="password", placeholder="비밀번호를 입력하세요.")
+            university   = st.text_input("대학교", placeholder="예: OO대학교")
+            major        = st.text_input("전공", placeholder="예: OO학과")
+            gpa          = st.text_input("학점", placeholder="예: 4.5")
+            field_pref   = st.text_input("선호분야(산업군)", placeholder="예: 제조업")
+            job_pref     = st.text_input("선호직무", placeholder="예: 개발자")
+            activities   = st.text_area("경력사항", placeholder="예: OO공모전 수상 \n OO서포터즈 ...")
+            certificates = st.text_area("보유 자격증", placeholder="예: ADsP\nSQLD")
+
+            submitted = st.form_submit_button("로그인 및 정보 입력")
             if submitted:
                 if pw == st.secrets["general"]["APP_PASSWORD"]:
                     st.session_state.authenticated = True
-                    st.success("로그인 성공!")
+                    # 프로필 정보도 세션에 저장
+                    st.session_state.university   = university
+                    st.session_state.major        = major
+                    st.session_state.gpa          = gpa
+                    st.session_state.field_pref   = field_pref
+                    st.session_state.job_pref     = job_pref
+                    st.session_state.activities   = activities
+                    st.session_state.certificates = certificates
+                    st.success("✅ 로그인 성공 및 프로필 정보 저장 완료!")
                     st.rerun()
                 else:
                     st.error("비밀번호가 올바르지 않습니다")
-
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
         st.stop()
         
 authenticate()
