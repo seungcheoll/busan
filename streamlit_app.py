@@ -19,25 +19,18 @@ from openai import OpenAI
 import json
 import streamlit.components.v1 as components
 #---
-# ───────────────────────────────────────────
-# 반드시 가장 첫 줄 다음에 호출
-# ───────────────────────────────────────────
-st.set_page_config(
-    page_title="JOBBUSAN",
-    page_icon="🚀",
-    layout="wide"
-)
-
-# ───────────────────────────────────────────
-# [인증용 CSS & 함수 정의]
-# ───────────────────────────────────────────
 st.markdown("""
     <style>
+      /* 이걸 body 바로 위에 붙이면, 로그인 전용 오버레이가 화면 전체를 덮게 됩니다 */
       .login-container {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         z-index: 999;
       }
       .login-card {
@@ -48,30 +41,60 @@ st.markdown("""
         width: 320px;
         text-align: center;
       }
-      .login-card h2 { margin-bottom: 24px; color: #333; }
-      .login-card input { width:100%; padding:12px; margin-bottom:16px; }
-      .login-card button { width:100%; padding:12px; background:#3498db; color:#fff; border:none; }
-      .login-card button:hover { background:#2980b9; }
+      .login-card h2 {
+        margin-bottom: 24px;
+        color: #333;
+      }
+      .login-card input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 16px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 16px;
+      }
+      .login-card button {
+        width: 100%;
+        padding: 12px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .login-card button:hover {
+        background-color: #2980b9;
+      }
+      /* 배경 흐리게 하고 싶다면 아래 주석 해제 */
+      /* .stApp > header, .stApp > footer, .block-container > :not(.login-container) {
+           filter: blur(2px);
+      } */
     </style>
 """, unsafe_allow_html=True)
 
 def authenticate():
-    if not st.session_state.get("authenticated"):
-        st.markdown('<div class="login-container"><div class="login-card">', unsafe_allow_html=True)
-        st.markdown('<h2>🚀 지금 바로 JOBBUSAN을 시작하세요!</h2>', unsafe_allow_html=True)
+    if not st.session_state.get("authenticated", False):
+        st.markdown('<div class="login-container">', unsafe_allow_html=True)
+        st.markdown('<div class="login-card">', unsafe_allow_html=True)
+        st.markdown('<h2>🔒 앱 로그인</h2>', unsafe_allow_html=True)
+
         with st.form("login_form"):
-            pw = st.text_input("", type="password", placeholder="비밀번호를 입력하세요", label_visibility="collapsed")
-            if st.form_submit_button("로그인"):
+            pw = st.text_input("", type="password", placeholder="비밀번호를 입력하세요")
+            submitted = st.form_submit_button("로그인")
+            if submitted:
                 if pw == st.secrets["general"]["APP_PASSWORD"]:
                     st.session_state.authenticated = True
                     st.success("로그인 성공!")
-                    st.rerun()
+                    st.experimental_rerun()
                 else:
                     st.error("비밀번호가 올바르지 않습니다")
-        st.markdown('</div></div>', unsafe_allow_html=True)
-        st.stop()
 
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.stop()
 authenticate()
+
 
 #---
 
