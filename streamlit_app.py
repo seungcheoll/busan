@@ -207,7 +207,7 @@ with st.sidebar:
     # 🔘 페이지 선택 메뉴
     choice = option_menu(
         menu_title="Page",
-        options=["Guide","Career", "Dreamer"],
+        options=["Guide","CareerChat", "DreamChat"],
         icons=["info-circle","", ""],
         menu_icon="",
         default_index=0,
@@ -235,8 +235,8 @@ with st.sidebar:
     st.sidebar.markdown("#### ▶️ 시연 영상")
     st.sidebar.video("https://youtu.be/G_MKtEmmJt8")  # 여기에 유튜브 링크 삽입
 info = choice == "Guide"
-Career = choice == "Career"
-Dreamer = choice == "Dreamer"
+Career = choice == "CareerChat"
+Dreamer = choice == "DreamChat"
 
 # ───────────────────────────────────────────
 # [7] 이용 가이드 페이지
