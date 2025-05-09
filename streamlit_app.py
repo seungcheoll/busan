@@ -33,7 +33,7 @@ def start_page():
             st.markdown("""
                 <div style="
                     background-color: #f9f9f9;
-                    padding: 20px;
+                    padding: 0px;
                     border-radius: 12px;
                     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
                     text-align: center;
