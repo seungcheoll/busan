@@ -408,361 +408,378 @@ if info:
 # ───────────────────────────────────────────
 # 📌 Job Busan 페이지 구성
 if job_rag:
-    st.markdown("""
-        <div style='padding: 10px 0px;'>
-            <h1 style='margin:0; font-size:28px; display: flex; align-items: center; gap: 0px;'>
-                <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/chatbot.png' 
-                     style='width: 60px; height: auto; vertical-align: middle;'>
-                부산시 취업 상담 챗봇(Job-Busan)
-            </h1>
-        </div>
-    """, unsafe_allow_html=True)
+    if "current_page" not in st.session_state:
+    st.session_state.current_page = "job_rag"
 
-    # 세션 상태 초기화
-    if "llm" not in st.session_state:
-        st.session_state.llm, st.session_state.retriever, st.session_state.company_df_for_gpt, st.session_state.company_df_for_map, st.session_state.map_html = init_qa_chain()
-    if "templates" not in st.session_state:
-        st.session_state.templates = load_all_templates()
-    if "query" not in st.session_state:
-        st.session_state.query = ""
-    if "main_query" not in st.session_state:
-        st.session_state["main_query"] = ""
-    if "query_input" not in st.session_state:
-        st.session_state["query_input"] = ""
-    if "user_type" not in st.session_state:
-        st.session_state["user_type"] = "대학생"
-    if "saved_user_type" not in st.session_state:
-        st.session_state["saved_user_type"] = ""
-    if "saved_query" not in st.session_state:
-        st.session_state["saved_query"] = ""
-
-    # 🔐 입력값 저장 콜백 함수
-    def save_user_inputs():
-        st.session_state["saved_user_type"] = st.session_state["user_type"]
-        st.session_state["saved_query"] = st.session_state["query_input"]
-
-    # 🔎 질문 입력 및 유형 선택 영역
-    col1, col2 = st.columns([3, 2])
-    with col1:
-        st.text_input(
-            "❓ 질문으로 상담을 시작하세요!",
-            key="query_input",
-            value=st.session_state["main_query"],
-            placeholder="예: 연봉 3000만원 이상 선박 제조업 추천",
-            on_change=save_user_inputs
-        )
-    with col2:
-        st.selectbox(
-            "🏷️ 유형을 선택하세요!",
-            ["대학생", "첫 취업 준비", "이직 준비"],
-            key="user_type",
-            on_change=save_user_inputs
-        )
-
-    query = st.session_state["query_input"]
-    user_type = st.session_state["user_type"]
-
-    # 💬 질문 실행 버튼
-    if st.button("💬 질문 실행"):
-        with st.spinner("🔎 Job-Busan이 부산 기업 정보를 검색 중입니다."):
-            selected_template = st.session_state.templates[user_type]
-            formatted_template = selected_template.format(
-                university   = st.session_state.university,
-                major        = st.session_state.major,
-                gpa          = st.session_state.gpa,
-                field_pref   = st.session_state.field_pref,
-                job_pref     = st.session_state.job_pref,
-                activities   = st.session_state.activities,
-                certificates = st.session_state.certificates
-            )
-            # 4) 포맷된 문자열로 PromptTemplate 생성
-            prompt = PromptTemplate.from_template(formatted_template)
-            qa_chain = RetrievalQA.from_chain_type(
-                llm=st.session_state.llm,
-                retriever=st.session_state.retriever,
-                return_source_documents=True,
-                chain_type_kwargs={"prompt": prompt}
-            )
-            while True:
-                try:
-                    result = qa_chain.invoke({"query": query})
-                    text = result["result"]
-                    text = strip_code_blocks(text)
-                    text = text_to_json(text)
-                    st.session_state.gpt_result = text["전체 출력 결과"]
-                    st.session_state.company_name_by_gpt = text["기업명"]
-                    break
-                except:
-                    continue
-            st.session_state.source_docs = result["source_documents"]
-
-            # 다시 비우기 전 최종 저장
-            st.session_state["saved_query"] = query
-            st.session_state["saved_user_type"] = user_type
-
+    # ✅ job_rag 페이지 로직
+    if st.session_state.current_page == "job_rag":
+        st.markdown("""
+            <div style='padding: 10px 0px;'>
+                <h1 style='margin:0; font-size:28px; display: flex; align-items: center; gap: 0px;'>
+                    <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/chatbot.png' 
+                         style='width: 60px; height: auto; vertical-align: middle;'>
+                    부산시 취업 상담 챗봇(Job-Busan)
+                </h1>
+            </div>
+        """, unsafe_allow_html=True)
+    
+        # 세션 상태 초기화
+        if "llm" not in st.session_state:
+            st.session_state.llm, st.session_state.retriever, st.session_state.company_df_for_gpt, st.session_state.company_df_for_map, st.session_state.map_html = init_qa_chain()
+        if "templates" not in st.session_state:
+            st.session_state.templates = load_all_templates()
+        if "query" not in st.session_state:
+            st.session_state.query = ""
+        if "main_query" not in st.session_state:
             st.session_state["main_query"] = ""
-            st.rerun()
-    else:
-        st.session_state["main_query"] = query
-        
-    # ───────────────────────────────────────
-    # [8-1] 결과 탭 구성
-    # ───────────────────────────────────────
-    # 📁 결과 탭 구성
-    selected_tabs = st.tabs([
-        "✅ Job-Busan 답변",
-        "📚 추천 기업 상세",
-        "📢 관련 채용 정보(JobKorea)",
-        "🌍 추천 기업 위치",
-        "🔍 부산 기업 분포 및 검색"
-    ])
-
-    # 1️⃣ 답변 탭
-    with selected_tabs[0]:
-        st.write(st.session_state.get("gpt_result", "🔹 Job-Busan의 응답 결과가 여기에 표시됩니다."))
-
-    # 2️⃣ 문서 탭
-    with selected_tabs[1]:
-        raw_names = st.session_state.get("company_name_by_gpt", "")
-        company_name_by_gpt = [name.strip() for name in raw_names.split(",")]
-        # 2. isin()으로 필터링
-        matched_df_by_gpt = st.session_state.company_df_for_gpt[
-            st.session_state.company_df_for_gpt['회사명'].isin(company_name_by_gpt)
-        ]
-        if matched_df_by_gpt.empty:
-            st.warning("일치하는 기업이 없습니다.")
-        else:        
-            # 필드 분류
-            basic_fields = [
-                '회사명', '홈페이지', '구분', '업 종', '상세업종', '사업분야','실수령액(월)', '실수령액(연)',
-                '평균초임', '평균연봉', '기업규모',
-                '매출액 (백만원)', '직원수(계)', '직원수(정규직)', '직원수(비정규직)',
-                '소재 구군', '도로명', '주요제품 / 서비스', '대표번호', '비 고'
-            ]
-            work_life_fields = [f'워라벨{i}' for i in range(1, 11)]
-            training_fields = [f'직무교육{i}' for i in range(1, 7)]
-            welfare_fields = [f'복리후생{i}' for i in range(1, 14)]
+        if "query_input" not in st.session_state:
+            st.session_state["query_input"] = ""
+        if "user_type" not in st.session_state:
+            st.session_state["user_type"] = "대학생"
+        if "saved_user_type" not in st.session_state:
+            st.session_state["saved_user_type"] = ""
+        if "saved_query" not in st.session_state:
+            st.session_state["saved_query"] = ""
     
-            # 병합 유틸
-            def join_fields(row, fields):
-                values = [str(row[f]).strip() for f in fields if pd.notna(row[f]) and str(row[f]).strip() != '']
-                return ' / '.join(values)
+        # 🔐 입력값 저장 콜백 함수
+        def save_user_inputs():
+            st.session_state["saved_user_type"] = st.session_state["user_type"]
+            st.session_state["saved_query"] = st.session_state["query_input"]
     
-            # 행 포맷 함수
-            def format_row(row):
-                lines = []
-                for field in basic_fields:
-                    value = row.get(field, '')
-                    if pd.notna(value) and str(value).strip() != '':
-                        lines.append(f"{field}: {str(value).strip()}")
-                lines.append(f"워라벨: {join_fields(row, work_life_fields)}")
-                lines.append(f"직무교육: {join_fields(row, training_fields)}")
-                lines.append(f"복리후생: {join_fields(row, welfare_fields)}")
-                info = "\n\n".join(lines)
+        # 🔎 질문 입력 및 유형 선택 영역
+        col1, col2 = st.columns([3, 2])
+        with col1:
+            st.text_input(
+                "❓ 질문으로 상담을 시작하세요!",
+                key="query_input",
+                value=st.session_state["main_query"],
+                placeholder="예: 연봉 3000만원 이상 선박 제조업 추천",
+                on_change=save_user_inputs
+            )
+        with col2:
+            st.selectbox(
+                "🏷️ 유형을 선택하세요!",
+                ["대학생", "첫 취업 준비", "이직 준비"],
+                key="user_type",
+                on_change=save_user_inputs
+            )
     
-                desc = str(row.get("기업설명", "")).strip()
-                return f"1. 기업정보\n\n{info}\n\n\n2. 기업설명\n\n{desc}"
-                
-            st.session_state.setdefault("content_to_gpt", [])
-            # 👉 Expander에 표시
-            for _, row in matched_df_by_gpt.iterrows():
-                content_to_gpt={}
-                with st.expander(f"**{row['회사명']}** 상세 정보"):
-                    content = format_row(row)
-                    st.session_state.content_to_gpt.append(content)
-                    st.write(content)
-        
-    # 3️⃣ JOBKOREA
-    with selected_tabs[2]:
-        raw_names = st.session_state.get("company_name_by_gpt", "")
-        company_name_by_gpt = [name.strip() for name in raw_names.split(",")]
-        # 2. isin()으로 필터링
-        matched_df_by_gpt = st.session_state.company_df_for_gpt[
-            st.session_state.company_df_for_gpt['회사명'].isin(company_name_by_gpt)
-        ]
-        if matched_df_by_gpt.empty:
-            st.warning("일치하는 기업이 없습니다.")
-        else:
-            for _, row in matched_df_by_gpt.iterrows():
-                name = row['회사명']
-                jk_url = row['잡코리아 주소']
-                # expander 생성
-                with st.expander(f"**{name}** 채용 정보"):
-                    # iframe으로 잡코리아 페이지 임베딩
-                    components.iframe(
-                        src=jk_url,
-                        height=1000,      # iframe 높이 (필요에 따라 조정)
-                        scrolling=True
+        query = st.session_state["query_input"]
+        user_type = st.session_state["user_type"]
+    
+        # 💬 질문 실행 + 📄 다른 페이지로 이동 버튼 (옆으로 배치)
+        col_btn1, col_btn2 = st.columns([2, 1])
+        with col_btn1:
+            # 💬 질문 실행 버튼
+            if st.button("💬 질문 실행"):
+                with st.spinner("🔎 Job-Busan이 부산 기업 정보를 검색 중입니다."):
+                    selected_template = st.session_state.templates[user_type]
+                    formatted_template = selected_template.format(
+                        university   = st.session_state.university,
+                        major        = st.session_state.major,
+                        gpa          = st.session_state.gpa,
+                        field_pref   = st.session_state.field_pref,
+                        job_pref     = st.session_state.job_pref,
+                        activities   = st.session_state.activities,
+                        certificates = st.session_state.certificates
                     )
-    # 4️⃣ 기업 위치 지도
-    with selected_tabs[3]:
-        raw_names = st.session_state.get("company_name_by_gpt", "")
-        company_name_by_gpt = [name.strip() for name in raw_names.split(",")]
-        matched_df = st.session_state.company_df_for_map[st.session_state.company_df_for_map['회사명'].isin(company_name_by_gpt)]
-        if not matched_df.empty:
-            m = folium.Map(location=[matched_df["위도"].mean(), matched_df["경도"].mean()], zoom_start=12)
+                    # 4) 포맷된 문자열로 PromptTemplate 생성
+                    prompt = PromptTemplate.from_template(formatted_template)
+                    qa_chain = RetrievalQA.from_chain_type(
+                        llm=st.session_state.llm,
+                        retriever=st.session_state.retriever,
+                        return_source_documents=True,
+                        chain_type_kwargs={"prompt": prompt}
+                    )
+                    while True:
+                        try:
+                            result = qa_chain.invoke({"query": query})
+                            text = result["result"]
+                            text = strip_code_blocks(text)
+                            text = text_to_json(text)
+                            st.session_state.gpt_result = text["전체 출력 결과"]
+                            st.session_state.company_name_by_gpt = text["기업명"]
+                            break
+                        except:
+                            continue
+                    st.session_state.source_docs = result["source_documents"]
+        
+                    # 다시 비우기 전 최종 저장
+                    st.session_state["saved_query"] = query
+                    st.session_state["saved_user_type"] = user_type
+        
+                    st.session_state["main_query"] = ""
+                    st.rerun()
+            else:
+                st.session_state["main_query"] = query
+                
+            # ───────────────────────────────────────
+            # [8-1] 결과 탭 구성
+            # ───────────────────────────────────────
+            # 📁 결과 탭 구성
+            selected_tabs = st.tabs([
+                "✅ Job-Busan 답변",
+                "📚 추천 기업 상세",
+                "📢 관련 채용 정보(JobKorea)",
+                "🌍 추천 기업 위치",
+                "🔍 부산 기업 분포 및 검색"
+            ])
+        
+            # 1️⃣ 답변 탭
+            with selected_tabs[0]:
+                st.write(st.session_state.get("gpt_result", "🔹 Job-Busan의 응답 결과가 여기에 표시됩니다."))
+        
+            # 2️⃣ 문서 탭
+            with selected_tabs[1]:
+                raw_names = st.session_state.get("company_name_by_gpt", "")
+                company_name_by_gpt = [name.strip() for name in raw_names.split(",")]
+                # 2. isin()으로 필터링
+                matched_df_by_gpt = st.session_state.company_df_for_gpt[
+                    st.session_state.company_df_for_gpt['회사명'].isin(company_name_by_gpt)
+                ]
+                if matched_df_by_gpt.empty:
+                    st.warning("일치하는 기업이 없습니다.")
+                else:        
+                    # 필드 분류
+                    basic_fields = [
+                        '회사명', '홈페이지', '구분', '업 종', '상세업종', '사업분야','실수령액(월)', '실수령액(연)',
+                        '평균초임', '평균연봉', '기업규모',
+                        '매출액 (백만원)', '직원수(계)', '직원수(정규직)', '직원수(비정규직)',
+                        '소재 구군', '도로명', '주요제품 / 서비스', '대표번호', '비 고'
+                    ]
+                    work_life_fields = [f'워라벨{i}' for i in range(1, 11)]
+                    training_fields = [f'직무교육{i}' for i in range(1, 7)]
+                    welfare_fields = [f'복리후생{i}' for i in range(1, 14)]
             
-            for _, row in matched_df.iterrows():
-                # 원으로 시각화
-                folium.CircleMarker(
-                    location=[row["위도"], row["경도"]],
-                    radius=6,
-                    color="blue",
-                    fill=True,
-                    fill_color="blue",
-                    fill_opacity=0.6
-                ).add_to(m)
+                    # 병합 유틸
+                    def join_fields(row, fields):
+                        values = [str(row[f]).strip() for f in fields if pd.notna(row[f]) and str(row[f]).strip() != '']
+                        return ' / '.join(values)
             
-                # 이름 팝업 항상 열기 (Marker + Popup 조합)
-                popup = folium.Popup(row["회사명"], max_width=200, show=True)
-                folium.Marker(
-                    location=[row["위도"], row["경도"]],
-                    popup=popup,
-                    icon=folium.DivIcon(icon_size=(0, 0))  # 아이콘 숨김 (텍스트만 표시)
-                ).add_to(m)
+                    # 행 포맷 함수
+                    def format_row(row):
+                        lines = []
+                        for field in basic_fields:
+                            value = row.get(field, '')
+                            if pd.notna(value) and str(value).strip() != '':
+                                lines.append(f"{field}: {str(value).strip()}")
+                        lines.append(f"워라벨: {join_fields(row, work_life_fields)}")
+                        lines.append(f"직무교육: {join_fields(row, training_fields)}")
+                        lines.append(f"복리후생: {join_fields(row, welfare_fields)}")
+                        info = "\n\n".join(lines)
             
-            html(m._repr_html_(), height=550)
-        else:
-            st.warning("일치하는 기업이 없습니다.")
-
-    # 5️⃣ 기업 검색 및 지도 표시
-    with selected_tabs[4]:
-        if "search_keyword" not in st.session_state:
-            st.session_state.search_keyword = ""
-        if "reset_triggered" not in st.session_state:
-            st.session_state.reset_triggered = False
-
-        def reset_search():
-            st.session_state.search_keyword = ""
-            st.session_state["search_input"] = ""
-            st.session_state.reset_triggered = True
-
-        col1, col2 = st.columns([2, 1])
-        with col1:
-            search_input = st.text_input(" ", key="search_input", label_visibility="collapsed", placeholder="🔎 회사명으로 검색 (예: 현대, 시스템, 조선 등)")
-        with col2:
-            if search_input:
-                st.button("검색 초기화", on_click=reset_search)
-
-        st.session_state.search_keyword = search_input
-
-        if st.session_state.reset_triggered:
-            st.session_state.reset_triggered = False
-            st.rerun()
-
-        matched_df = pd.DataFrame()
-        keyword = st.session_state.search_keyword.strip()
-        if keyword:
-            matched_df = st.session_state.company_df_for_map[
-                st.session_state.company_df_for_map["회사명"].str.contains(keyword, case=False, na=False)
-            ]
-
-        col1, col2 = st.columns([2, 1])
-        with col2:
-            st.markdown("### 🧾 검색 기업 정보")
-            if not matched_df.empty:
-                PINLEFT = {'pinned': 'left'}
-                PRECISION_TWO = {'type': ['numericColumn'], 'precision': 6}
-                formatter = {
-                    '회사명': ('회사명', PINLEFT),
-                    '도로명': ('도로명', {'width': 200}),
-                    '업종명': ('업종명', {'width': 150}),
-                    '전화번호': ('전화번호', {'width': 120}),
-                    '위도': ('위도', {**PRECISION_TWO, 'width': 100}),
-                    '경도': ('경도', {**PRECISION_TWO, 'width': 100}),
-                }
-
-                gb = GridOptionsBuilder.from_dataframe(matched_df)
-                for col, (header, opts) in formatter.items():
-                    if col in matched_df.columns:
-                        gb.configure_column(col, header_name=header, **opts)
-                gb.configure_column('위도', hide=True)
-                gb.configure_column('경도', hide=True)
-                gb.configure_pagination(paginationAutoPageSize=True)
-                gb.configure_side_bar()
-                gb.configure_selection('multiple', use_checkbox=True, groupSelectsChildren=True)
-                gridOptions = gb.build()
-
-                grid_response = AgGrid(
-                    matched_df,
-                    gridOptions=gridOptions,
-                    data_return_mode=DataReturnMode.AS_INPUT,
-                    update_mode=GridUpdateMode.MODEL_CHANGED,
-                    fit_columns_on_grid_load=True,
-                    theme='blue',
-                    enable_enterprise_modules=True,
-                    height=418,
-                    width='100%',
-                    allow_unsafe_jscode=True
-                )
-
-                sr = grid_response.get('selected_rows')
-                if sr is None:
-                    selected = []
-                elif isinstance(sr, pd.DataFrame):
-                    selected = sr.to_dict('records')
-                elif isinstance(sr, list):
-                    selected = sr
+                        desc = str(row.get("기업설명", "")).strip()
+                        return f"1. 기업정보\n\n{info}\n\n\n2. 기업설명\n\n{desc}"
+                        
+                    st.session_state.setdefault("content_to_gpt", [])
+                    # 👉 Expander에 표시
+                    for _, row in matched_df_by_gpt.iterrows():
+                        content_to_gpt={}
+                        with st.expander(f"**{row['회사명']}** 상세 정보"):
+                            content = format_row(row)
+                            st.session_state.content_to_gpt.append(content)
+                            st.write(content)
+                
+            # 3️⃣ JOBKOREA
+            with selected_tabs[2]:
+                raw_names = st.session_state.get("company_name_by_gpt", "")
+                company_name_by_gpt = [name.strip() for name in raw_names.split(",")]
+                # 2. isin()으로 필터링
+                matched_df_by_gpt = st.session_state.company_df_for_gpt[
+                    st.session_state.company_df_for_gpt['회사명'].isin(company_name_by_gpt)
+                ]
+                if matched_df_by_gpt.empty:
+                    st.warning("일치하는 기업이 없습니다.")
                 else:
-                    selected = []
-
-                st.session_state.selected_rows = selected
-
-                if selected:
-                    selected_df = pd.DataFrame(selected)[matched_df.columns]
-            else:
-                st.info("기업을 검색해주세요.")
-
-        with col1:
-            selected = st.session_state.get('selected_rows', [])
-            if selected:
-                df_map = pd.DataFrame(selected)
-                m = folium.Map(location=[df_map['위도'].mean(), df_map['경도'].mean()], zoom_start=12)
-                for _, row in df_map.iterrows():
-                    # 1️⃣ 원(CircleMarker)으로 기업 위치 표시
-                    folium.CircleMarker(
-                        location=[row['위도'], row['경도']],
-                        radius=6,
-                        color='blue',
-                        fill=True,
-                        fill_color='blue',
-                        fill_opacity=0.8,
-                        tooltip=row['회사명']
-                    ).add_to(m)
-                
-                    # 2️⃣ 말풍선 팝업을 항상 보이도록 설정 (Marker + Popup + show=True)
-                    popup = folium.Popup(row["회사명"], max_width=200, show=True)
-                    folium.Marker(
-                        location=[row["위도"], row["경도"]],
-                        popup=popup,
-                        icon=folium.DivIcon(icon_size=(0, 0))  # 마커 아이콘 숨기고 말풍선만 표시
-                    ).add_to(m)
-                
-                # 3️⃣ 지도 출력 및 안내 문구
-                html(m._repr_html_(), height=480)
-                st.caption(f"✅ 선택된 기업 {len(df_map)}곳을 지도에 표시했습니다.")
-            elif not matched_df.empty:
-                m = folium.Map(location=[matched_df['위도'].mean(), matched_df['경도'].mean()], zoom_start=12)
-                for _, row in matched_df.iterrows():
-                    # 원으로 기업 위치 시각화
-                    folium.CircleMarker(
-                        location=[row['위도'], row['경도']],
-                        radius=5,
-                        color='blue',
-                        fill=True,
-                        fill_color='blue',
-                        fill_opacity=0.7,
-                        popup=row['회사명'],
-                        tooltip=row['회사명']
-                    ).add_to(m)
-                html(m._repr_html_(), height=480)
-                st.caption(f"※ '{keyword}'를 포함한 기업 {len(matched_df)}곳을 지도에 표시했습니다.")
-            elif keyword:
-                st.warning("🛑 해당 기업이 존재하지 않습니다.")
-            else:
-                html(st.session_state.map_html, height=480)
-                st.caption("※ 전체 기업 분포를 표시 중입니다.")
-
+                    for _, row in matched_df_by_gpt.iterrows():
+                        name = row['회사명']
+                        jk_url = row['잡코리아 주소']
+                        # expander 생성
+                        with st.expander(f"**{name}** 채용 정보"):
+                            # iframe으로 잡코리아 페이지 임베딩
+                            components.iframe(
+                                src=jk_url,
+                                height=1000,      # iframe 높이 (필요에 따라 조정)
+                                scrolling=True
+                            )
+            # 4️⃣ 기업 위치 지도
+            with selected_tabs[3]:
+                raw_names = st.session_state.get("company_name_by_gpt", "")
+                company_name_by_gpt = [name.strip() for name in raw_names.split(",")]
+                matched_df = st.session_state.company_df_for_map[st.session_state.company_df_for_map['회사명'].isin(company_name_by_gpt)]
+                if not matched_df.empty:
+                    m = folium.Map(location=[matched_df["위도"].mean(), matched_df["경도"].mean()], zoom_start=12)
+                    
+                    for _, row in matched_df.iterrows():
+                        # 원으로 시각화
+                        folium.CircleMarker(
+                            location=[row["위도"], row["경도"]],
+                            radius=6,
+                            color="blue",
+                            fill=True,
+                            fill_color="blue",
+                            fill_opacity=0.6
+                        ).add_to(m)
+                    
+                        # 이름 팝업 항상 열기 (Marker + Popup 조합)
+                        popup = folium.Popup(row["회사명"], max_width=200, show=True)
+                        folium.Marker(
+                            location=[row["위도"], row["경도"]],
+                            popup=popup,
+                            icon=folium.DivIcon(icon_size=(0, 0))  # 아이콘 숨김 (텍스트만 표시)
+                        ).add_to(m)
+                    
+                    html(m._repr_html_(), height=550)
+                else:
+                    st.warning("일치하는 기업이 없습니다.")
+        
+            # 5️⃣ 기업 검색 및 지도 표시
+            with selected_tabs[4]:
+                if "search_keyword" not in st.session_state:
+                    st.session_state.search_keyword = ""
+                if "reset_triggered" not in st.session_state:
+                    st.session_state.reset_triggered = False
+        
+                def reset_search():
+                    st.session_state.search_keyword = ""
+                    st.session_state["search_input"] = ""
+                    st.session_state.reset_triggered = True
+        
+                col1, col2 = st.columns([2, 1])
+                with col1:
+                    search_input = st.text_input(" ", key="search_input", label_visibility="collapsed", placeholder="🔎 회사명으로 검색 (예: 현대, 시스템, 조선 등)")
+                with col2:
+                    if search_input:
+                        st.button("검색 초기화", on_click=reset_search)
+        
+                st.session_state.search_keyword = search_input
+        
+                if st.session_state.reset_triggered:
+                    st.session_state.reset_triggered = False
+                    st.rerun()
+        
+                matched_df = pd.DataFrame()
+                keyword = st.session_state.search_keyword.strip()
+                if keyword:
+                    matched_df = st.session_state.company_df_for_map[
+                        st.session_state.company_df_for_map["회사명"].str.contains(keyword, case=False, na=False)
+                    ]
+        
+                col1, col2 = st.columns([2, 1])
+                with col2:
+                    st.markdown("### 🧾 검색 기업 정보")
+                    if not matched_df.empty:
+                        PINLEFT = {'pinned': 'left'}
+                        PRECISION_TWO = {'type': ['numericColumn'], 'precision': 6}
+                        formatter = {
+                            '회사명': ('회사명', PINLEFT),
+                            '도로명': ('도로명', {'width': 200}),
+                            '업종명': ('업종명', {'width': 150}),
+                            '전화번호': ('전화번호', {'width': 120}),
+                            '위도': ('위도', {**PRECISION_TWO, 'width': 100}),
+                            '경도': ('경도', {**PRECISION_TWO, 'width': 100}),
+                        }
+        
+                        gb = GridOptionsBuilder.from_dataframe(matched_df)
+                        for col, (header, opts) in formatter.items():
+                            if col in matched_df.columns:
+                                gb.configure_column(col, header_name=header, **opts)
+                        gb.configure_column('위도', hide=True)
+                        gb.configure_column('경도', hide=True)
+                        gb.configure_pagination(paginationAutoPageSize=True)
+                        gb.configure_side_bar()
+                        gb.configure_selection('multiple', use_checkbox=True, groupSelectsChildren=True)
+                        gridOptions = gb.build()
+        
+                        grid_response = AgGrid(
+                            matched_df,
+                            gridOptions=gridOptions,
+                            data_return_mode=DataReturnMode.AS_INPUT,
+                            update_mode=GridUpdateMode.MODEL_CHANGED,
+                            fit_columns_on_grid_load=True,
+                            theme='blue',
+                            enable_enterprise_modules=True,
+                            height=418,
+                            width='100%',
+                            allow_unsafe_jscode=True
+                        )
+        
+                        sr = grid_response.get('selected_rows')
+                        if sr is None:
+                            selected = []
+                        elif isinstance(sr, pd.DataFrame):
+                            selected = sr.to_dict('records')
+                        elif isinstance(sr, list):
+                            selected = sr
+                        else:
+                            selected = []
+        
+                        st.session_state.selected_rows = selected
+        
+                        if selected:
+                            selected_df = pd.DataFrame(selected)[matched_df.columns]
+                    else:
+                        st.info("기업을 검색해주세요.")
+        
+                with col1:
+                    selected = st.session_state.get('selected_rows', [])
+                    if selected:
+                        df_map = pd.DataFrame(selected)
+                        m = folium.Map(location=[df_map['위도'].mean(), df_map['경도'].mean()], zoom_start=12)
+                        for _, row in df_map.iterrows():
+                            # 1️⃣ 원(CircleMarker)으로 기업 위치 표시
+                            folium.CircleMarker(
+                                location=[row['위도'], row['경도']],
+                                radius=6,
+                                color='blue',
+                                fill=True,
+                                fill_color='blue',
+                                fill_opacity=0.8,
+                                tooltip=row['회사명']
+                            ).add_to(m)
+                        
+                            # 2️⃣ 말풍선 팝업을 항상 보이도록 설정 (Marker + Popup + show=True)
+                            popup = folium.Popup(row["회사명"], max_width=200, show=True)
+                            folium.Marker(
+                                location=[row["위도"], row["경도"]],
+                                popup=popup,
+                                icon=folium.DivIcon(icon_size=(0, 0))  # 마커 아이콘 숨기고 말풍선만 표시
+                            ).add_to(m)
+                        
+                        # 3️⃣ 지도 출력 및 안내 문구
+                        html(m._repr_html_(), height=480)
+                        st.caption(f"✅ 선택된 기업 {len(df_map)}곳을 지도에 표시했습니다.")
+                    elif not matched_df.empty:
+                        m = folium.Map(location=[matched_df['위도'].mean(), matched_df['경도'].mean()], zoom_start=12)
+                        for _, row in matched_df.iterrows():
+                            # 원으로 기업 위치 시각화
+                            folium.CircleMarker(
+                                location=[row['위도'], row['경도']],
+                                radius=5,
+                                color='blue',
+                                fill=True,
+                                fill_color='blue',
+                                fill_opacity=0.7,
+                                popup=row['회사명'],
+                                tooltip=row['회사명']
+                            ).add_to(m)
+                        html(m._repr_html_(), height=480)
+                        st.caption(f"※ '{keyword}'를 포함한 기업 {len(matched_df)}곳을 지도에 표시했습니다.")
+                    elif keyword:
+                        st.warning("🛑 해당 기업이 존재하지 않습니다.")
+                    else:
+                        html(st.session_state.map_html, height=480)
+                        st.caption("※ 전체 기업 분포를 표시 중입니다.")
+        with col_btn2:
+            if st.button("📄 다른 페이지로 이동하기"):
+                st.session_state.current_page = "extra_page"
+                st.rerun()
+    # ✅ extra_page 콘텐츠
+    elif st.session_state.current_page == "extra_page":
+                # 🔙 돌아가기 버튼
+        if st.button("🔙 Job-Busan 페이지로 돌아가기"):
+            st.session_state.current_page = "job_rag"
+            st.rerun()
 # ───────────────────────────────────────────
 # [9] gpt Chatbot 페이지 (Job-Bu Chatbot)
 # ───────────────────────────────────────────
