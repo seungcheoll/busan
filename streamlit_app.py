@@ -280,8 +280,8 @@ Dreamer = choice == "Dream Chat"
 if info:
     st.markdown("""
     <h1 style='text-align: center;'>
-      <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/logo_guide.png" 
-           style="width: 150px; height: 20px; vertical-align: middle; margin-right: 0px;">
+      <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/logo_raw.png" 
+           style="width: 150px; height: 170px; vertical-align: middle; margin-right: 0px;">
       이용 가이드
     </h1>
     """, unsafe_allow_html=True)
