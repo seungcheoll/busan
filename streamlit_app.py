@@ -742,7 +742,7 @@ if Career:
         
         if "career_history" not in st.session_state:
             st.session_state.career_history = [
-                {"role": "assistant", "content": "안녕하세요! 취업 상담 챗봇 JOB-IS입니다! 무엇을 도와드릴까요?"}
+                {"role": "assistant", "content": "안녕하세요! 취업 상담 챗봇 CareerChat입니다! 무엇을 도와드릴까요?"}
             ]
     
         if "source_docs" not in st.session_state or not st.session_state.source_docs:
@@ -860,7 +860,7 @@ if Dreamer:
 
     if "dream_history" not in st.session_state:
         st.session_state.dream_history = [
-            {"role": "assistant", "content": "안녕하세요! 진로 상담 챗봇 Dreamer입니다! 무엇을 도와드릴까요?"}
+            {"role": "assistant", "content": "안녕하세요! 진로 상담 챗봇 DreamChat입니다! 무엇을 도와드릴까요?"}
         ]
 
     # 🔹 사용자 프로필 입력값 확인
