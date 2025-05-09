@@ -28,21 +28,15 @@ st.set_page_config(
 
 st.markdown("""
     <style>
-      .login-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 90vh;
-      }
       .login-card {
         background: white;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         padding: 40px;
-        width: 360px;
+        width: 320px;
         text-align: center;
       }
-      .login-card input, .login-card textarea {
+      .login-card input {
         width: 100%;
         padding: 12px;
         margin-bottom: 16px;
@@ -68,7 +62,7 @@ st.markdown("""
 
 def authenticate():
     if not st.session_state.get("authenticated", False):
-        st.markdown('<div class="login-wrapper"><div class="login-card">', unsafe_allow_html=True)
+        st.markdown('<h2>🚀 지금 바로 JOB-IS를 시작해보세요!</h2>', unsafe_allow_html=True)
 
         with st.form("login_form"):
             pw = st.text_input("비밀번호", type="password", placeholder="비밀번호를 입력하세요.")
@@ -84,6 +78,7 @@ def authenticate():
             if submitted:
                 if pw == st.secrets["general"]["APP_PASSWORD"]:
                     st.session_state.authenticated = True
+                    # 프로필 정보도 세션에 저장
                     st.session_state.university   = university
                     st.session_state.major        = major
                     st.session_state.gpa          = gpa
@@ -95,10 +90,8 @@ def authenticate():
                     st.rerun()
                 else:
                     st.error("비밀번호가 올바르지 않습니다")
-
-        st.markdown('</div></div>', unsafe_allow_html=True)
         st.stop()
-
+        
 authenticate()
 #---
 
