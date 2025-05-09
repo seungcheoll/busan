@@ -915,7 +915,7 @@ if chatbot:
 
     # 🔒 모두 비었으면 중단
     if not any([university, major, gpa, field_pref, job_pref, activities, certificates]):
-        st.warning("⚠️ 사용자 프로필이 입력되지 않았습니다. 사이드바 또는 Chatbot 탭에서 정보를 입력해 주세요.")
+        st.warning("⚠️ 사용자 프로필이 입력되지 않았습니다. 프로필 정보를 입력해 주세요.")
         st.stop()
 
     # 🔧 system prompt 구성 (user_type, user_query, context_text 제거)
