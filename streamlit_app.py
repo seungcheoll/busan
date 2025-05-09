@@ -919,7 +919,7 @@ if chatbot:
         st.stop()
 
     # 🔧 system prompt 구성 (user_type, user_query, context_text 제거)
-    with open("template/sys_template.txt", "r", encoding="utf-8") as file:
+    with open("template/sys_template_gpt_job.txt", "r", encoding="utf-8") as file:
         template = file.read()
 
     system_prompt = template.format(
