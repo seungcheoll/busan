@@ -22,7 +22,7 @@ import streamlit.components.v1 as components
 # 🧭 Streamlit 기본 설정 및 스타일 숨기기
 st.set_page_config(
     page_title="JOB-IS",
-    page_icon="https://raw.githubusercontent.com/seungcheoll/busan/main/image/chatbot.png",
+    page_icon="https://raw.githubusercontent.com/seungcheoll/busan/main/image/jobis.png",
     layout="wide"
 )
 
@@ -385,7 +385,7 @@ if Career:
         st.markdown("""
             <div style='padding: 10px 0px;'>
                 <h1 style='margin:0; font-size:28px; display: flex; align-items: center; gap: 0px;'>
-                    <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/chatbot.png' 
+                    <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/jobis.png' 
                          style='width: 60px; height: auto; vertical-align: middle;'>
                     취업 상담 챗봇(JOB-IS)
                 </h1>
@@ -819,7 +819,7 @@ if Career:
                         f"""
                         <div style='display: flex; align-items: flex-start; gap: 10px;'>
                             <img 
-                                src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/chatbot.png' 
+                                src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/jobis.png' 
                                 style='width: 40px; height: auto; margin-top: 4px;'
                             />
                             <div 
@@ -928,7 +928,7 @@ if Dreamer:
                     f"""
                     <div style='display: flex; align-items: flex-start; gap: 10px;'>
                         <img 
-                            src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/chatbot.png' 
+                            src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/jobis.png' 
                             style='width: 40px; height: auto; margin-top: 4px;' />
                         <div style='background-color:#f0f0f0; padding:12px; border-radius:8px; max-width:100%; color:black;'>
                             {msg['content']}
