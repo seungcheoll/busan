@@ -281,7 +281,7 @@ if info:
     st.markdown("""
     <h1 style='text-align: center;'>
       <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/logo_guide.png" 
-           style="width: 180px; height: 90px; vertical-align: middle; margin-right: 0px;">
+           style="width: 180px; height: 70px; vertical-align: middle; margin-right: 0px;">
     </h1>
     """, unsafe_allow_html=True)
     st.markdown("""
