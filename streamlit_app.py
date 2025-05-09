@@ -383,7 +383,7 @@ if Career:
             st.rerun()
             
         st.markdown("""
-            <div style='padding: 10px 0px; display: flex; align-items: center; gap: 10px;'>
+            <div style='padding: 0px 0px; display: flex; justify-content: center; align-items: center; gap: 10px; text-align: center;'>
                 <img src='https://raw.githubusercontent.com/seungcheoll/busan/main/image/jobis.png' 
                      style='width: 45px; height: 45px;'>
                 <span style='font-size:28px; font-weight: bold;'>취업 상담 챗봇(JOB-IS)</span>
