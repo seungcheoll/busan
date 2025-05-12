@@ -152,6 +152,7 @@ class GPTChatWrapper(BaseChatModel):
         response = self._client.chat.completions.create(
             model=self.model,
             messages=formatted,
+            temperature=0.2
         )
         return response.choices[0].message.content
 
