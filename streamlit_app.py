@@ -470,6 +470,13 @@ if Career:
     
 
         if st.button("💬 질문 실행"):
+            # 🔄 이전 챗봇 대화 내용 초기화
+            st.session_state.career_history = [
+                {"role": "assistant", "content": "안녕하세요! 취업 상담 챗봇 Career Chat입니다! 무엇을 도와드릴까요?"}
+            ]
+            st.session_state.dream_history = [
+                {"role": "assistant", "content": "안녕하세요! 진로 상담 챗봇 Dream Chat입니다! 무엇을 도와드릴까요?"}
+            ]
             with st.spinner("🔎 JOB-IS가 기업 정보를 검색 중입니다."):
                 selected_template = st.session_state.templates[user_type]
                 formatted_template = selected_template.format(
@@ -489,7 +496,7 @@ if Career:
                     return_source_documents=True,
                     chain_type_kwargs={"prompt": prompt}
                 )
-                while True:
+                for _ in range(3):  # 최대 3번만 시도
                     try:
                         result = qa_chain.invoke({"query": query})
                         text = result["result"]
@@ -500,6 +507,8 @@ if Career:
                         break
                     except:
                         continue
+                else:
+                    st.error(f"응답 처리에 실패했습니다: {last_error}")
                 st.session_state.source_docs = result["source_documents"]
     
                 # 다시 비우기 전 최종 저장
