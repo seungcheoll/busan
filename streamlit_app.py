@@ -471,7 +471,7 @@ if Career:
 
         if st.button("💬 질문 실행"):
             # 🔄 이전 챗봇 대화 내용 초기화
-            for key in ["career_history", "dream_history"]:
+            for key in ["career_history", "dream_history","content_to_gpt]:
                 st.session_state.pop(key,None)
             with st.spinner("🔎 JOB-IS가 기업 정보를 검색 중입니다."):
                 selected_template = st.session_state.templates[user_type]
