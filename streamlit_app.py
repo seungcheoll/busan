@@ -546,14 +546,14 @@ if Career:
             else:        
                 # 필드 분류
                 basic_fields = [
-                    '회사명', '홈페이지', '구분', '업 종', '상세업종', '사업분야','실수령액(월)', '실수령액(연)',
+                    '회사명', '잡코리아 주소','홈페이지', '업 종', '상세업종', '사업분야',
                     '평균초임', '평균연봉', '기업규모',
-                    '매출액 (백만원)', '직원수(계)', '직원수(정규직)', '직원수(비정규직)',
-                    '소재 구군', '도로명', '주요제품 / 서비스', '대표번호', '비 고'
+                    '매출액', '직원수(계)',
+                     '도로명', '주요제품 / 서비스'
                 ]
                 work_life_fields = [f'워라벨{i}' for i in range(1, 11)]
                 training_fields = [f'직무교육{i}' for i in range(1, 7)]
-                welfare_fields = [f'복리후생{i}' for i in range(1, 14)]
+                welfare_fields = [f'복리후생{i}' for i in range(1, 13)]
         
                 # 병합 유틸
                 def join_fields(row, fields):
