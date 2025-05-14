@@ -773,7 +773,7 @@ if Career:
                             tooltip=row['회사명']
                         ).add_to(m)
                     html(m._repr_html_(), height=480)
-                    st.caption(f"※ '{keyword}'를 포함한 기업 {len(matched_df)}곳을 지도에 표시했습니다.")
+                    st.caption(f"※ 검색 결과 기업 {len(matched_df)}곳을 지도에 표시했습니다.")
                 elif keyword:
                     st.warning("🛑 해당 기업이 존재하지 않습니다.")
                 else:
