@@ -658,7 +658,7 @@ if Career:
                 search_input = st.text_input(" ", key="search_input", label_visibility="collapsed", placeholder="🔎 회사명 또는 업종명 입력")
         
             with col2:
-                st.selectbox("검색 기준", ["회사명", "업종명"], key="search_field")
+                st.selectbox(["회사명", "업종명"], key="search_field")
         
             with col3:
                 if search_input:
