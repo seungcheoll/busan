@@ -99,7 +99,7 @@ def input_profile():
 
                 if submitted:
                     if not agree:
-                        st.warning("❗ 개인정보 수집 및 이용에 동의해야 합니다.")
+                        st.warning("❗ 원활한 상담을 위한 개인정보 수집 및 이용 동의를 부탁드립니다.")
                     else:
                         st.session_state.university   = university
                         st.session_state.major        = major
