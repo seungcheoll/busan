@@ -655,10 +655,10 @@ if Career:
             col1, col2, col3 = st.columns([2, 1, 1])
         
             with col1:
-                search_input = st.text_input(" ", key="search_input", label_visibility="collapsed", placeholder="🔎 회사명 또는 업종명 입력")
+                search_input = st.text_input(" ", key="search_input", label_visibility="collapsed", placeholder="🔎 회사명 또는 업종 입력(예 : 현대/컴퓨터)")
         
             with col2:
-                st.selectbox("",["회사명", "업종명"], key="search_field", label_visibility="collapsed")
+                st.selectbox("",["회사명", "업종"], key="search_field", label_visibility="collapsed")
         
             with col3:
                 if search_input:
@@ -673,7 +673,7 @@ if Career:
             matched_df = pd.DataFrame()
             keyword = st.session_state.search_keyword.strip()
             if keyword:
-                search_column = "회사명" if st.session_state.search_field == "회사명" else "업종명"
+                search_column = "회사명" if st.session_state.search_field == "회사명" else "업종"
                 matched_df = st.session_state.company_df_for_map[
                     st.session_state.company_df_for_map[search_column].str.contains(keyword, case=False, na=False)
                 ]
@@ -687,7 +687,7 @@ if Career:
                     formatter = {
                         '회사명': ('회사명', PINLEFT),
                         '도로명': ('도로명', {'width': 200}),
-                        '업종명': ('업종명', {'width': 150}),
+                        '업종': ('업종', {'width': 150}),
                         '전화번호': ('전화번호', {'width': 120}),
                         '위도': ('위도', {**PRECISION_TWO, 'width': 100}),
                         '경도': ('경도', {**PRECISION_TWO, 'width': 100}),
