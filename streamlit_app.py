@@ -813,7 +813,7 @@ if Career:
             ]
     
         if "source_docs" not in st.session_state or not st.session_state.source_docs:
-            st.warning("💡 이전 페이지에서 먼저 '질문 실행'을 눌러 상담에 필요한 참고자료를 확보해 주세요.")
+            st.warning("💡 이전 페이지에서 먼저 질문 입력 후, '질문 실행'을 눌러 상담에 필요한 참고자료를 확보해 주세요.")
             st.stop()
     
         # 🔹 사용자 유형과 질문 가져오기
