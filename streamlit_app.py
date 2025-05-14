@@ -62,7 +62,7 @@ def check_login():
             st.markdown('<h2 style="text-align:center;">😊 JOB-IS에 오신 걸 환영합니다!</h2>', unsafe_allow_html=True)
 
             with st.form("login_form"):
-                pw = st.text_input("비밀번호", type="password", placeholder="비밀번호를 입력하세요")
+                pw = st.text_input("코드", type="password", placeholder="로그인 코드를 입력하세요")
                 submitted = st.form_submit_button("로그인")
                 if submitted:
                     if pw == st.secrets["general"]["APP_PASSWORD"]:
@@ -70,7 +70,7 @@ def check_login():
                         st.success("✅ 로그인 성공!")
                         st.rerun()
                     else:
-                        st.error("비밀번호가 올바르지 않습니다")
+                        st.error("코드가 올바르지 않습니다")
         st.stop()
 
 def input_profile():
@@ -413,7 +413,7 @@ if Career:
 
     # ✅ job_rag 페이지 로직
     if st.session_state.current_page == "Career_rag":
-        if st.button("◀️ Chatbot 이용하기"):
+        if st.button("◀️ Career Chat 이용하기"):
             st.session_state.current_page = "Career_chatbot"
             st.rerun()
             
@@ -547,7 +547,7 @@ if Career:
                 # 필드 분류
                 basic_fields = [
                     '회사명', '잡코리아 주소','홈페이지', '업 종', '상세업종', '사업분야',
-                    '평균초임', '평균연봉', '기업규모',
+                    '평균초임', '평균연봉', '기업분류',
                     '매출액', '직원수(계)',
                      '도로명', '주요제품 / 서비스'
                 ]
@@ -610,7 +610,7 @@ if Career:
         with selected_tabs[3]:
             raw_names = st.session_state.get("company_name_by_gpt", "")
             company_name_by_gpt = [name.strip() for name in raw_names.split(",")]
-            matched_df = st.session_state.company_df_for_map[st.session_state.company_df_for_map['회사명'].isin(company_name_by_gpt)]
+            matched_df = st.session_state.company_df_for_map[st.session_state.company_df_for_map['기업명'].isin(company_name_by_gpt)]
             if not matched_df.empty:
                 m = folium.Map(location=[matched_df["위도"].mean(), matched_df["경도"].mean()], zoom_start=12)
                 
@@ -626,7 +626,7 @@ if Career:
                     ).add_to(m)
                 
                     # 이름 팝업 항상 열기 (Marker + Popup 조합)
-                    popup = folium.Popup(row["회사명"], max_width=200, show=True)
+                    popup = folium.Popup(row["기업명"], max_width=200, show=True)
                     folium.Marker(
                         location=[row["위도"], row["경도"]],
                         popup=popup,
@@ -644,21 +644,21 @@ if Career:
             if "reset_triggered" not in st.session_state:
                 st.session_state.reset_triggered = False
             if "search_field" not in st.session_state:
-                st.session_state.search_field = "회사명"
+                st.session_state.search_field = "기업명"
         
             def reset_search():
                 st.session_state.search_keyword = ""
                 st.session_state["search_input"] = ""
-                st.session_state["search_field"] = "회사명"
+                st.session_state["search_field"] = "기업명"
                 st.session_state.reset_triggered = True
         
             col1, col2, col3 = st.columns([2, 1, 1])
         
             with col1:
-                search_input = st.text_input(" ", key="search_input", label_visibility="collapsed", placeholder="🔎 회사명 또는 업종 입력(예 : 현대/컴퓨터)")
+                search_input = st.text_input(" ", key="search_input", label_visibility="collapsed", placeholder="🔎 기업명 또는 산업 분야 입력(예 : 조선/소프트웨어)")
         
             with col2:
-                st.selectbox("",["회사명", "업종"], key="search_field", label_visibility="collapsed")
+                st.selectbox("",["기업명", "산업 분야"], key="search_field", label_visibility="collapsed")
         
             with col3:
                 if search_input:
@@ -673,7 +673,7 @@ if Career:
             matched_df = pd.DataFrame()
             keyword = st.session_state.search_keyword.strip()
             if keyword:
-                search_column = "회사명" if st.session_state.search_field == "회사명" else "업종"
+                search_column = "기업명" if st.session_state.search_field == "기업명" else "산업 분야"
                 matched_df = st.session_state.company_df_for_map[
                     st.session_state.company_df_for_map[search_column].str.contains(keyword, case=False, na=False)
                 ]
@@ -685,9 +685,9 @@ if Career:
                     PINLEFT = {'pinned': 'left'}
                     PRECISION_TWO = {'type': ['numericColumn'], 'precision': 6}
                     formatter = {
-                        '회사명': ('회사명', PINLEFT),
-                        '도로명': ('도로명', {'width': 200}),
-                        '업종': ('업종', {'width': 150}),
+                        '기업명': ('기업명', PINLEFT),
+                        '주소': ('주소', {'width': 200}),
+                        '산업 분야': ('산업 분야', {'width': 150}),
                         '전화번호': ('전화번호', {'width': 120}),
                         '위도': ('위도', {**PRECISION_TWO, 'width': 100}),
                         '경도': ('경도', {**PRECISION_TWO, 'width': 100}),
@@ -747,10 +747,10 @@ if Career:
                             fill=True,
                             fill_color='blue',
                             fill_opacity=0.8,
-                            tooltip=row['회사명']
+                            tooltip=row['기업명']
                         ).add_to(m)
         
-                        popup = folium.Popup(row["회사명"], max_width=200, show=True)
+                        popup = folium.Popup(row["기업명"], max_width=200, show=True)
                         folium.Marker(
                             location=[row["위도"], row["경도"]],
                             popup=popup,
@@ -769,8 +769,8 @@ if Career:
                             fill=True,
                             fill_color='blue',
                             fill_opacity=0.7,
-                            popup=row['회사명'],
-                            tooltip=row['회사명']
+                            popup=row['기업명'],
+                            tooltip=row['기업명']
                         ).add_to(m)
                     html(m._repr_html_(), height=480)
                     st.caption(f"※ 검색 결과 기업 {len(matched_df)}곳을 지도에 표시했습니다.")
