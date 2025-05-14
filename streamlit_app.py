@@ -70,7 +70,7 @@ def check_login():
                         st.success("✅ 로그인 성공!")
                         st.rerun()
                     else:
-                        st.error("코드가 올바르지 않습니다")
+                        st.error("❗ 코드가 올바르지 않습니다.")
         st.stop()
 
 def input_profile():
