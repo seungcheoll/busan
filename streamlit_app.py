@@ -18,49 +18,38 @@ from langchain.schema import ChatResult
 from openai import OpenAI
 import json
 import streamlit.components.v1 as components
-#---
-# 🧭 Streamlit 기본 설정 및 스타일 숨기기
+
+# ───────────────────────────────────────────
+# [2] 기본 설정 및 사용자 인증 처리
+# ───────────────────────────────────────────
+# Streamlit 기본 설정 (타이틀, 아이콘, 레이아웃)
 st.set_page_config(
     page_title="JOB-IS",
     page_icon="https://raw.githubusercontent.com/seungcheoll/busan/main/image/jobis.png",
     layout="wide"
 )
 
+# 시작 페이지 (로고 및 이용 버튼 표시)
 def start_page():
     if "started" not in st.session_state:
-        col1, col2, col3 = st.columns([1, 2, 1])  # 가운데 정렬
+        col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
             st.markdown("""
-                <div style="
-                    background-color: #FFFFFF;
-                    padding: 0px;
-                    border-radius: 10px;
-                    text-align: center;
-                    width: 500px;
-                    margin: 0 auto;
-                ">
-                    <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/logo_raw.png" 
-                         style="width: 500px; height: 250px; display: block; margin: 0 auto;">
-                </div>
+                <div style="...">...</div>
             """, unsafe_allow_html=True)
 
-        # 버튼만 따로 가운데 정렬
         btn_col1, btn_col2, btn_col3 = st.columns([1.75, 1, 1])
         with btn_col2:
-            st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)  # 버튼 위 여백 최소
             if st.button("이용하러 가기"):
                 st.session_state.started = True
                 st.rerun()
-
         st.stop()
-        
+
+# 로그인 처리 함수 (비밀번호 기반)
 def check_login():
     if not st.session_state.get("authenticated", False):
-        col1, col2, col3 = st.columns([1, 2, 1])  # 가운데 열이 넓도록 설정
-
+        col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
-            st.markdown('<h2 style="text-align:center;">😊 JOB-IS에 오신 걸 환영합니다!</h2>', unsafe_allow_html=True)
-
             with st.form("login_form"):
                 pw = st.text_input("", type="password",label_visibility="collapsed", placeholder="로그인 코드를 입력하세요")
                 submitted = st.form_submit_button("로그인")
@@ -71,6 +60,24 @@ def check_login():
                         st.rerun()
                     else:
                         st.error("❗ 코드가 올바르지 않습니다.")
+        st.stop()
+
+# 사용자 프로필 입력 함수
+def input_profile():
+    if "profile_done" not in st.session_state:
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            st.markdown('<h2 style="text-align:center;">📋 사용자 정보를 입력해주세요</h2>', unsafe_allow_html=True)
+            with st.form("profile_form"):
+                ... # (대학, 전공, 학점, 자격증 등 입력 필드)
+                if submitted:
+                    if not agree:
+                        st.warning("❗ 동의가 필요합니다.")
+                    else:
+                        ... # 세션 상태에 값 저장
+                        st.session_state.profile_done = True
+                        st.success("✅ 프로필 정보 저장 완료!")
+                        st.rerun()
         st.stop()
 
 def input_profile():
@@ -113,12 +120,13 @@ def input_profile():
                         st.rerun()
         st.stop()
 
-# 실행 흐름
 start_page()
 check_login()
 input_profile()
-#---
 
+# ───────────────────────────────────────────
+# [3] 유틸 함수: JSON 파싱 및 텍스트 처리
+# ───────────────────────────────────────────
 def strip_code_blocks(text):
     if text.startswith("```json"):
         text = text.replace("```json", "").replace("```", "").strip()
@@ -130,7 +138,9 @@ def text_to_json(text):
         return result
     except json.JSONDecodeError as e:
         return f"JSON 변환 오류: {e}"
-        
+# ───────────────────────────────────────────
+# [4] GPT LLM 래퍼 클래스 정의
+# ───────────────────────────────────────────
 # ✅ GPT용 LLM 클래스 정의
 class GPTChatWrapper(BaseChatModel):
     openai_api_key: str
@@ -169,7 +179,7 @@ class GPTChatWrapper(BaseChatModel):
         return {"model": self.model}
         
 # ───────────────────────────────────────────
-# [2] API 키 및 사용자 템플릿 로딩 함수
+# [5] API 키 및 템플릿 로딩 함수 정의
 # ───────────────────────────────────────────
 # 🔑 API Key 불러오기
 def load_api_key():
@@ -185,7 +195,7 @@ def load_all_templates():
     return templates
 
 # ───────────────────────────────────────────
-# [3] 벡터 DB 및 QA 체인 초기화 함수
+# [6] 벡터 DB 및 QA 체인 초기화
 # ───────────────────────────────────────────
 # ✅ GPTChatWrapper 적용을 위해 init_qa_chain 함수
 @st.cache_resource
@@ -204,7 +214,7 @@ def init_qa_chain():
 
 
 # ───────────────────────────────────────────
-# [4] Streamlit 기본 설정 및 스타일 커스터마이징
+# [7] 스타일 커스터마이징 (Streamlit UI 숨기기 등)
 # ───────────────────────────────────────────
 
 hide_streamlit_style = """
@@ -229,14 +239,14 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ───────────────────────────────────────────
-# [5] 사용자 입력값 세션 초기화
+# [8] 사용자 세션 상태 초기화
 # ───────────────────────────────────────────
 for key in ["university", "major", "gpa", "field_pref", "job_pref", "activities", "certificates"]:
     if key not in st.session_state:
         st.session_state[key] = ""
 
 # ───────────────────────────────────────────
-# [6] 사이드바: 메뉴 선택 및 사용자 프로필 입력
+# [9] 사이드바 메뉴 및 시연 영상
 # ───────────────────────────────────────────
 # 🔘 사이드바 라디오 메뉴 설정
 with st.sidebar:
@@ -275,7 +285,7 @@ Career = choice == "Career Chat"
 Dreamer = choice == "Dream Chat"
 
 # ───────────────────────────────────────────
-# [7] 이용 가이드 페이지
+# [10] Guide 페이지 렌더링
 # ───────────────────────────────────────────
 if info:
     st.markdown("""
@@ -403,15 +413,16 @@ if info:
       </div>
     </div>
     """, unsafe_allow_html=True)
+    
 # ───────────────────────────────────────────
-# [8] Job-Busan 페이지: LLM QA + 지도 시각화
+# [11] Career Chat 페이지 (기업 추천 + 지도 시각화 + 취업 상담 챗봇)
 # ───────────────────────────────────────────
-# 📌 Job Busan 페이지 구성
+
+# 📌 Career Chat 페이지 구성
 if Career:
     if "current_page" not in st.session_state:
         st.session_state.current_page = "Career_rag"
-
-    # ✅ job_rag 페이지 로직
+        
     if st.session_state.current_page == "Career_rag":
         if st.button("◀️ Career Chat 이용하기"):
             st.session_state.current_page = "Career_chatbot"
@@ -780,7 +791,9 @@ if Career:
                     html(st.session_state.map_html, height=480)
                     st.caption("※ 전체 기업 분포를 표시 중입니다.")
 
-    # ✅ Career_chatbot 콘텐츠
+# ───────────────────────────────────────────
+# [12] Career Chat 페이지 (취업 상담 전용 챗봇)
+# ───────────────────────────────────────────
     elif st.session_state.current_page == "Career_chatbot":
         if st.button("◀️ 이전 페이지로 돌아가기"):
             st.session_state.current_page = "Career_rag"
@@ -899,10 +912,12 @@ if Career:
             answer_career = st.session_state.career_chat._call(history_career)
             st.session_state.career_history.append({"role": "assistant", "content": answer_career})
             st.rerun()
+            
 # ───────────────────────────────────────────
-# [9] gpt Chatbot 페이지 (Job-Bu Chatbot)
+# [12] Dream Chat 페이지 (진로 상담 전용 챗봇)
 # ───────────────────────────────────────────
-# 🤖 chatbot 페이지
+
+# 🤖 Dream Chat 페이지
 if Dreamer:
     if "dream_chat" not in st.session_state:
         st.session_state.dream_chat = GPTChatWrapper(openai_api_key=load_api_key())
