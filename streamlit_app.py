@@ -643,32 +643,41 @@ if Career:
                 st.session_state.search_keyword = ""
             if "reset_triggered" not in st.session_state:
                 st.session_state.reset_triggered = False
-    
+            if "search_field" not in st.session_state:
+                st.session_state.search_field = "회사명"
+        
             def reset_search():
                 st.session_state.search_keyword = ""
                 st.session_state["search_input"] = ""
+                st.session_state["search_field"] = "회사명"
                 st.session_state.reset_triggered = True
-    
-            col1, col2 = st.columns([2, 1])
+        
+            col1, col2, col3 = st.columns([2, 1, 1])
+        
             with col1:
-                search_input = st.text_input(" ", key="search_input", label_visibility="collapsed", placeholder="🔎 회사명으로 검색 (예: 현대, 시스템, 조선 등)")
+                search_input = st.text_input(" ", key="search_input", label_visibility="collapsed", placeholder="🔎 회사명 또는 업종명 입력")
+        
             with col2:
+                st.selectbox("검색 기준", ["회사명", "업종명"], key="search_field")
+        
+            with col3:
                 if search_input:
                     st.button("검색 초기화", on_click=reset_search)
-    
+        
             st.session_state.search_keyword = search_input
-    
+        
             if st.session_state.reset_triggered:
                 st.session_state.reset_triggered = False
                 st.rerun()
-    
+        
             matched_df = pd.DataFrame()
             keyword = st.session_state.search_keyword.strip()
             if keyword:
+                search_column = "회사명" if st.session_state.search_field == "회사명" else "업종명"
                 matched_df = st.session_state.company_df_for_map[
-                    st.session_state.company_df_for_map["회사명"].str.contains(keyword, case=False, na=False)
+                    st.session_state.company_df_for_map[search_column].str.contains(keyword, case=False, na=False)
                 ]
-    
+        
             col1, col2 = st.columns([2, 1])
             with col2:
                 st.markdown("### 🧾 검색 기업 정보")
@@ -683,7 +692,7 @@ if Career:
                         '위도': ('위도', {**PRECISION_TWO, 'width': 100}),
                         '경도': ('경도', {**PRECISION_TWO, 'width': 100}),
                     }
-    
+        
                     gb = GridOptionsBuilder.from_dataframe(matched_df)
                     for col, (header, opts) in formatter.items():
                         if col in matched_df.columns:
@@ -694,7 +703,7 @@ if Career:
                     gb.configure_side_bar()
                     gb.configure_selection('multiple', use_checkbox=True, groupSelectsChildren=True)
                     gridOptions = gb.build()
-    
+        
                     grid_response = AgGrid(
                         matched_df,
                         gridOptions=gridOptions,
@@ -707,7 +716,7 @@ if Career:
                         width='100%',
                         allow_unsafe_jscode=True
                     )
-    
+        
                     sr = grid_response.get('selected_rows')
                     if sr is None:
                         selected = []
@@ -717,21 +726,20 @@ if Career:
                         selected = sr
                     else:
                         selected = []
-    
+        
                     st.session_state.selected_rows = selected
-    
+        
                     if selected:
                         selected_df = pd.DataFrame(selected)[matched_df.columns]
                 else:
                     st.info("기업을 검색해주세요.")
-    
+        
             with col1:
                 selected = st.session_state.get('selected_rows', [])
                 if selected:
                     df_map = pd.DataFrame(selected)
                     m = folium.Map(location=[df_map['위도'].mean(), df_map['경도'].mean()], zoom_start=12)
                     for _, row in df_map.iterrows():
-                        # 1️⃣ 원(CircleMarker)으로 기업 위치 표시
                         folium.CircleMarker(
                             location=[row['위도'], row['경도']],
                             radius=6,
@@ -741,22 +749,19 @@ if Career:
                             fill_opacity=0.8,
                             tooltip=row['회사명']
                         ).add_to(m)
-                    
-                        # 2️⃣ 말풍선 팝업을 항상 보이도록 설정 (Marker + Popup + show=True)
+        
                         popup = folium.Popup(row["회사명"], max_width=200, show=True)
                         folium.Marker(
                             location=[row["위도"], row["경도"]],
                             popup=popup,
-                            icon=folium.DivIcon(icon_size=(0, 0))  # 마커 아이콘 숨기고 말풍선만 표시
+                            icon=folium.DivIcon(icon_size=(0, 0))
                         ).add_to(m)
-                    
-                    # 3️⃣ 지도 출력 및 안내 문구
+        
                     html(m._repr_html_(), height=480)
                     st.caption(f"✅ 선택된 기업 {len(df_map)}곳을 지도에 표시했습니다.")
                 elif not matched_df.empty:
                     m = folium.Map(location=[matched_df['위도'].mean(), matched_df['경도'].mean()], zoom_start=12)
                     for _, row in matched_df.iterrows():
-                        # 원으로 기업 위치 시각화
                         folium.CircleMarker(
                             location=[row['위도'], row['경도']],
                             radius=5,
