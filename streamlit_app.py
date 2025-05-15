@@ -913,9 +913,8 @@ if Career:
                     (HumanMessage if m["role"] == "user" else AIMessage)(content=m["content"])
                 )
             with st.spinner("💬 Career Chat이 답변을 생성 중입니다... 잠시만 기다려주세요!"):
-                answer_career = st.session_state.career_chat._call(history_career)
-            answer_career = st.session_state.career_chat._call(history_career)
-            st.session_state.career_history.append({"role": "assistant", "content": answer_career})
+                answer_career = st.session_state.career_chat._call(history_career))
+                st.session_state.career_history.append({"role": "assistant", "content": answer_career})
             st.rerun()
             
 # ───────────────────────────────────────────
@@ -1015,5 +1014,5 @@ if Dreamer:
             )
         with st.spinner("💬 Dream Chat이 답변을 생성 중입니다... 잠시만 기다려주세요!"):
             answer_dream = st.session_state.dream_chat._call(history_dream)
-        st.session_state.dream_history.append({"role": "assistant", "content": answer_dream})
+            st.session_state.dream_history.append({"role": "assistant", "content": answer_dream})
         st.rerun()
