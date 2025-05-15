@@ -39,24 +39,40 @@ st.set_page_config(
 # 시작 페이지 (로고 및 이용 버튼 표시)
 def start_page():
     if "started" not in st.session_state:
-        col1, col2, col3 = st.columns([1, 2, 1])
+        col1, col2, col3 = st.columns([1, 2, 1])  # 가운데 정렬
         with col2:
             st.markdown("""
-                <div style="...">...</div>
+                <div style="
+                    background-color: #FFFFFF;
+                    padding: 0px;
+                    border-radius: 10px;
+                    text-align: center;
+                    width: 500px;
+                    margin: 0 auto;
+                ">
+                    <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/logo_raw.png" 
+                         style="width: 500px; height: 250px; display: block; margin: 0 auto;">
+                </div>
             """, unsafe_allow_html=True)
 
+        # 버튼만 따로 가운데 정렬
         btn_col1, btn_col2, btn_col3 = st.columns([1.75, 1, 1])
         with btn_col2:
+            st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)  # 버튼 위 여백 최소
             if st.button("이용하러 가기"):
                 st.session_state.started = True
                 st.rerun()
+
         st.stop()
 
-# 로그인 처리 함수 (비밀번호 기반)
+# 로그인 페이지 (로고 및 이용 버튼 표시)     
 def check_login():
     if not st.session_state.get("authenticated", False):
-        col1, col2, col3 = st.columns([1, 2, 1])
+        col1, col2, col3 = st.columns([1, 2, 1])  # 가운데 열이 넓도록 설정
+
         with col2:
+            st.markdown('<h2 style="text-align:center;">😊 JOB-IS에 오신 걸 환영합니다!</h2>', unsafe_allow_html=True)
+
             with st.form("login_form"):
                 pw = st.text_input("", type="password",label_visibility="collapsed", placeholder="로그인 코드를 입력하세요")
                 submitted = st.form_submit_button("로그인")
@@ -69,24 +85,8 @@ def check_login():
                         st.error("❗ 코드가 올바르지 않습니다.")
         st.stop()
 
-# 사용자 프로필 입력 함수
-def input_profile():
-    if "profile_done" not in st.session_state:
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            st.markdown('<h2 style="text-align:center;">📋 사용자 정보를 입력해주세요</h2>', unsafe_allow_html=True)
-            with st.form("profile_form"):
-                ... # (대학, 전공, 학점, 자격증 등 입력 필드)
-                if submitted:
-                    if not agree:
-                        st.warning("❗ 동의가 필요합니다.")
-                    else:
-                        ... # 세션 상태에 값 저장
-                        st.session_state.profile_done = True
-                        st.success("✅ 프로필 정보 저장 완료!")
-                        st.rerun()
-        st.stop()
 
+# 사용자 프로필 입력 함수
 def input_profile():
     if "profile_done" not in st.session_state:
         col1, col2, col3 = st.columns([1, 2, 1])  # 가운데 열을 더 넓게
@@ -126,7 +126,6 @@ def input_profile():
                         st.success("✅ 프로필 정보 저장 완료!")
                         st.rerun()
         st.stop()
-
 start_page()
 check_login()
 input_profile()
