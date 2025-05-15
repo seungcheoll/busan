@@ -285,7 +285,7 @@ with st.sidebar:
     # ▶️ 시연 영상 (YouTube 삽입)
     st.markdown("")
     st.sidebar.markdown("#### ▶️ 시연 영상")
-    st.sidebar.video("https://youtu.be/G_MKtEmmJt8")  # 여기에 유튜브 링크 삽입
+    st.sidebar.video("https://youtu.be/XwpaQ3lSH88")  # 여기에 유튜브 링크 삽입
 Guide = choice == "Guide"
 Career = choice == "Career Chat"
 Dreamer = choice == "Dream Chat"
