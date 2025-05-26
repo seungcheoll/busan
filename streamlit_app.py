@@ -609,10 +609,10 @@ if Career:
                 st.session_state.company_df_for_gpt['회사명'].isin(company_name_by_gpt)
             ]
             if matched_df_by_gpt.empty:
-                st.warning("⚠️ 본 페이지는 상업적 목적이나 원본 UI 복제를 의도하지 않았으며, 구직자 서비스 컨셉 구현을 위해 참고용으로 제작되었습니다.\n\n※ 추후 정식 서비스 개발 시, JobKorea API 등 공식 연동 방식으로 교체할 예정입니다.")
+                st.warning("⚠️ 본 페이지는 상업적 목적이나 원본 UI 복제를 의도하지 않았으며, JOB-IS 서비스 컨셉 구현을 위해 참고용으로 제작되었습니다.\n\n※ 추후 정식 서비스 개발 시, JobKorea API 등 공식 연동 방식으로 교체할 예정입니다.")
                 st.warning("일치하는 기업이 없습니다.")
             else:
-                st.warning("⚠️ 본 페이지는 상업적 목적이나 원본 UI 복제를 의도하지 않았으며, 구직자 서비스 컨셉 구현을 위해 참고용으로 제작되었습니다.\n\n※ 추후 정식 서비스 개발 시, JobKorea API 등 공식 연동 방식으로 교체할 예정입니다.")
+                st.warning("⚠️ 본 페이지는 상업적 목적이나 원본 UI 복제를 의도하지 않았으며, JOB-IS 서비스 컨셉 구현을 위해 참고용으로 제작되었습니다.\n\n※ 추후 정식 서비스 개발 시, JobKorea API 등 공식 연동 방식으로 교체할 예정입니다.")
                 for _, row in matched_df_by_gpt.iterrows():
                     name = row['회사명']
                     jk_url = row['잡코리아 주소']
