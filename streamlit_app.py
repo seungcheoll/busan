@@ -130,6 +130,38 @@ start_page()
 check_login()
 input_profile()
 
+# 조건 만족 시에만 사이드바 및 이후 화면 렌더링
+if st.session_state.get("authenticated") and st.session_state.get("profile_done"):
+    with st.sidebar:
+        choice = option_menu(
+            menu_title="Page",
+            options=["Guide", "Career Chat", "Dream Chat"],
+            icons=["info-circle", "", ""],
+            menu_icon="",
+            default_index=0,
+            styles={
+                "container": {"padding": "4!important", "background-color": "transparent"},
+                "icon": {"display": "none"},
+                "nav-link": {
+                    "font-size": "14px",
+                    "text-align": "left",
+                    "margin": "0px",
+                    "--hover-color": "#e5e9f2"
+                },
+                "nav-link-selected": {
+                    "background-color": "#3498db",
+                    "color": "white"
+                },
+            }
+        )
+        st.sidebar.markdown("#### ▶️ 시연 영상")
+        st.sidebar.video("https://youtu.be/XwpaQ3lSH88")
+
+    # 페이지 선택값 저장
+    Guide = choice == "Guide"
+    Career = choice == "Career Chat"
+    Dreamer = choice == "Dream Chat"
+
 # ───────────────────────────────────────────
 # [3] 유틸 함수: JSON 파싱 및 텍스트 처리
 # ───────────────────────────────────────────
@@ -255,39 +287,39 @@ for key in ["university", "major", "gpa", "field_pref", "job_pref", "activities"
 # [9] 사이드바 메뉴 및 시연 영상
 # ───────────────────────────────────────────
 # 🔘 사이드바 라디오 메뉴 설정
-with st.sidebar:
-    choice = option_menu(
-        menu_title="Page",
-        options=["Guide","Career Chat", "Dream Chat"],
-        icons=["info-circle","", ""],
-        menu_icon="",
-        default_index=0,
-        styles={
-            "container": {
-                "padding": "4!important",
-                "background-color": "transparent"
-            },
-            "icon": {"display": "none"},
-            "nav-link": {
-                "font-size": "14px",
-                "text-align": "left",
-                "margin": "0px",
-                "--hover-color": "#e5e9f2"
-            },
-            "nav-link-selected": {
-                "background-color": "#3498db",
-                "color": "white"
-            },
-        }
-    )
-    # ▶️ 시연 영상
-    st.sidebar.markdown("#### ▶️ 시연 영상")
-    st.sidebar.video("https://youtu.be/XwpaQ3lSH88")
+# with st.sidebar:
+#     choice = option_menu(
+#         menu_title="Page",
+#         options=["Guide","Career Chat", "Dream Chat"],
+#         icons=["info-circle","", ""],
+#         menu_icon="",
+#         default_index=0,
+#         styles={
+#             "container": {
+#                 "padding": "4!important",
+#                 "background-color": "transparent"
+#             },
+#             "icon": {"display": "none"},
+#             "nav-link": {
+#                 "font-size": "14px",
+#                 "text-align": "left",
+#                 "margin": "0px",
+#                 "--hover-color": "#e5e9f2"
+#             },
+#             "nav-link-selected": {
+#                 "background-color": "#3498db",
+#                 "color": "white"
+#             },
+#         }
+#     )
+#     # ▶️ 시연 영상
+#     st.sidebar.markdown("#### ▶️ 시연 영상")
+#     st.sidebar.video("https://youtu.be/XwpaQ3lSH88")
 
-# 사이드바 선택 값에 따른 페이지 분기
-Guide = choice == "Guide"
-Career = choice == "Career Chat"
-Dreamer = choice == "Dream Chat"
+# # 사이드바 선택 값에 따른 페이지 분기
+# Guide = choice == "Guide"
+# Career = choice == "Career Chat"
+# Dreamer = choice == "Dream Chat"
 
 # ───────────────────────────────────────────
 # [10] Guide 페이지 렌더링
