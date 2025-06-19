@@ -36,41 +36,6 @@ st.set_page_config(
     layout="wide"
 )
 
-# 🔘 사이드바 라디오 메뉴 설정
-with st.sidebar:
-    choice = option_menu(
-        menu_title="Page",
-        options=["Guide","Career Chat", "Dream Chat"],
-        icons=["info-circle","", ""],
-        menu_icon="",
-        default_index=0,
-        styles={
-            "container": {
-                "padding": "4!important",
-                "background-color": "transparent"
-            },
-            "icon": {"display": "none"},
-            "nav-link": {
-                "font-size": "14px",
-                "text-align": "left",
-                "margin": "0px",
-                "--hover-color": "#e5e9f2"
-            },
-            "nav-link-selected": {
-                "background-color": "#3498db",
-                "color": "white"
-            },
-        }
-    )
-    # ▶️ 시연 영상
-    st.sidebar.markdown("#### ▶️ 시연 영상")
-    st.sidebar.video("https://youtu.be/XwpaQ3lSH88")
-
-# 사이드바 선택 값에 따른 페이지 분기
-Guide = choice == "Guide"
-Career = choice == "Career Chat"
-Dreamer = choice == "Dream Chat"
-
 # 시작 페이지 (로고 및 이용 버튼 표시)
 def start_page():
     if "started" not in st.session_state:
@@ -289,9 +254,40 @@ for key in ["university", "major", "gpa", "field_pref", "job_pref", "activities"
 # ───────────────────────────────────────────
 # [9] 사이드바 메뉴 및 시연 영상
 # ───────────────────────────────────────────
+# 🔘 사이드바 라디오 메뉴 설정
+with st.sidebar:
+    choice = option_menu(
+        menu_title="Page",
+        options=["Guide","Career Chat", "Dream Chat"],
+        icons=["info-circle","", ""],
+        menu_icon="",
+        default_index=0,
+        styles={
+            "container": {
+                "padding": "4!important",
+                "background-color": "transparent"
+            },
+            "icon": {"display": "none"},
+            "nav-link": {
+                "font-size": "14px",
+                "text-align": "left",
+                "margin": "0px",
+                "--hover-color": "#e5e9f2"
+            },
+            "nav-link-selected": {
+                "background-color": "#3498db",
+                "color": "white"
+            },
+        }
+    )
+    # ▶️ 시연 영상
+    st.sidebar.markdown("#### ▶️ 시연 영상")
+    st.sidebar.video("https://youtu.be/XwpaQ3lSH88")
 
-
-
+# 사이드바 선택 값에 따른 페이지 분기
+Guide = choice == "Guide"
+Career = choice == "Career Chat"
+Dreamer = choice == "Dream Chat"
 
 # ───────────────────────────────────────────
 # [10] Guide 페이지 렌더링
