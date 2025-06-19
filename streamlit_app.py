@@ -130,38 +130,6 @@ start_page()
 check_login()
 input_profile()
 
-# 조건 만족 시에만 사이드바 및 이후 화면 렌더링
-if st.session_state.get("authenticated") and st.session_state.get("profile_done"):
-    with st.sidebar:
-        choice = option_menu(
-            menu_title="Page",
-            options=["Guide", "Career Chat", "Dream Chat"],
-            icons=["info-circle", "", ""],
-            menu_icon="",
-            default_index=0,
-            styles={
-                "container": {"padding": "4!important", "background-color": "transparent"},
-                "icon": {"display": "none"},
-                "nav-link": {
-                    "font-size": "14px",
-                    "text-align": "left",
-                    "margin": "0px",
-                    "--hover-color": "#e5e9f2"
-                },
-                "nav-link-selected": {
-                    "background-color": "#3498db",
-                    "color": "white"
-                },
-            }
-        )
-        st.sidebar.markdown("#### ▶️ 시연 영상")
-        st.sidebar.video("https://youtu.be/XwpaQ3lSH88")
-
-    # 페이지 선택값 저장
-    Guide = choice == "Guide"
-    Career = choice == "Career Chat"
-    Dreamer = choice == "Dream Chat"
-
 # ───────────────────────────────────────────
 # [3] 유틸 함수: JSON 파싱 및 텍스트 처리
 # ───────────────────────────────────────────
@@ -286,170 +254,170 @@ for key in ["university", "major", "gpa", "field_pref", "job_pref", "activities"
 # ───────────────────────────────────────────
 # [9] 사이드바 메뉴 및 시연 영상
 # ───────────────────────────────────────────
-# 🔘 사이드바 라디오 메뉴 설정
-# with st.sidebar:
-#     choice = option_menu(
-#         menu_title="Page",
-#         options=["Guide","Career Chat", "Dream Chat"],
-#         icons=["info-circle","", ""],
-#         menu_icon="",
-#         default_index=0,
-#         styles={
-#             "container": {
-#                 "padding": "4!important",
-#                 "background-color": "transparent"
-#             },
-#             "icon": {"display": "none"},
-#             "nav-link": {
-#                 "font-size": "14px",
-#                 "text-align": "left",
-#                 "margin": "0px",
-#                 "--hover-color": "#e5e9f2"
-#             },
-#             "nav-link-selected": {
-#                 "background-color": "#3498db",
-#                 "color": "white"
-#             },
-#         }
-#     )
-#     # ▶️ 시연 영상
-#     st.sidebar.markdown("#### ▶️ 시연 영상")
-#     st.sidebar.video("https://youtu.be/XwpaQ3lSH88")
+🔘 사이드바 라디오 메뉴 설정
+with st.sidebar:
+    choice = option_menu(
+        menu_title="Page",
+        options=["Guide","Career Chat", "Dream Chat"],
+        icons=["info-circle","", ""],
+        menu_icon="",
+        default_index=0,
+        styles={
+            "container": {
+                "padding": "4!important",
+                "background-color": "transparent"
+            },
+            "icon": {"display": "none"},
+            "nav-link": {
+                "font-size": "14px",
+                "text-align": "left",
+                "margin": "0px",
+                "--hover-color": "#e5e9f2"
+            },
+            "nav-link-selected": {
+                "background-color": "#3498db",
+                "color": "white"
+            },
+        }
+    )
+    # ▶️ 시연 영상
+    st.sidebar.markdown("#### ▶️ 시연 영상")
+    st.sidebar.video("https://youtu.be/XwpaQ3lSH88")
 
-# # 사이드바 선택 값에 따른 페이지 분기
-# Guide = choice == "Guide"
-# Career = choice == "Career Chat"
-# Dreamer = choice == "Dream Chat"
+# 사이드바 선택 값에 따른 페이지 분기
+Guide = choice == "Guide"
+Career = choice == "Career Chat"
+Dreamer = choice == "Dream Chat"
 
 # ───────────────────────────────────────────
 # [10] Guide 페이지 렌더링
 # ───────────────────────────────────────────
 if Guide:
-    st.markdown("""
-    <h1 style='text-align: center;'>
-      <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/logo_guide.png" 
-           style="width: 180px; height: 70px; vertical-align: middle; margin-right: 0px;">
-    </h1>
-    """, unsafe_allow_html=True)
-    st.markdown("""
-    <style>
-      .gbox {
-        background-color: #f0f4f8;
-        padding: 30px;
-        border: 2px solid #d1dce5;
-        border-radius: 15px;
-        margin: 20px 0;
-      }
+    # st.markdown("""
+    # <h1 style='text-align: center;'>
+    #   <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/logo_guide.png" 
+    #        style="width: 180px; height: 70px; vertical-align: middle; margin-right: 0px;">
+    # </h1>
+    # """, unsafe_allow_html=True)
+    # st.markdown("""
+    # <style>
+    #   .gbox {
+    #     background-color: #f0f4f8;
+    #     padding: 30px;
+    #     border: 2px solid #d1dce5;
+    #     border-radius: 15px;
+    #     margin: 20px 0;
+    #   }
 
-      /* 모든 텍스트를 검정색으로 고정 */
-      .gbox, .gbox * {
-        color: black !important;
-      }
+    #   /* 모든 텍스트를 검정색으로 고정 */
+    #   .gbox, .gbox * {
+    #     color: black !important;
+    #   }
 
-      .split {
-        display: flex;
-        gap: 20px;
-      }
+    #   .split {
+    #     display: flex;
+    #     gap: 20px;
+    #   }
 
-      .image-section {
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 10px;
-        border-left: 6px solid #1f77b4;
-        flex: 1;
-      }
+    #   .image-section {
+    #     background-color: #ffffff;
+    #     padding: 20px;
+    #     border-radius: 10px;
+    #     border-left: 6px solid #1f77b4;
+    #     flex: 1;
+    #   }
 
-      hr.custom {
-        border: none;
-        border-top: 1px solid #d1dce5;
-        margin: 10px 0 15px;
-      }
+    #   hr.custom {
+    #     border: none;
+    #     border-top: 1px solid #d1dce5;
+    #     margin: 10px 0 15px;
+    #   }
 
-      .image-section p {
-        font-size: 20px;
-        font-weight: bold;
-        margin: 0;
-        text-align: center;
-      }
+    #   .image-section p {
+    #     font-size: 20px;
+    #     font-weight: bold;
+    #     margin: 0;
+    #     text-align: center;
+    #   }
 
-      .image-section img {
-        width: 100%;
-        border-radius: 8px;
-      }
+    #   .image-section img {
+    #     width: 100%;
+    #     border-radius: 8px;
+    #   }
 
-      .right-section {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        flex: 1;
-      }
+    #   .right-section {
+    #     display: flex;
+    #     flex-direction: column;
+    #     gap: 20px;
+    #     flex: 1;
+    #   }
 
-      .textbox {
-        background-color: #ffffff;
-        border-left: 6px solid #1f77b4;
-        padding: 25px;
-        border-radius: 12px;
-      }
+    #   .textbox {
+    #     background-color: #ffffff;
+    #     border-left: 6px solid #1f77b4;
+    #     padding: 25px;
+    #     border-radius: 12px;
+    #   }
 
-      .textbox h4 {
-        margin-top: 0;
-        margin-bottom: 10px;
-      }
+    #   .textbox h4 {
+    #     margin-top: 0;
+    #     margin-bottom: 10px;
+    #   }
 
-      .textbox ul {
-        margin: 0;
-        padding-left: 1.2em;
-      }
-    </style>
+    #   .textbox ul {
+    #     margin: 0;
+    #     padding-left: 1.2em;
+    #   }
+    # </style>
 
-    <div class="gbox">
-      <div class="split">
-        <div class="image-section">
-          <p style="font-size:30px; font-weight:bold; text-align:center; margin:0;">
-            System Workflow
-          </p>
-          <hr class="custom"/>
-          <img
-            src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/flow.png"
-            alt="JobBusan RAG 처리 구조도"
-            style="width:600px; height:510px; display:block; margin:0 auto; padding-top: 20px;"
-          />
-        </div>
-        <div class="right-section">
-            <div class="textbox">
-              <h4>1️⃣ Career Chat (기업 매칭 서비스)</h4>
-              <ul>
-                <li>❓ 질문 입력 및 유형 선택 후 질문 실행 버튼을 클릭하세요.</li>
-                <li>📁 결과는 5개의 탭으로 구성되어 있습니다.
-                  <ul>
-                    <li>✅ Job-Busan 답변: 부산 내 강소기업 추천</li>
-                    <li>📚 추천 기업 상세</li>
-                    <li>📢 관련 채용 정보(JobKorea)</li>
-                    <li>🌍 추천 기업 위치</li>
-                    <li>🔍 부산 기업 분포 : 원하는 기업 검색</li>
-                  </ul>
-                </li>
-                <li>💬 JOB-IS 답변 기반 취업 상담 챗봇이 함께 제공됩니다.</li>
-              </ul>
-            </div>
-            <div class="textbox">
-              <h4>2️⃣ Dream Chat (진로 상담 서비스)</h4>
-              <ul>
-                <li>🧠 사용자가 입력한 프로필 정보를 바탕으로 진로 상담을 제공합니다.</li>
-                <li>💡 예시 질문
-                  <ul>
-                    <li>"제 전공에 맞는 직무가 궁금해요."</li>
-                    <li>"관심 분야에서 필요한 자격증은 뭔가요?"</li>
-                    <li>"해외 취업도 고려 중인데, 어떤 준비가 필요할까요?"</li>
-                    <li>"저와 비슷한 경력을 가진 사람들은 어떤 기업에 입사하나요?"</li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-        </div>
-      </div>
-    </div>
-    """, unsafe_allow_html=True)
+    # <div class="gbox">
+    #   <div class="split">
+    #     <div class="image-section">
+    #       <p style="font-size:30px; font-weight:bold; text-align:center; margin:0;">
+    #         System Workflow
+    #       </p>
+    #       <hr class="custom"/>
+    #       <img
+    #         src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/flow.png"
+    #         alt="JobBusan RAG 처리 구조도"
+    #         style="width:600px; height:510px; display:block; margin:0 auto; padding-top: 20px;"
+    #       />
+    #     </div>
+    #     <div class="right-section">
+    #         <div class="textbox">
+    #           <h4>1️⃣ Career Chat (기업 매칭 서비스)</h4>
+    #           <ul>
+    #             <li>❓ 질문 입력 및 유형 선택 후 질문 실행 버튼을 클릭하세요.</li>
+    #             <li>📁 결과는 5개의 탭으로 구성되어 있습니다.
+    #               <ul>
+    #                 <li>✅ Job-Busan 답변: 부산 내 강소기업 추천</li>
+    #                 <li>📚 추천 기업 상세</li>
+    #                 <li>📢 관련 채용 정보(JobKorea)</li>
+    #                 <li>🌍 추천 기업 위치</li>
+    #                 <li>🔍 부산 기업 분포 : 원하는 기업 검색</li>
+    #               </ul>
+    #             </li>
+    #             <li>💬 JOB-IS 답변 기반 취업 상담 챗봇이 함께 제공됩니다.</li>
+    #           </ul>
+    #         </div>
+    #         <div class="textbox">
+    #           <h4>2️⃣ Dream Chat (진로 상담 서비스)</h4>
+    #           <ul>
+    #             <li>🧠 사용자가 입력한 프로필 정보를 바탕으로 진로 상담을 제공합니다.</li>
+    #             <li>💡 예시 질문
+    #               <ul>
+    #                 <li>"제 전공에 맞는 직무가 궁금해요."</li>
+    #                 <li>"관심 분야에서 필요한 자격증은 뭔가요?"</li>
+    #                 <li>"해외 취업도 고려 중인데, 어떤 준비가 필요할까요?"</li>
+    #                 <li>"저와 비슷한 경력을 가진 사람들은 어떤 기업에 입사하나요?"</li>
+    #               </ul>
+    #             </li>
+    #           </ul>
+    #         </div>
+    #     </div>
+    #   </div>
+    # </div>
+    # """, unsafe_allow_html=True)
     
 # ───────────────────────────────────────────
 # [11] Career Chat 페이지 (기업 추천 + 지도 시각화 + 취업 상담 챗봇)
