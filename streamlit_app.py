@@ -231,7 +231,7 @@ st.markdown("""
 
         /* 상단 여백 제거 (헤더는 숨기지 않음!) */
         .block-container {
-            padding-top: 0.7rem !important;
+            padding-top: 1.2rem !important;
         }
     </style>
 """, unsafe_allow_html=True)
