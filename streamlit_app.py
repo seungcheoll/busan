@@ -370,9 +370,9 @@ if Guide:
     </style>
 
     <div class="gbox">
-        <p style="color: red; font-weight: bold;">
-          왼쪽 위 <span style="font-size: 18px;">화살표(▶)</span>를 눌러 메뉴를 펼쳐 진행하세요!
-        </p>
+    <p style="color: red; font-weight: bold;">
+      왼쪽 위 <span style="font-size: 18px;">화살표(▶)</span>를 눌러 메뉴를 펼쳐 진행하세요!
+    </p>
       </div>
       <div class="split">
         <div class="image-section">
