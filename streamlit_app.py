@@ -20,8 +20,8 @@ from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from langchain.schema.messages import BaseMessage, HumanMessage, AIMessage
 from langchain.chat_models.base import BaseChatModel
-from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.schema import ChatResult
+from langchain_huggingface import HuggingFaceEmbeddings
 from openai import OpenAI
 import json
 import streamlit.components.v1 as components
