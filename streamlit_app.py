@@ -370,7 +370,14 @@ if Guide:
     </style>
 
     <div class="gbox">
+    st.markdown("""
+<div style="text-align: center;">
     <h4>1️⃣ Career Chat (기업 매칭 서비스)</h4>
+    <p style="color: red; font-weight: bold;">
+        왼쪽 위 <span style="font-size: 18px;">화살표(▶)</span>를 눌러 메뉴를 펼쳐 진행하세요!
+    </p>
+</div>
+""", unsafe_allow_html=True)
       <div class="split">
         <div class="image-section">
           <p style="font-size:30px; font-weight:bold; text-align:center; margin:0;">
