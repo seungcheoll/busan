@@ -230,7 +230,7 @@ hide_streamlit_style = """
         header {visibility: hidden;}
     </style>
 """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+# st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 # # 📏 상단 여백 제거 스타일
 # st.markdown("""
