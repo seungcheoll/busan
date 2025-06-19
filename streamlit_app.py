@@ -225,9 +225,9 @@ def init_qa_chain():
 # ───────────────────────────────────────────
 hide_streamlit_style = """
     <style>
-        #MainMenu {visibility: hidden;}
+        # MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
-        header {visibility: hidden;}
+        # header {visibility: hidden;}
     </style>
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
