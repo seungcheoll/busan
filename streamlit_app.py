@@ -255,40 +255,42 @@ for key in ["university", "major", "gpa", "field_pref", "job_pref", "activities"
 # [9] 사이드바 메뉴 및 시연 영상
 # ───────────────────────────────────────────
 # 🔘 사이드바 라디오 메뉴 설정
-with st.sidebar:
-    # 🔘 페이지 선택 메뉴
-    choice = option_menu(
-        menu_title="Page",
-        options=["Guide","Career Chat", "Dream Chat"],
-        icons=["info-circle","", ""],
-        menu_icon="",
-        default_index=0,
-        styles={
-            "container": {
-                "padding": "4!important",
-                "background-color": "transparent"
-            },
-            "icon": {"display": "none"},
-            "nav-link": {
-                "font-size": "14px",
-                "text-align": "left",
-                "margin": "0px",
-                "--hover-color": "#e5e9f2"
-            },
-            "nav-link-selected": {
-                "background-color": "#3498db",
-                "color": "white"
-            },
-        }
-    )
+if st.session_state.get("started") and st.session_state.get("authenticated") and st.session_state.get("profile_done"):
+    # 🔘 사이드바 라디오 메뉴 설정
+    with st.sidebar:
+        choice = option_menu(
+            menu_title="Page",
+            options=["Guide","Career Chat", "Dream Chat"],
+            icons=["info-circle","", ""],
+            menu_icon="",
+            default_index=0,
+            styles={
+                "container": {
+                    "padding": "4!important",
+                    "background-color": "transparent"
+                },
+                "icon": {"display": "none"},
+                "nav-link": {
+                    "font-size": "14px",
+                    "text-align": "left",
+                    "margin": "0px",
+                    "--hover-color": "#e5e9f2"
+                },
+                "nav-link-selected": {
+                    "background-color": "#3498db",
+                    "color": "white"
+                },
+            }
+        )
+        # ▶️ 시연 영상
+        st.sidebar.markdown("#### ▶️ 시연 영상")
+        st.sidebar.video("https://youtu.be/XwpaQ3lSH88")
 
-    # ▶️ 시연 영상 (YouTube 삽입)
-    st.markdown("")
-    st.sidebar.markdown("#### ▶️ 시연 영상")
-    st.sidebar.video("https://youtu.be/XwpaQ3lSH88")  # 여기에 유튜브 링크 삽입
-Guide = choice == "Guide"
-Career = choice == "Career Chat"
-Dreamer = choice == "Dream Chat"
+    # 사이드바 선택 값에 따른 페이지 분기
+    Guide = choice == "Guide"
+    Career = choice == "Career Chat"
+    Dreamer = choice == "Dream Chat"
+
 
 # ───────────────────────────────────────────
 # [10] Guide 페이지 렌더링
