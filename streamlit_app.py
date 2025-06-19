@@ -293,6 +293,7 @@ Dreamer = choice == "Dream Chat"
 # [10] Guide 페이지 렌더링
 # ───────────────────────────────────────────
 if Guide:
+    st.warning("error")
     # st.markdown("""
     # <h1 style='text-align: center;'>
     #   <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/logo_guide.png" 
