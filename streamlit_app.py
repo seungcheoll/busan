@@ -289,8 +289,7 @@ if Guide:
       <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/logo_guide.png" 
            style="width: 180px; height: 70px; vertical-align: middle; margin-right: 0px;">
     </h1>
-    """, unsafe_allow_html=True)
-    st.markdown("""
+
     <style>
       .gbox {
         background-color: #f0f4f8;
@@ -300,7 +299,6 @@ if Guide:
         margin: 20px 0;
       }
 
-      /* 모든 텍스트를 검정색으로 고정 */
       .gbox, .gbox * {
         color: black !important;
       }
@@ -362,11 +360,13 @@ if Guide:
     </style>
 
     <div class="gbox">
-    <div style="text-align: center; width: 100%; margin-bottom: 10px;">
+
+      <div style="text-align: center; width: 100%; margin-bottom: 10px;">
         <p style="font-weight: bold;">
-          왼쪽 위 <span style="color: 'Red'; font-size: 18px;">사이드 바(>>)</span>메뉴를 펼쳐 진행하세요!
+          왼쪽 위 <span style="color: red; font-size: 18px;">사이드 바(&raquo;&raquo;)</span> 메뉴를 펼쳐 진행하세요!
         </p>
-    </div>
+      </div>
+
       <div class="split">
         <div class="image-section">
           <p style="font-size:30px; font-weight:bold; text-align:center; margin:0;">
@@ -379,6 +379,7 @@ if Guide:
             style="width:600px; height:510px; display:block; margin:0 auto; padding-top: 20px;"
           />
         </div>
+
         <div class="right-section">
             <div class="textbox">
               <h4>1️⃣ Career Chat (기업 매칭 서비스)</h4>
@@ -396,6 +397,7 @@ if Guide:
                 <li>💬 JOB-IS 답변 기반 취업 상담 챗봇이 함께 제공됩니다.</li>
               </ul>
             </div>
+
             <div class="textbox">
               <h4>2️⃣ Dream Chat (진로 상담 서비스)</h4>
               <ul>
