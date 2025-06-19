@@ -259,6 +259,7 @@ st.write("✅ authenticated:", st.session_state.get("authenticated"))
 st.write("✅ profile_done:", st.session_state.get("profile_done"))
 #🔘 사이드바 라디오 메뉴 설정
 with st.sidebar:
+    st.write("🔍 사이드바 진입")  # ← 이게 보이면 블록은 실행됨
     choice = option_menu(
         menu_title="Page",
         options=["Guide","Career Chat", "Dream Chat"],
@@ -286,7 +287,7 @@ with st.sidebar:
     # ▶️ 시연 영상
     st.sidebar.markdown("#### ▶️ 시연 영상")
     st.sidebar.video("https://youtu.be/XwpaQ3lSH88")
-
+    st.write("🔍 사이드바 완료")  # ← 이게 안 보이면 내부에서 죽는 것
 # 사이드바 선택 값에 따른 페이지 분기
 Guide = choice == "Guide"
 Career = choice == "Career Chat"
