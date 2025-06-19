@@ -223,26 +223,18 @@ def init_qa_chain():
 # ───────────────────────────────────────────
 # [7] 스타일 커스터마이징 (Streamlit UI 숨기기 등)
 # ───────────────────────────────────────────
-hide_streamlit_style = """
+st.markdown("""
     <style>
-        MainMenu {visibility: hidden;}
+        /* 좌측 상단 메뉴 및 하단 footer 숨기기 */
+        #MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
-        # header {visibility: hidden;}
-    </style>
-"""
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-# # 📏 상단 여백 제거 스타일
-# st.markdown("""
-#     <style>
-#         .block-container {
-#             padding-top: 0rem !important;
-#         }
-#         header[data-testid="stHeader"] {
-#             display: none;
-#         }
-#     </style>
-# """, unsafe_allow_html=True)
+        /* 상단 여백 제거 (헤더는 숨기지 않음!) */
+        .block-container {
+            padding-top: 0rem !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 # ───────────────────────────────────────────
 # [8] 사용자 프로필 세션 상태 초기화
