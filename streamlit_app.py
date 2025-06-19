@@ -371,8 +371,8 @@ if Guide:
 
     <div class="gbox">
     <div style="text-align: center; width: 100%; margin-bottom: 10px;">
-        <p style="color: red; font-weight: bold;">
-          왼쪽 위 <span style="font-size: 18px;">화살표(▶)</span>를 눌러 메뉴를 펼쳐 진행하세요!
+        <p style="\font-weight: bold;">
+          왼쪽 위 <span style="color: red; font-size: 18px;">사이드 바(>>)</span>를 눌러 메뉴를 펼쳐 진행하세요!
         </p>
     </div>
       <div class="split">
