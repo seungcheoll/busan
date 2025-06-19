@@ -130,6 +130,11 @@ st.set_page_config(
 # check_login()
 # input_profile()
 
+# 체험용으로 강제 우회
+st.session_state["started"] = True
+st.session_state["authenticated"] = True
+st.session_state["profile_done"] = True
+
 # ───────────────────────────────────────────
 # [3] 유틸 함수: JSON 파싱 및 텍스트 처리
 # ───────────────────────────────────────────
