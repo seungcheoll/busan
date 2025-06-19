@@ -225,7 +225,7 @@ def init_qa_chain():
 # ───────────────────────────────────────────
 hide_streamlit_style = """
     <style>
-        # MainMenu {visibility: hidden;}
+        MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
         # header {visibility: hidden;}
     </style>
