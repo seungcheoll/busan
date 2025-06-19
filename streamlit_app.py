@@ -364,7 +364,7 @@ if Guide:
     <div class="gbox">
     <div style="text-align: center; width: 100%; margin-bottom: 0px;">
         <p style="font-weight: bold;">
-          <span style="font-size: 25px;">🚨!</span><span style="font-size: 18px;">왼쪽 위 사이드 바(>>)메뉴를 펼쳐 진행하세요!</span>
+          <span style="font-size: 23px;">🚨</span><span style="font-size: 18px;">왼쪽 위 사이드 바(>>)메뉴를 펼쳐 진행하세요!</span><span style="font-size: 23px;">🚨</span>
         </p>
     </div>
       <div class="split">
