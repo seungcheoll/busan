@@ -370,6 +370,7 @@ if Guide:
     </style>
 
     <div class="gbox">
+    <h4>1️⃣ Career Chat (기업 매칭 서비스)</h4>
       <div class="split">
         <div class="image-section">
           <p style="font-size:30px; font-weight:bold; text-align:center; margin:0;">
