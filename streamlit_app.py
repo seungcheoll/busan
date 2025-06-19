@@ -254,7 +254,7 @@ for key in ["university", "major", "gpa", "field_pref", "job_pref", "activities"
 # ───────────────────────────────────────────
 # [9] 사이드바 메뉴 및 시연 영상
 # ───────────────────────────────────────────
-🔘 사이드바 라디오 메뉴 설정
+#🔘 사이드바 라디오 메뉴 설정
 with st.sidebar:
     choice = option_menu(
         menu_title="Page",
