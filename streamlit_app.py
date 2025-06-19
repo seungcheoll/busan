@@ -362,13 +362,13 @@ if Guide:
     </style>
 
     <div class="gbox">
-    st.markdown("""
-    <div style="text-align: center; width: 100%; margin-bottom: 10px;">
-        <p style="font-weight: bold;">
-          왼쪽 위 <span style="color: red; font-size: 18px;">사이드 바(&raquo;&raquo;)</span> 메뉴를 펼쳐 진행하세요!
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
+st.markdown("""
+<div style="text-align: center; width: 100%; margin-bottom: 10px;">
+    <p style="font-weight: bold;">
+      왼쪽 위 <span style="color: red; font-size: 18px;">사이드 바(&raquo;&raquo;)</span> 메뉴를 펼쳐 진행하세요!
+    </p>
+</div>
+""", unsafe_allow_html=True)
       <div class="split">
         <div class="image-section">
           <p style="font-size:30px; font-weight:bold; text-align:center; margin:0;">
