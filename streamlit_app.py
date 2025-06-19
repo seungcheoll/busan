@@ -36,99 +36,99 @@ st.set_page_config(
     layout="wide"
 )
 
-# # 시작 페이지 (로고 및 이용 버튼 표시)
-# def start_page():
-#     if "started" not in st.session_state:
-#         col1, col2, col3 = st.columns([1, 2, 1])  # 가운데 정렬
-#         with col2:
-#             st.markdown("""
-#                 <div style="
-#                     background-color: #FFFFFF;
-#                     padding: 0px;
-#                     border-radius: 10px;
-#                     text-align: center;
-#                     width: 500px;
-#                     margin: 0 auto;
-#                 ">
-#                     <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/logo_raw.png" 
-#                          style="width: 500px; height: 250px; display: block; margin: 0 auto;">
-#                 </div>
-#             """, unsafe_allow_html=True)
+# 시작 페이지 (로고 및 이용 버튼 표시)
+def start_page():
+    if "started" not in st.session_state:
+        col1, col2, col3 = st.columns([1, 2, 1])  # 가운데 정렬
+        with col2:
+            st.markdown("""
+                <div style="
+                    background-color: #FFFFFF;
+                    padding: 0px;
+                    border-radius: 10px;
+                    text-align: center;
+                    width: 500px;
+                    margin: 0 auto;
+                ">
+                    <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/logo_raw.png" 
+                         style="width: 500px; height: 250px; display: block; margin: 0 auto;">
+                </div>
+            """, unsafe_allow_html=True)
 
-#         # 버튼만 따로 가운데 정렬
-#         btn_col1, btn_col2, btn_col3 = st.columns([1.75, 1, 1])
-#         with btn_col2:
-#             st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)  # 버튼 위 여백 최소
-#             if st.button("이용하러 가기"):
-#                 st.session_state.started = True
-#                 st.rerun()
+        # 버튼만 따로 가운데 정렬
+        btn_col1, btn_col2, btn_col3 = st.columns([1.75, 1, 1])
+        with btn_col2:
+            st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)  # 버튼 위 여백 최소
+            if st.button("이용하러 가기"):
+                st.session_state.started = True
+                st.rerun()
 
-#         st.stop()
+        st.stop()
 
-# # 로그인 페이지 (로고 및 이용 버튼 표시)     
-# def check_login():
-#     if not st.session_state.get("authenticated", False):
-#         col1, col2, col3 = st.columns([1, 2, 1])  # 가운데 열이 넓도록 설정
+# 로그인 페이지 (로고 및 이용 버튼 표시)     
+def check_login():
+    if not st.session_state.get("authenticated", False):
+        col1, col2, col3 = st.columns([1, 2, 1])  # 가운데 열이 넓도록 설정
 
-#         with col2:
-#             st.markdown('<h2 style="text-align:center;">😊 JOB-IS에 오신 걸 환영합니다!</h2>', unsafe_allow_html=True)
+        with col2:
+            st.markdown('<h2 style="text-align:center;">😊 JOB-IS에 오신 걸 환영합니다!</h2>', unsafe_allow_html=True)
 
-#             with st.form("login_form"):
-#                 pw = st.text_input("-", type="password",label_visibility="collapsed", placeholder="로그인 코드를 입력하세요")
-#                 submitted = st.form_submit_button("로그인")
-#                 if submitted:
-#                     if pw == st.secrets["general"]["APP_PASSWORD"]:
-#                         st.session_state.authenticated = True
-#                         st.success("✅ 로그인 성공!")
-#                         st.rerun()
-#                     else:
-#                         st.error("❗ 코드가 올바르지 않습니다.")
-#         st.stop()
+            with st.form("login_form"):
+                pw = st.text_input("-", type="password",label_visibility="collapsed", placeholder="로그인 코드를 입력하세요")
+                submitted = st.form_submit_button("로그인")
+                if submitted:
+                    if pw == st.secrets["general"]["APP_PASSWORD"]:
+                        st.session_state.authenticated = True
+                        st.success("✅ 로그인 성공!")
+                        st.rerun()
+                    else:
+                        st.error("❗ 코드가 올바르지 않습니다.")
+        st.stop()
 
 
-# # 사용자 프로필 입력 함수
-# def input_profile():
-#     if "profile_done" not in st.session_state:
-#         col1, col2, col3 = st.columns([1, 2, 1])  # 가운데 열을 더 넓게
+# 사용자 프로필 입력 함수
+def input_profile():
+    if "profile_done" not in st.session_state:
+        col1, col2, col3 = st.columns([1, 2, 1])  # 가운데 열을 더 넓게
 
-#         with col2:  # 두 번째 컬럼에만 폼 표시
-#             st.markdown('<h2 style="text-align:center;">📋 사용자 정보를 입력해주세요</h2>', unsafe_allow_html=True)
-#             st.markdown("""
-#             <div style="text-align:center; color:red; font-weight:bold; font-size:16px;">
-#             ※ 프로필 정보 미입력 시 진로 상담 챗봇(Dream Chat)의 사용이 제한됩니다. ※
-#             </div>
-#             """, unsafe_allow_html=True)
+        with col2:  # 두 번째 컬럼에만 폼 표시
+            st.markdown('<h2 style="text-align:center;">📋 사용자 정보를 입력해주세요</h2>', unsafe_allow_html=True)
+            st.markdown("""
+            <div style="text-align:center; color:red; font-weight:bold; font-size:16px;">
+            ※ 프로필 정보 미입력 시 진로 상담 챗봇(Dream Chat)의 사용이 제한됩니다. ※
+            </div>
+            """, unsafe_allow_html=True)
             
-#             with st.form("profile_form"):
-#                 university   = st.text_input("대학교", placeholder="예: OO대학교")
-#                 major        = st.text_input("전공", placeholder="예: OO학과")
-#                 gpa          = st.text_input("학점", placeholder="예: 4.5")
-#                 field_pref   = st.text_input("선호분야(산업군)", placeholder="예: 제조업")
-#                 job_pref     = st.text_input("선호직무", placeholder="예: 개발자")
-#                 activities   = st.text_area("경력사항", placeholder="예: OO공모전 수상 \n OO서포터즈 ...")
-#                 certificates = st.text_area("보유 자격증", placeholder="예: ADsP\nSQLD")
+            with st.form("profile_form"):
+                university   = st.text_input("대학교", placeholder="예: OO대학교")
+                major        = st.text_input("전공", placeholder="예: OO학과")
+                gpa          = st.text_input("학점", placeholder="예: 4.5")
+                field_pref   = st.text_input("선호분야(산업군)", placeholder="예: 제조업")
+                job_pref     = st.text_input("선호직무", placeholder="예: 개발자")
+                activities   = st.text_area("경력사항", placeholder="예: OO공모전 수상 \n OO서포터즈 ...")
+                certificates = st.text_area("보유 자격증", placeholder="예: ADsP\nSQLD")
                 
-#                 agree = st.checkbox("개인정보 수집 및 이용 동의(※ 입력된 정보는 맞춤형 취업 상담을 위한 용도로만 사용됩니다.)")
-#                 submitted = st.form_submit_button("입력 완료")
+                agree = st.checkbox("개인정보 수집 및 이용 동의(※ 입력된 정보는 맞춤형 취업 상담을 위한 용도로만 사용됩니다.)")
+                submitted = st.form_submit_button("입력 완료")
 
-#                 if submitted:
-#                     if not agree:
-#                         st.warning("❗ 원활한 상담을 위한 개인정보 수집 및 이용 동의를 부탁드립니다.")
-#                     else:
-#                         st.session_state.university   = university
-#                         st.session_state.major        = major
-#                         st.session_state.gpa          = gpa
-#                         st.session_state.field_pref   = field_pref
-#                         st.session_state.job_pref     = job_pref
-#                         st.session_state.activities   = activities
-#                         st.session_state.certificates = certificates
-#                         st.session_state.profile_done = True
-#                         st.success("✅ 프로필 정보 저장 완료!")
-#                         st.rerun()
-#         st.stop()
-# start_page()
-# check_login()
-# input_profile()
+                if submitted:
+                    if not agree:
+                        st.warning("❗ 원활한 상담을 위한 개인정보 수집 및 이용 동의를 부탁드립니다.")
+                    else:
+                        st.session_state.university   = university
+                        st.session_state.major        = major
+                        st.session_state.gpa          = gpa
+                        st.session_state.field_pref   = field_pref
+                        st.session_state.job_pref     = job_pref
+                        st.session_state.activities   = activities
+                        st.session_state.certificates = certificates
+                        st.session_state.profile_done = True
+                        st.success("✅ 프로필 정보 저장 완료!")
+                        st.rerun()
+        st.stop()
+start_page()
+check_login()
+input_profile()
 
 # 체험용으로 강제 우회
 st.session_state["started"] = True
