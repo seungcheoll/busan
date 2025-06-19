@@ -74,7 +74,7 @@ def check_login():
             st.markdown('<h2 style="text-align:center;">😊 JOB-IS에 오신 걸 환영합니다!</h2>', unsafe_allow_html=True)
 
             with st.form("login_form"):
-                pw = st.text_input("", type="password",label_visibility="collapsed", placeholder="로그인 코드를 입력하세요")
+                pw = st.text_input("-", type="password",label_visibility="collapsed", placeholder="로그인 코드를 입력하세요")
                 submitted = st.form_submit_button("로그인")
                 if submitted:
                     if pw == st.secrets["general"]["APP_PASSWORD"]:
