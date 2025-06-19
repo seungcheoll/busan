@@ -292,7 +292,6 @@ Dreamer = choice == "Dream Chat"
 # [10] Guide 페이지 렌더링
 # ───────────────────────────────────────────
 if Guide:
-    st.warning(":왼쪽을_가리키는_손_모양: 왼쪽 위의 :앞쪽_화살표: 아이콘을 눌러 사이드바를 열어 설정을 확인하세요!")
     st.markdown("""
     <h1 style='text-align: center;'>
       <img src="https://raw.githubusercontent.com/seungcheoll/busan/main/image/logo_guide.png" 
