@@ -232,17 +232,17 @@ hide_streamlit_style = """
 """
 # st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-# # 📏 상단 여백 제거 스타일
-# st.markdown("""
-#     <style>
-#         .block-container {
-#             padding-top: 0rem !important;
-#         }
-#         header[data-testid="stHeader"] {
-#             display: none;
-#         }
-#     </style>
-# """, unsafe_allow_html=True)
+# 📏 상단 여백 제거 스타일
+st.markdown("""
+    <style>
+        .block-container {
+            padding-top: 0rem !important;
+        }
+        header[data-testid="stHeader"] {
+            display: none;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 # ───────────────────────────────────────────
 # [8] 사용자 프로필 세션 상태 초기화
