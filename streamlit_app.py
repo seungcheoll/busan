@@ -371,7 +371,7 @@ if Guide:
 
     <div class="gbox">
       <div class="split">
-      <h4>1️⃣ Career Chat (기업 매칭 서비스)</h4>
+          <h4>1️⃣ Career Chat (기업 매칭 서비스)</h4>
         <div class="image-section">
           <p style="font-size:30px; font-weight:bold; text-align:center; margin:0;">
             System Workflow
