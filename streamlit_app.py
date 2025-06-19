@@ -62,9 +62,6 @@ def start_page():
             if st.button("이용하러 가기"):
                 st.session_state.started = True
                 st.rerun()
-
-        st.stop()
-
 # 로그인 페이지 (로고 및 이용 버튼 표시)     
 def check_login():
     if not st.session_state.get("authenticated", False):
@@ -83,8 +80,6 @@ def check_login():
                         st.rerun()
                     else:
                         st.error("❗ 코드가 올바르지 않습니다.")
-        st.stop()
-
 
 # 사용자 프로필 입력 함수
 def input_profile():
@@ -125,7 +120,6 @@ def input_profile():
                         st.session_state.profile_done = True
                         st.success("✅ 프로필 정보 저장 완료!")
                         st.rerun()
-        st.stop()
 start_page()
 check_login()
 input_profile()
