@@ -226,7 +226,7 @@ def init_qa_chain():
 st.markdown("""
     <style>
         /* 좌측 상단 메뉴 및 하단 footer 숨기기 */
-        #MainMenu {visibility: hidden;}
+        MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
 
         /* 상단 여백 제거 (헤더는 숨기지 않음!) */
