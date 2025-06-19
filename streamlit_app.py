@@ -254,6 +254,11 @@ for key in ["university", "major", "gpa", "field_pref", "job_pref", "activities"
 # ───────────────────────────────────────────
 # [9] 사이드바 메뉴 및 시연 영상
 # ───────────────────────────────────────────
+
+if "started" not in st.session_state: st.session_state["started"] = True
+if "authenticated" not in st.session_state: st.session_state["authenticated"] = True
+if "profile_done" not in st.session_state: st.session_state["profile_done"] = True
+    
 # 🔘 사이드바 라디오 메뉴 설정
 if st.session_state.get("started") and st.session_state.get("authenticated") and st.session_state.get("profile_done"):
     # 🔘 사이드바 라디오 메뉴 설정
