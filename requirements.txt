@@ -1,6 +1,6 @@
 streamlit
 streamlit-aggrid
-streamlit_option_menu
+streamlit-option-menu
 langchain
 langchain-community
 langchain-huggingface
